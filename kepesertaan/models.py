@@ -1,8 +1,9 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
-User = get_user_model()
+# User = get_user_model()
 
 NIK_VALIDATOR = RegexValidator("^\d{16}$","Format NIK Tidak Sesuai")
 HP_VALIDATOR = RegexValidator("^(08+[1-9])([0-9]{7,10})$", "Format NO HP TIDAK SESUA!!!")
