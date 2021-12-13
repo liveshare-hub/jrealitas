@@ -1,13 +1,18 @@
 from django.db.models import Q
 from django.http.response import JsonResponse
+from pyexcel_xls import get_data as xls_get
+from pyexcel_xlsx import get_data as xlsx_get
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from django.contrib import messages
+
+import io, csv
 
 from .models import (
     Kantor, Jabatan, Profile, 
-    Perusahaan, Perusahaan_user, Tenaga_kerja
+    Perusahaan, Tenaga_kerja, User_Profile
 )
 
 @login_required(login_url='/accounts/login/')
@@ -30,7 +35,7 @@ def index(request):
 @login_required(login_url='/accounts/login/')
 def data_user(request):
     # print(request.user.profile_set.values('jabatan_id')[0])
-    print(request.user.profile_set.values('pk')[0])
+    # print(request.user.profile_set.values('pk')[0])
     datas = Perusahaan.objects.all()
     return render(request, 'kepesertaan/data_user.html', {'datas':datas})
 
@@ -40,7 +45,7 @@ def Daftar_Perusahaan(request):
     nama_pers = request.POST.get('nama_pemberi_kerja')
     nik = request.POST.get('nik')
     nama = request.POST.get('nama_lengkap')
-    jabatan = request.POST.get('jabatan')
+    # jabatan = request.POST.get('jabatan')
     pembina = request.POST.get('pembina_id')
     email = request.POST.get('email')
     no_hp = request.POST.get('no_hp')
@@ -52,12 +57,29 @@ def Daftar_Perusahaan(request):
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
 
-    if password1 == password2 :
-        try:
-            User.objects.create(username=username, password=password1)
-        except User.DoesNotExist:
-            return False
+    try:
+        if password1 == password2 :
+            user = User.objects.create(username=username, password=password1)
+            user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+                email=email, no_hp=no_hp)
+            Perusahaan.objects.create(profile_id=user_prof.pk,npp=npp, nama_perusahaan=nama_pers,
+                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
+                pembina_id=pembina)
 
-        return JsonResponse({'success':'done'})
-    else:
-        return JsonResponse({'error':'Password tidak sama!'})
+            return JsonResponse({'success':'done'})
+        else:
+            return JsonResponse({'error':'Password tidak sama!'})
+    except:
+        return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+
+def save_to_models(request):
+    csv_file = request.FILES['file']
+    if not csv_file.name.endswith('.csv'):
+        messages.error(request, 'Hanya support file csv')
+    read_file = csv_file.read().decode('utf-8')
+    io_string = io.StringIO(read_file)
+    next(io_string)
+    for col in csv.reader(io_string, delimiter=',', quotechar="|"):
+        print(col[:1])
+    return render(request, 'kepesertaan/upload.html')
+    

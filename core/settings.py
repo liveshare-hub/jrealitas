@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
+
+    'import_export',
     'kepesertaan',
      #graphene
     
@@ -123,7 +125,7 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    BASE_DIR / 'kepesertaan/static'
+    # BASE_DIR / 'kepesertaan/static'
 ]
 
 # Default primary key field type

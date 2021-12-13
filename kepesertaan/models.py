@@ -1,5 +1,6 @@
 from django.db import models
 # from django.contrib.auth import get_user_model
+
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
@@ -46,7 +47,19 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.username} - {self.nama}'
 
+class User_Profile(models.Model):
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
+    nama = models.CharField(max_length=100)
+    nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
+    email = models.EmailField(max_length=100)
+    no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
+    Jabatan = models.CharField(default='HRD', max_length=10)
+
+    def __str__(self):
+        return f'{self.nama} - {self.Jabatan}'
+
 class Perusahaan(models.Model):
+    profile = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     npp = models.CharField(max_length=9)
     nama_perusahaan = models.CharField(max_length=200)
     alamat = models.CharField(max_length=250)
@@ -63,21 +76,21 @@ class Perusahaan(models.Model):
         npp = Perusahaan.objects.select_related('pembina').filter(pembina__username__username=kwargs['kwargs'])
         return npp.count()
 
-class Perusahaan_user(models.Model):
-    nama = models.CharField(max_length=100)
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
-    npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
-    nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
-    email = models.EmailField(max_length=100)
-    no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
-    jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
+# class Perusahaan_user(models.Model):
+#     nama = models.CharField(max_length=100)
+#     username = models.ForeignKey(User, on_delete=models.CASCADE)
+#     npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
+#     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
+#     email = models.EmailField(max_length=100)
+#     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
+#     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f'{self.username} - {self.nama}'
+#     def __str__(self):
+#         return f'{self.username} - {self.nama}'
 
 
 class Tenaga_kerja(models.Model):
-    npp = models.ForeignKey(Perusahaan_user, on_delete=models.CASCADE)
+    npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
     nama = models.CharField(max_length=100)
     no_kartu = models.CharField(max_length=11)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
@@ -88,3 +101,13 @@ class Tenaga_kerja(models.Model):
 
     def __str__(self):
         return f'{self.no_kartu} - {self.nama}'
+
+class Informasi(models.Model):
+    npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
+    judul = models.CharField(max_length=200)
+    attachment = models.FileField(upload_to='informasi/attachment/', blank=True, null=True)
+    isi = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.npp.npp} - {self.judul}'

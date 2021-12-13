@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Upload{% endblock title %}
+
+{% block styles %}{% endblock styles %}
+
+{% block content %}
+{% if messages %}
+    {% for message in messages %}
+        <div>
+        <!-- | means OR operator-->
+            <strong>{{message|safe}}</strong>
+        </div>
+    {% endfor %}
+{% else %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label for="file">Upload File</label>
+    <input type="file" id="file" name="file" class="form-control">
+    <button type="submit" class="btn btn-success">Upload</button>
+</form>
+
+{% endblock content %}
