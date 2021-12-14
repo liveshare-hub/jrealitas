@@ -16,7 +16,7 @@ function DafarNPP() {
     data.append("password1", $("#password1").val())
     data.append("password2", $("#password2").val())
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
-    console.log($("#pembina_id").val())
+    
     $.ajax({
         method:"POST",
         url:"/create/npp/",
@@ -34,6 +34,30 @@ function DafarNPP() {
             console.log(err)
         }
     })
+}
+
+function uploadFile() {
+
+    var data = new FormData()
+    data.append("file", $("#file")[0].files[0])
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    $.ajax({
+        method:"POST",
+        url:"/templates/upload/",
+        contentType:false,
+        mimeType:"multipart/form-data",
+        processData:false,
+        data:data,
+        success:function(data){
+            console.log(data)
+            location.href = "/user/data/"
+           
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+
 }
 
 $(document).ready(function() {
@@ -126,6 +150,11 @@ $(document).ready(function() {
         
         $("#form_registrasi_user_perusahaan").valid();
         DafarNPP();
+    })
+
+    $("#upload").click(function(e) {
+      //  e.preventDefault();
+        uploadFile();
     })
 
 })

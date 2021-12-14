@@ -47,25 +47,29 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.username} - {self.nama}'
 
-class User_Profile(models.Model):
-    username = models.ForeignKey(User, on_delete=models.CASCADE)
+# class User_Profile(models.Model):
+#     username = models.ForeignKey(User, on_delete=models.CASCADE)
+#     nama = models.CharField(max_length=100)
+#     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
+#     email = models.EmailField(max_length=100)
+#     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
+#     Jabatan = models.CharField(default='HRD', max_length=10)
+
+#     def __str__(self):
+#         return f'{self.nama} - {self.Jabatan}'
+
+class Perusahaan(models.Model):
     nama = models.CharField(max_length=100)
     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
     email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
-    Jabatan = models.CharField(default='HRD', max_length=10)
-
-    def __str__(self):
-        return f'{self.nama} - {self.Jabatan}'
-
-class Perusahaan(models.Model):
-    profile = models.ForeignKey(User_Profile, on_delete=models.CASCADE)
     npp = models.CharField(max_length=9)
     nama_perusahaan = models.CharField(max_length=200)
     alamat = models.CharField(max_length=250)
     desa_kel = models.CharField(max_length=100)
     kecamatan = models.CharField(max_length=100)
     kota_kab = models.CharField(max_length=100)
+    username = models.ForeignKey(User, on_delete=models.CASCADE)
     pembina = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):

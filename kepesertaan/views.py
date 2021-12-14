@@ -1,18 +1,19 @@
 from django.db.models import Q
-from django.http.response import JsonResponse
-from pyexcel_xls import get_data as xls_get
-from pyexcel_xlsx import get_data as xlsx_get
+from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from django.contrib import messages
+from django.core.files.storage import FileSystemStorage
 
-import io, csv
+import pandas as pd
+from io import StringIO, BytesIO
+import xlsxwriter
 
 from .models import (
     Kantor, Jabatan, Profile, 
-    Perusahaan, Tenaga_kerja, User_Profile
+    Perusahaan, Tenaga_kerja
 )
 
 @login_required(login_url='/accounts/login/')
@@ -60,9 +61,10 @@ def Daftar_Perusahaan(request):
     try:
         if password1 == password2 :
             user = User.objects.create(username=username, password=password1)
-            user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-                email=email, no_hp=no_hp)
-            Perusahaan.objects.create(profile_id=user_prof.pk,npp=npp, nama_perusahaan=nama_pers,
+            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+            #     email=email, no_hp=no_hp)
+            Perusahaan.objects.create(username_id=user.pk,nama=nama, nik=nik, email=email,
+                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers,
                 alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
                 pembina_id=pembina)
 
@@ -72,14 +74,72 @@ def Daftar_Perusahaan(request):
     except:
         return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
+
 def save_to_models(request):
-    csv_file = request.FILES['file']
-    if not csv_file.name.endswith('.csv'):
-        messages.error(request, 'Hanya support file csv')
-    read_file = csv_file.read().decode('utf-8')
-    io_string = io.StringIO(read_file)
-    next(io_string)
-    for col in csv.reader(io_string, delimiter=',', quotechar="|"):
-        print(col[:1])
-    return render(request, 'kepesertaan/upload.html')
+    pembina = request.user.profile_set.values('pk')[0]['pk']
     
+    if request.method == 'POST' and request.FILES['file']:
+        myfile = request.FILES['file']
+        
+        fs = FileSystemStorage()
+        filename = fs.save(myfile.name, myfile)
+        uploaded_url = fs.url(filename)
+        excel_file = uploaded_url
+        
+        exceldata = pd.read_excel("."+excel_file)
+        
+        dbframe = exceldata
+        for dbframe in dbframe.itertuples():
+            
+            user = User.objects.create(username=dbframe.NPP, password=dbframe.NPP)
+            obj = Perusahaan.objects.select_related('pembina','username').create(nama=dbframe.NAMA_LENGKAP, nik=dbframe.NIK, email=dbframe.EMAIL,
+                no_hp=dbframe.NO_HANDPHONE, npp=dbframe.NPP, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, alamat=dbframe.ALAMAT_PERUSAHAAN,
+                desa_kel=dbframe.DESA_KELURAHAN, kecamatan=dbframe.KECAMATAN, kota_kab=dbframe.KOTA_KABUPATEN, username_id=user.pk, pembina_id=pembina)
+            obj.save()
+
+        return JsonResponse({'success':'Done'})
+        # return render(request, 'kepesertaan/upload.html',{'upload_url':uploaded_url})
+ 
+    # return render(request, 'kepesertaan/upload.html')
+
+def download_excel(request):
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    bold = workbook.add_format({'bold':True})
+    worksheet = workbook.add_worksheet()
+    worksheet.write('A1','NPP',bold)
+    worksheet.write('B1','NAMA_PERUSAHAAN', bold)
+    worksheet.write('C1','NAMA_LENGKAP', bold)
+    worksheet.write('D1','NIK', bold)
+    worksheet.write('E1','JABATAN',bold)
+    worksheet.write('F1','EMAIL', bold)
+    worksheet.write('G1','NO_HANDPHONE', bold)
+    worksheet.write('H1','ALAMAT_PERUSAHAAN', bold)
+    worksheet.write('I1','DESA_KELURAHAN', bold)
+    worksheet.write('J1','KECAMATAN', bold)
+    worksheet.write('K1','KOTA_KABUPATEN', bold)
+
+    row = 1
+    col = 0
+
+    datas = Perusahaan.objects.filter(npp="BB0409090").all()
+    for data in datas:
+        worksheet.write(row, col, data.npp)
+        worksheet.write(row, col+1, data.nama_perusahaan)
+        worksheet.write(row, col+2, data.nama)
+        worksheet.write(row, col+3, data.nik)
+        worksheet.write(row, col+4, "HRD")
+        worksheet.write(row, col+5, data.email)
+        worksheet.write(row, col+6, data.no_hp)
+        worksheet.write(row, col+7, data.alamat)
+        worksheet.write(row, col+8, data.desa_kel)
+        worksheet.write(row, col+9, data.kecamatan)
+        worksheet.write(row, col+10, data.kota_kab)
+
+    workbook.close()
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    npp = datas[0].npp
+    response['Content-Disposition'] = f'attachment;filename="{npp}.xlsx"'
+
+    response.write(output.getvalue())
+    return response
