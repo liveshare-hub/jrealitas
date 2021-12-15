@@ -1,3 +1,4 @@
+import os
 from django.db import models
 # from django.contrib.auth import get_user_model
 
@@ -111,7 +112,11 @@ class Informasi(models.Model):
     judul = models.CharField(max_length=200)
     attachment = models.FileField(upload_to='informasi/attachment/', blank=True, null=True)
     isi = models.TextField()
+    created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f'{self.npp.npp} - {self.judul}'
+
+    def filename(self):
+        return os.path.basename(self.attachment.name)

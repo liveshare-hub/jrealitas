@@ -1,25 +1,49 @@
+from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, get_user_model, login
-# from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+
+from django.conf import settings
 from .forms import LoginForm
 from django.contrib import messages
 
-User = get_user_model()
+# User = get_user_model()
 
 def login_view(request):
-    if request.method == 'POST':
-        form = LoginForm(request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
+    form = LoginForm(request.POST or None)
+    msg = None
 
-        user = authenticate(username, password)
-        if user:
-            if user.is_active:
-                login(request, user)
-                return redirect('dashboard')
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            return redirect('dashboard')
         else:
-            messages.error(request, "username or password not correct")
-            return redirect('login')
+            msg = "Invalid Credentials"
     else:
         form = LoginForm()
-    return render(request, 'registration/login.html',{'form':form})
+        
+    return render(request, 'registration/login.html',{'form':form, 'msg':msg})
+
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+
+def edit_password(request, pk):
+    msg = None
+    
+    password1 = request.POST.get('edit_password1')
+    password2 = request.POST.get('edit_password2')
+    if (password1 != password2) or password1 is None or password2 is None:
+        msg = "Password tidak sama"
+        return JsonResponse({'error':msg, 'status':400})
+    else:
+        password = make_password(password1, hasher='default')
+        
+        User.objects.filter(id=pk).update(password=password)
+        return JsonResponse({'success':'Password berhasil diganti','status':200})

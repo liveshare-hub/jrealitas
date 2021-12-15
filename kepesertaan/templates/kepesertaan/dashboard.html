@@ -3,6 +3,10 @@
 
 {% block title %}DASHBOARD{% endblock title %}
 
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'kepesertaan/css/article.css' %}">
+{% endblock stylesheets %}
+
 {% block content %}
 
 <!-- Begin Page Content -->
@@ -130,9 +134,22 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    <div class="chart-area">
-                        <canvas id="myAreaChart"></canvas>
-                    </div>
+                    {% if info %}
+                    {% for data in info %}
+                    
+                        <h5 class="card-title">{{data.judul}}</h5>
+                        <p class="card-text">{{data.isi}}</p>
+                        {% if data.attachment %}
+                            <a class="card-link" href="{{data.attachment.url}}">Lihat</a>
+                        {% else %}
+                            <p class="card-text">No Attachement!</p>
+                        {% endif %}
+                        <p class="article"><i>Created On : {{data.created}}</i></p>
+                        <hr>
+                    {% endfor %}
+                    {% else %}
+                        <h3 class="card-title">Tidak ada informasi terbaru</h3>
+                    {% endif %}
                 </div>
             </div>
         </div>

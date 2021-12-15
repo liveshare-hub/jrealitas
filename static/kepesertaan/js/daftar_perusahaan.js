@@ -49,7 +49,7 @@ function uploadFile() {
         processData:false,
         data:data,
         success:function(data){
-            console.log(data)
+            
             location.href = "/user/data/"
            
         },
@@ -61,6 +61,7 @@ function uploadFile() {
 }
 
 $(document).ready(function() {
+    
     $("#form_registrasi_user_perusahaan").validate({
         rules:{
             npp:{
@@ -157,5 +158,48 @@ $(document).ready(function() {
         uploadFile();
     })
 
+    $("#form_edit_password").submit(function(e) {
+        var pk = $("#id_ganti_password").val()
+        
+        var data = new FormData()
+        data.append("edit_password1",$("#id_edit_password1").val())
+        data.append("edit_password2",$("#id_edit_password2").val())
+        data.append("csrfmiddlewaretoken", $("input[name=csrfmiddlewaretoken]").val())
+
+        $.ajax({
+            method:'POST',
+            url:`/ganti/password/${pk}`,
+            contentType:false,
+            processData:false,
+            data:data,
+            success:function(res){
+                if(res['status'] === 200){
+                    $("#warning").remove()
+                    $("#alert").append(
+                        '<div class="alert alert-success" role="alert" id="success">'+
+                        'Password Berhasil Dirubah'+
+                      '</div>'
+                    )
+                    $("#success").fadeOut(5000)
+                }else{
+                    $("#success").remove()
+                    $("#alert").append(
+                        '<div class="alert alert-warning" role="alert" id="warning">'+
+                        'Password tidak sama'+
+                        '</div>'
+                      
+                    )
+                    $("#warning").fadeOut(5000)
+                }
+                console.log(res['error'])
+            },
+            error:function(err){
+                console.log(err)
+            }
+        });
+        e.preventDefault()
+        $("#id_edit_password1").val("")
+        $("#id_edit_password2").val("")
+    })
 })
     

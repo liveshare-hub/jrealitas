@@ -12,7 +12,7 @@ from io import StringIO, BytesIO
 import xlsxwriter
 
 from .models import (
-    Kantor, Jabatan, Profile, 
+    Informasi, Kantor, Jabatan, Profile, 
     Perusahaan, Tenaga_kerja
 )
 
@@ -121,25 +121,39 @@ def download_excel(request):
 
     row = 1
     col = 0
-
-    datas = Perusahaan.objects.filter(npp="BB0409090").all()
-    for data in datas:
-        worksheet.write(row, col, data.npp)
-        worksheet.write(row, col+1, data.nama_perusahaan)
-        worksheet.write(row, col+2, data.nama)
-        worksheet.write(row, col+3, data.nik)
-        worksheet.write(row, col+4, "HRD")
-        worksheet.write(row, col+5, data.email)
-        worksheet.write(row, col+6, data.no_hp)
-        worksheet.write(row, col+7, data.alamat)
-        worksheet.write(row, col+8, data.desa_kel)
-        worksheet.write(row, col+9, data.kecamatan)
-        worksheet.write(row, col+10, data.kota_kab)
-
+    try:
+        datas = Perusahaan.objects.filter(npp="BB0409090").all()
+        # npp = datas[0].npp
+        for data in datas:
+            worksheet.write(row, col, data.npp)
+            worksheet.write(row, col+1, data.nama_perusahaan)
+            worksheet.write(row, col+2, data.nama)
+            worksheet.write(row, col+3, data.nik)
+            worksheet.write(row, col+4, "HRD")
+            worksheet.write(row, col+5, data.email)
+            worksheet.write(row, col+6, data.no_hp)
+            worksheet.write(row, col+7, data.alamat)
+            worksheet.write(row, col+8, data.desa_kel)
+            worksheet.write(row, col+9, data.kecamatan)
+            worksheet.write(row, col+10, data.kota_kab)
+    except:
+        pass
+        
     workbook.close()
     response = HttpResponse(content_type='application/vnd.ms-excel')
-    npp = datas[0].npp
-    response['Content-Disposition'] = f'attachment;filename="{npp}.xlsx"'
+    response['Content-Disposition'] = 'attachment;filename="uploaded.xlsx"'
 
     response.write(output.getvalue())
     return response
+
+def informasi(request):
+
+    # user = Profile.objects.select_related('username').filter(username__username=request.user)
+    # if user.exists():
+    #     datas = Informasi.objects.select_related('npp').filter(npp__pembina__username__username=request.user)
+    #     return render(request, 'kepesertaan/informasi.html', {'datas':datas})
+    # else:
+    #     datas = Informasi.objects.select_related('npp').filter(npp__npp=request.user)
+    return render(request, 'kepesertaan/informasi.html')
+        
+    

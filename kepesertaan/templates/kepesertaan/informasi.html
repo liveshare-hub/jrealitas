@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}Informasi{% endblock title %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper" style="font-size:small;font-weight:bold">
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="nav-item mr-2">
+                                <a href="#show_data" class="nav-link active" data-toggle="tab">
+                                    <i class="fas fa-fw fa-file-alt"> </i>
+                                     List Informasi
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="show_data">
+                        <div class="row justify-content-center">
+                            <div class="col-md-12">
+                                <div class="card mb-2">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            {% if info %}
+                                                {% for data in info %}
+                                                <div class="col-sm-12 grid-margin mb-3">
+                                                    <h4 class="mb-2 font-weight-bold text-primary">
+                                                      {{data.judul}}  
+                                                    </h4>
+                                                    <div class="font-italic mb-2 text-muted" style="font-size:0.70rem;">
+                                                        <span class="mr-2"><small>{{data.created}}</small></span>
+                                                    </div>
+                                                    <p class="mb-0 text-truncate" style="font-size:0.85rem;width:82%;height:50px;">
+                                                        {{data.isi}}
+                                                        <span><a href="{{data.pk}}" class="nav-link">read more</a></span>
+                                                    </p>
+                                                    <p class="mb-0 mt-2" style="font-size:0.80rem">
+                                                        {% if data.attachment %}
+                                                        <a href="{{data.attachment.url}}" class="btn btn-sm btn-primary">{{data.filename}}</a>
+                                                        {% else %}
+                                                            No Attachment!
+                                                        {% endif %}
+                                                        <a href="/" class="btn btn-sm btn-success float-right" onclick="return confirm('Hapus data ini ?')">Hapus</a>
+                                                    </p>
+                                                    <hr clas="col-12 justify-content-end">
+                                                </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
