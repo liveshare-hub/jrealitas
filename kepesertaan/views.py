@@ -55,6 +55,33 @@ def data_user(request):
     return render(request, 'kepesertaan/data_user.html', context)
 
 @csrf_exempt
+def Daftar_Pembina(request):
+    kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
+    nama = request.POST.get('nama')
+    jabatan = request.POST.get('jabatan')
+    bidang = request.POST.get('bidang')
+    kepala = request.POST.get('kepala_id')
+    email = request.POST.get('email')
+    no_hp = request.POST.get('no_hp')
+    username = request.POST.get('username')
+    password1 = request.POST.get('password1')
+    password2 = request.POST.get('password2')
+
+    try:
+        if password1 == password2 :
+            user = User.objects.create(username=username, password=password1)
+            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+            #     email=email, no_hp=no_hp)
+            Profile.objects.create(username_id=user.pk,nama=nama, jabatan__pk=jabatan,bidang__pk=bidang,
+                email=email, kd_kantor__pk=kd_kantor, no_hp=no_hp)
+
+            return JsonResponse({'success':'done'})
+        else:
+            return JsonResponse({'error':'Password tidak sama!'})
+    except:
+        return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+
+@csrf_exempt
 def Daftar_Perusahaan(request):
     npp = request.POST.get('npp')
     nama_pers = request.POST.get('nama_pemberi_kerja')

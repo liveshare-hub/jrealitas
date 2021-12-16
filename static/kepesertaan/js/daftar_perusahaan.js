@@ -36,6 +36,39 @@ function DafarNPP() {
     })
 }
 
+function DaftarPembina() {
+    var data = new FormData()
+    data.append("nama", $("#npp").val())
+    data.append("jabatan", $('select#makeselect option').filter(':selected').val())
+    data.append("bidang", $('select#bidang option').filter(':selected').val())
+    data.append("kd_user", $("#kd_user").val())
+    data.append("kepala_id", $("#id_jabatan").val())
+    data.append("email",$("#email").val())
+    data.append("no_hp",$("#no_hp").val())
+    data.append("username", $("#pembaina_username").val())
+    data.append("password1", $("#pembina_password1").val())
+    data.append("password2", $("#pembina_password2").val())
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    
+    $.ajax({
+        method:"POST",
+        url:"/create/pembina/",
+        contentType:false,
+        processData:false,
+        data:data,
+        success:function(res){
+            $("input.clear").val("")
+            
+            
+            console.log(res)
+            
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+}
+
 function uploadFile() {
 
     var data = new FormData()
@@ -217,6 +250,10 @@ $(document).ready(function() {
     $("#upload").click(function(e) {
       //  e.preventDefault();
         uploadFile();
+    })
+
+    $("#daftar_pembina_btn").click(function() {
+        DaftarPembina();
     })
 
     $("#form_edit_password").submit(function(e) {
