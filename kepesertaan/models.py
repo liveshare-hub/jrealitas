@@ -26,16 +26,13 @@ class Jabatan(models.Model):
         return f'{self.kode_jabatan} - {self.nama_jabatan}'
 
 
-# class Kakacab_user(models.Model):
-#     nama = models.CharField(max_length=100)
-#     username = models.ForeignKey(User, on_delete=models.CASCADE)
-#     kode_kantor = models.ForeignKey(Kantor, on_delete=models.CASCADE)
-#     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
-#     email = models.EmailField(max_length=100)
-#     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
+class Bidang(models.Model):
+    kode_bidang = models.CharField(max_length=3)
+    nama_bidang = models.CharField(max_length=50)
 
-#     def __str__(self):
-#         return f'{self.username} - {self.jabatan}'
+    def __str__(self):
+        return f'{self.kode_bidang} - {self.nama_bidang}'
+    
 
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -43,6 +40,7 @@ class Profile(models.Model):
     email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
+    bidang = models.ForeignKey(Bidang, on_delete=models.CASCADE)
     kode_kantor = models.ForeignKey(Kantor, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -114,7 +112,7 @@ class Informasi(models.Model):
     isi = models.TextField()
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
-
+    
     def __str__(self):
         return f'{self.npp.npp} - {self.judul}'
 

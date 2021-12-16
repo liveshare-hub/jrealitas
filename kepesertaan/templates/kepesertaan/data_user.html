@@ -17,9 +17,29 @@
                     <div class="nav-tabs-navigation">
                         <div class="nav-tabs-wrapper" style="font-size: small; font-weight: bold;">
                             <ul class="nav nav-tabs" data-tabs="tabs">
+                                {% if kepala %}
+                                <li class="nav-item dropdown mr-2">
+                                    <a href="#" class="nav-link color-nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-users"> </i> Data
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#show_pembina" data-toggle="tab">Pembina</a>
+                                        <a class="dropdown-item" href="#show_perusahaan" data-toggle="tab">Perusahaan</a>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown mr-2">
+                                    <a href="#" class="nav-link color-nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-users"> </i> Registrasi
+                                    </a>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="#register_pembina" data-toggle="tab">Pembina</a>
+                                        <a class="dropdown-item" href="#register_perusahaan" data-toggle="tab">Perusahaan</a>
+                                    </div>
+                                </li>
+                                {% else %}
                                 <li class="nav-item mr-2">
                                     <a href="#data_perusahaan" class="color-nav-link nav-link active" data-toggle="tab">
-                                        <i class="fas fa-fw fa-users"> </i>Data User
+                                        <i class="fas fa-fw fa-users"> </i> Data User  
                                     </a>
                                 </li>
                                 <li class="nav-item mr-2">
@@ -37,18 +57,254 @@
                                         <i class="fas fa-fw fa-download">  </i>Download Template
                                     </a>
                                 </li>
+                                {% endif %}
                             </ul>
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
+                        {% if kepala %}
+                        <div style="font-size:14px;" class="tab-pane active" id="show_pembina">
+                            <div class="table-responsive mt-3">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="example" class="table table-bordered dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>NAMA LENGKAP</th>
+                                                        <th>JABATAN</th>
+                                                        <th>KODE USER</th>
+                                                        <th>EMAIL</th>
+                                                        <th>NO HANDPHONE</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for data in profiles %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{data.nama}}</td>
+                                                        <td>{{data.jabatan.nama_jabatan}}</td>
+                                                        <td>{{data.username.username}}</td>
+                                                        <td>{{data.email}}</td>
+                                                        <td>{{data.no_hp}}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="far fa-edit">edit</i>
+                                                                </a>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password_pembina{{data.pk}}">Ganti Password</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal Change Password -->
+                                                    <div class="modal fade" id="edit_password_pembina{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                        Ganti Password {{data.username.username}}
+                                                                    </h6>
+                                                                    
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">x</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="alert" class="mt-2"></div>
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{data.username__username.pk}}" id="id_ganti_password_pembina">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password1">Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="font-size:14px;" class="tab-pane" id="show_perusahaan">
+                            <div class="table-responsive mt-3">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="example" class="table table-bordered dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>NPP</th>
+                                                        <th>NAMA PERUSAHAAN</th>
+                                                        <th>ALAMAT</th>
+                                                        <th>DESA/KEL.</th>
+                                                        <th>KECAMATAN</th>
+                                                        <th>KOTA/KAB.</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for data in datas %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{data.npp}}</td>
+                                                        <td>{{data.nama_perusahaan}}</td>
+                                                        <td>{{data.alamat}}</td>
+                                                        <td>{{data.desa_kel}}</td>
+                                                        <td>{{data.kecamatan}}</td>
+                                                        <td>{{data.kota_kab}}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="far fa-edit">edit</i>
+                                                                </a>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal Change Password -->
+                                                    <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                        Ganti Password {{data.npp}}
+                                                                    </h6>
+                                                                    
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">x</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="alert" class="mt-2"></div>
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password1">Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="register_pembina">
+                            <h6 class="text-center font-weight-bold">Registrasi Pembina</h6>
+                            <hr>
+                            <form id="form_register_pembina" method="POST">
+                                {% csrf_token %}
+                                <div class="row justify-content-center">
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="nama">NAMA LENGKAP</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama" id="nama" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="100">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="makeselect">Jabatan</label>
+                                            <span style="color:red;">*</span>
+                                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="makeselect">
+                                                <option selected style="text-align:center;">---------- PILIH JABATAN ----------</option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="bidang">Bidang</label>
+                                            <span style="color:red;">*</span>
+                                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="bidang">
+                                                <option selected style="text-align:center;">---------- PILIH BIDANG ----------</option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kd_user">Kode User</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="kd_user" name="kd_user" onkeyup="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
+                                        </div>
+                                    </div>
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="no_hp">No Handphone</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pembaina_username">Username</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="pembaina_username" id="pembaina_username" class="form-control clear" onkeyup="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pembina_password1">Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="pembina_password1" id="pembina_password1" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pembina_password2">Ulangi Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="pembina_password2" id="pembina_password2" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        
+                                       <div class="form-group">
+                                            <button type="button" class="btn btn-success float-right mt-4" id="daftar">Daftar</button>
+                                       </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        {% else %}
                         <div style="font-size:14px;" class="tab-pane active" id="data_perusahaan">
                             <div class="table-responsive mt-3">
                                 <div class="dataTables_wrapper dt-bootstrap4 no-footer">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <table id="table_company_user" class="table table-bordered dataTable no-footer">
+                                            <table id="example" class="table table-bordered dataTable no-footer">
                                                 <thead>
                                                     <tr>
                                                         <th>NO</th>
@@ -222,6 +478,8 @@
                                 </div>
                             </form>
                         </div>
+                        {% endif %}
+                        
                         <div class="tab-pane" id="upload_template">
                             
                         </div>
@@ -263,7 +521,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function() {
-        $('#table_company_user').DataTable();
+        $('#example').DataTable();
     })
 </script>
 
@@ -276,12 +534,24 @@ allJabatan{
 }
 }`
 
+var bidangQuery = `query{
+allBidang{
+    id
+    kodeBidang
+    namaBidang
+}
+}`
 
 $(document).ready(function() {
     $("#npp").on("focusout", function() {
         var nppVal = $(this).val()
         
         $("#username").val(nppVal)
+    })
+
+    $("#kd_user").on("focusout", function() {
+        var kd_user = $(this).val()
+        $("#pembaina_username").val(kd_user)
     })
     
     $.ajax({
@@ -295,14 +565,14 @@ $(document).ready(function() {
         success:function(data){
             var datas = data['data']['allJabatan']
             var jabatan = $("#id_jabatan").val();
-            console.log(jabatan)
-            if((jabatan === '701') || (jabatan === '702')){
+            
+            if((jabatan === '3') || (jabatan === '4')){
                 $.each(datas, function(i,j){
                     
                     $("#makeselect").append($('<option>', {
                         
                         value:j['id'],
-                        text:j['kodeJabatan']+" - "+j['namaJabatan'],       
+                        text:j['id']+" - "+j['namaJabatan'],       
                     }));
                 })
             }else{
@@ -316,6 +586,38 @@ $(document).ready(function() {
         error:function(err){
             console.log(err)
         }
+    })
+    
+    $.ajax({
+        method:"POST",
+        url:"{% url 'graphql' %}",
+        contentType:"application/json",
+        data:JSON.stringify({
+            query:bidangQuery,
+        }),
+        dataType:"json",
+        success:function(data){
+            
+            var datas = data['data']['allBidang']
+            var jabatan = $("#id_jabatan").val();
+    
+            if((jabatan === '3') || (jabatan === '4')){
+                $.each(datas, function(i,j){
+                    
+                    $("#bidang").append($('<option>', {
+                        
+                        value:j['id'],
+                        text:j['id']+" - "+j['namaBidang'],       
+                    }));
+                })
+            }else{
+                $("#bidang").append($('<option>', {
+                    value:"0",
+                    text:"No DATA"    
+                }));
+            }
+          
+        },
     })
 })
 </script>

@@ -147,6 +147,67 @@ $(document).ready(function() {
         },
     })
 
+    $("#form_register_pembina").validate({
+        rules:{
+            nama:{
+                required:true,
+            },
+            makeselect:{
+                required:true,
+            },
+            bidang:{
+                required:true,
+            },
+            kd_user:{
+                required:true,
+            },
+            email:{
+                required:true,
+            },
+            no_hp:{
+                required:true,
+            },
+            password1:{
+                required:true,
+                minlength:8,
+            },
+            password2:{
+                required:true,
+                minlength:8,
+                equalTo:"#password1"
+            }
+        },
+        messages:{
+            nama:{
+                required:"Nama tidak boleh kosong",
+            },
+            makeselect:{
+                required:"Jabatan harus dipilih",
+            },
+            bidang:{
+                required:"Bidang harus dipilih!",
+            },
+            kd_user:{
+                required:"Kode user tidak boleh kosong",
+            },
+            email:{
+                required:"Email tidak boleh kosong",
+            },
+            no_hp:{
+                required:"No HP tidak boleh kosong",
+            },
+            password1:{
+                required:"Passowrd tidak boleh kosong",
+                minlength:"Password minimal harus 8 karakter",
+            },
+            password2:{
+                required:"Password Konfirmasi tidak boleh kosong",
+                minlength:"Password minimal harus 8 karakter",
+                equalTo:"Password harus sama dengan password di atas"
+            }  
+        },
+    })
+
     $("#daftar").click(function(){
         
         $("#form_registrasi_user_perusahaan").valid();

@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}DATA USER{% endblock title %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'kepesertaan/styles.css' %}">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper" style="font-size: small; font-weight: bold;">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item dropdown mr-2">
+                                    <a href="#" class="color-nav-link nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-fw fa-users"> </i>Data
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="#daftar_perusahaan" class="color-nav-link nav-link" data-toggle="tab">
+                                        <i class="fas fa-fw fa-user-plus"> </i>Registrasi User
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="#" class="color-nav-link nav-link" data-toggle="modal" data-target="#modal_upload_template">
+                                        <i class="fas fa-file-upload"> </i><span>Upload Template</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="{% url 'download-npp' %}" class="color-nav-link nav-link">
+                                        <i class="fas fa-fw fa-download">  </i>Download Template
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div style="font-size:14px;" class="tab-pane active" id="data_perusahaan">
+                            <div class="table-responsive mt-3">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="table_company_user" class="table table-bordered dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>NPP</th>
+                                                        <th>NAMA PERUSAHAAN</th>
+                                                        <th>ALAMAT</th>
+                                                        <th>DESA/KEL.</th>
+                                                        <th>KECAMATAN</th>
+                                                        <th>KOTA/KAB.</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for data in datas %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{data.npp}}</td>
+                                                        <td>{{data.nama_perusahaan}}</td>
+                                                        <td>{{data.alamat}}</td>
+                                                        <td>{{data.desa_kel}}</td>
+                                                        <td>{{data.kecamatan}}</td>
+                                                        <td>{{data.kota_kab}}</td>
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="far fa-edit">edit</i>
+                                                                </a>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal Change Password -->
+                                                    <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                        Ganti Password {{data.npp}}
+                                                                    </h6>
+                                                                    
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">x</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="alert" class="mt-2"></div>
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password1">Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="daftar_perusahaan">
+                            <form id="form_registrasi_user_perusahaan" method="POST">
+                                {% csrf_token %}
+                                <div class="row justify-content-center">
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="npp">NPP</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="npp" id="npp" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_pemberi_kerja">Nama Pemeberi Kerja</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama_pemberi_kerja" id="nama_pemberi_kerja" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nik">No Identitas (KTP)</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nik" id="nik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="makeselect">Jabatan</label>
+                                            <span style="color:red;">*</span>
+                                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="makeselect">
+                                                <option selected style="text-align:center;">---------- PILIH JABATAN ----------</option>
+                                                
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pembina">Kode Pembina</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" value="{{request.user}}" class="form-control" id="pembina" name="pembina" disabled>
+                                            <input type="text" value="{{request.user.profile_set.values.0.id}}" id="pembina_id" hidden>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="no_hp">No Handphone</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
+                                        </div>
+                                    </div>
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="alamat_perusahaan">Alamat Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="alamat_perusahaan" id="alamat_perusahaan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="desa_kel">Desa/Kelurahan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="desa_kel" id="desa_kel" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kecamatan">Kecamatan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kecamatan" id="kecamatan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kota_kab">Kota/Kabupaten</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kota_kab" id="kota_kab" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="username" id="username" class="form-control" required onkeyup="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password1">Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="password1" id="password1" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password2">Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="password2" id="password2" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        
+                                       <div class="form-group">
+                                            <button type="button" class="btn btn-success float-right mt-4" id="daftar">Daftar</button>
+                                       </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="upload_template">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_upload_template" tabindex="-1" role="dialog" aria-labelledby="modal_upload_templateLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Template Perusahaan</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body mt-2 mb-2">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file" required accept=".xlsx">
+                            <label id="upload_user_perusahaan_label" class="custom-file-label" for="upload_user_perusahaan">Pilih file...</label>
+                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="upload">Simpan</button>
+                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock  %}
+
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    $(document).ready(function() {
+        $('#table_company_user').DataTable();
+    })
+</script>
+
+<script>
+var superQuery = `query{
+allJabatan{
+    id
+    kodeJabatan
+    namaJabatan
+}
+}`
+
+
+$(document).ready(function() {
+    $("#npp").on("focusout", function() {
+        var nppVal = $(this).val()
+        
+        $("#username").val(nppVal)
+    })
+    
+    $.ajax({
+        method:"POST",
+        url:"{% url 'graphql' %}",
+        contentType:"application/json",
+        data:JSON.stringify({
+            query:superQuery,
+        }),
+        dataType:"json",
+        success:function(data){
+            var datas = data['data']['allJabatan']
+            var jabatan = $("#id_jabatan").val();
+            console.log(jabatan)
+            if((jabatan === '701') || (jabatan === '702')){
+                $.each(datas, function(i,j){
+                    
+                    $("#makeselect").append($('<option>', {
+                        
+                        value:j['id'],
+                        text:j['kodeJabatan']+" - "+j['namaJabatan'],       
+                    }));
+                })
+            }else{
+                $("#makeselect").append($('<option>', {
+                    value:"HRD",
+                    text:"999 - HRD"    
+                }))
+            }
+          
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+})
+</script>
+<script src="{% static 'kepesertaan/js/daftar_perusahaan.js' %}"></script>
+{% endblock javascripts %}

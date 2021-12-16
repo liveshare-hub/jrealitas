@@ -21,8 +21,8 @@ def index(request):
     user = request.user
     jabatan = Profile.objects.select_related('username').filter(username__username=user)
     
-    if jabatan.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=32) | Q(jabatan__kode_jabatan=703)):
-        total = Perusahaan.all()
+    if jabatan.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=703) | Q(jabatan__kode_jabatan=701)):
+        total = Perusahaan.objects.all()
         print(total)
     elif jabatan.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2)):
         total = Perusahaan.total_npp(kwargs=user.username)
@@ -35,10 +35,24 @@ def index(request):
 
 @login_required(login_url='/accounts/login/')
 def data_user(request):
-    # print(request.user.profile_set.values('jabatan_id')[0])
-    # print(request.user.profile_set.values('pk')[0])
-    datas = Perusahaan.objects.all()
-    return render(request, 'kepesertaan/data_user.html', {'datas':datas})
+    user = request.user
+    profile = Profile.objects.select_related('username').filter(username__username=user)
+    kepala = profile.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701))
+    keps = profile.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2))
+    ply = profile.filter(jabatan__kode_jabatan=703)
+    if kepala.exists() or ply.exists():
+        datas = Perusahaan.objects.all()
+        profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2))
+    else:
+        datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
+    context = {
+        'datas':datas,
+        'profiles':profiles,
+        'kepala':kepala,
+        'keps':keps,
+        'ply':ply,
+    }
+    return render(request, 'kepesertaan/data_user.html', context)
 
 @csrf_exempt
 def Daftar_Perusahaan(request):
