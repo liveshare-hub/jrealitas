@@ -65,6 +65,7 @@
                 <div class="card-body">
                     <div class="tab-content">
                         {% if kepala %}
+                        <!-- List Pembina -->
                         <div style="font-size:14px;" class="tab-pane active" id="show_pembina">
                             <div class="table-responsive mt-3">
                                 <div class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -145,6 +146,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- List Perusahaan Seluruh Binaan -->
                         <div style="font-size:14px;" class="tab-pane" id="show_perusahaan">
                             <div class="table-responsive mt-3">
                                 <div class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -227,6 +229,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Pendaftaran Pembina -->
                         <div class="tab-pane" id="register_pembina">
                             <h6 class="text-center font-weight-bold">Registrasi Pembina</h6>
                             <hr>
@@ -237,7 +240,7 @@
                                         <div class="form-group">
                                             <label for="nama">Nama Lengkap</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nama" id="nama" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="100">
+                                            <input type="text" name="nama_pembina" id="nama_pembina" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="100">
                                         </div>
                                         <div class="form-group">
                                             <label for="makeselect">Jabatan</label>
@@ -261,19 +264,19 @@
                                             <input type="text" class="form-control clear" id="kd_user" name="kd_user" onkeyup="this.value = this.value.toUpperCase()" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
+                                            <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan_pembina" hidden>
                                         </div>
                                     </div>
                                     <div class="col md-5">
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                            <input type="text" class="form-control clear" id="email_pembina" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="no_hp">No Handphone</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
+                                            <input type="text" class="form-control clear" id="no_hp_pembina" name="no_hp" maxlength="13" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="pembaina_username">Username</label>
@@ -293,6 +296,101 @@
                                         
                                        <div class="form-group">
                                             <button type="button" class="btn btn-success float-right mt-4" id="daftar_pembina_btn">Daftar</button>
+                                       </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Pendaftaran Perusahaan -->
+                        <div class="tab-pane" id="register_perusahaan">
+                            <form id="form_registrasi_user_perusahaan" method="POST">
+                                {% csrf_token %}
+                                <div class="row justify-content-center">
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="npp">NPP</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="npp" id="npp" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_pemberi_kerja">Nama Pemeberi Kerja</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama_pemberi_kerja" id="nama_pemberi_kerja" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nik">No Identitas (KTP)</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nik" id="nik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="jabatan_perusahaan">Jabatan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="jabatan_perusahaan" id="jabatan_perusahaan" class="form-control clear" value="HRD" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="pembina">Kode Pembina</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" value="{{request.user}}" class="form-control" id="pembina" name="pembina" disabled>
+                                            <input type="text" value="{{request.user.profile_set.values.0.id}}" id="pembina_id" hidden>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="no_hp">No Handphone</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
+                                        </div>
+                                    </div>
+                                    <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="alamat_perusahaan">Alamat Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="alamat_perusahaan" id="alamat_perusahaan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="desa_kel">Desa/Kelurahan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="desa_kel" id="desa_kel" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kecamatan">Kecamatan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kecamatan" id="kecamatan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kota_kab">Kota/Kabupaten</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kota_kab" id="kota_kab" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="username">Username</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="username" id="username" class="form-control" required onkeyup="this.value = this.value.toUpperCase()" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password1">Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="password1" id="password1" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password2">Password</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="password" name="password2" id="password2" class="form-control clear" minlength="8" required>
+                                        </div>
+                                        
+                                       <div class="form-group">
+                                            <button type="button" class="btn btn-success float-right mt-4" id="daftar">Daftar</button>
                                        </div>
                                     </div>
                                 </div>
@@ -407,7 +505,7 @@
                                             <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
                                         </div>
                                         <div class="form-group">
-                                            <label for="makeselect">Jabatan</label>
+                                            <label for="makeselect">Posisi</label>
                                             <span style="color:red;">*</span>
                                             <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="makeselect">
                                                 <option selected style="text-align:center;">---------- PILIH JABATAN ----------</option>
@@ -543,6 +641,7 @@ allBidang{
 }`
 
 $(document).ready(function() {
+   
     $("#npp").on("focusout", function() {
         var nppVal = $(this).val()
         
@@ -564,11 +663,11 @@ $(document).ready(function() {
         dataType:"json",
         success:function(data){
             var datas = data['data']['allJabatan']
-            var jabatan = $("#id_jabatan").val();
-            console.log(jabatan)
+            var jabatan = $("#id_jabatan, #id_jabatan_pembina").val();
+            
             if((jabatan === '3') || (jabatan === '4')){
                 $.each(datas, function(i,j){
-                    
+
                     $("#makeselect").append($('<option>', {
                         
                         value:j['id'],
@@ -577,7 +676,7 @@ $(document).ready(function() {
                 })
             }else{
                 $("#makeselect").append($('<option>', {
-                    value:"HRD",
+                    value:"0",
                     text:"999 - HRD"    
                 }))
             }
@@ -599,7 +698,8 @@ $(document).ready(function() {
         success:function(data){
             
             var datas = data['data']['allBidang']
-            var jabatan = $("#id_jabatan").val();
+            var jabatan = $("#id_jabatan, #id_jabatan_pembina").val();
+           
     
             if((jabatan === '3') || (jabatan === '4')){
                 $.each(datas, function(i,j){

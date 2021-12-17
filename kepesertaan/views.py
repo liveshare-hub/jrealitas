@@ -57,29 +57,31 @@ def data_user(request):
 @csrf_exempt
 def Daftar_Pembina(request):
     kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
-    nama = request.POST.get('nama')
+    
+    nama = request.POST.get('nama_pembina')
     jabatan = request.POST.get('jabatan')
     bidang = request.POST.get('bidang')
     kepala = request.POST.get('kepala_id')
-    email = request.POST.get('email')
-    no_hp = request.POST.get('no_hp')
+    email = request.POST.get('email_pembina')
+    no_hp = request.POST.get('no_hp_pembina')
     username = request.POST.get('username')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
+    print(nama)
+    print(bidang)
+    # try:
+    if password1 == password2 :
+        user = User.objects.create(username=username, password=password1)
+        # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+        #     email=email, no_hp=no_hp)
+        Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,bidang_id=bidang,
+            email=email, kode_kantor_id=kd_kantor, no_hp=no_hp)
 
-    try:
-        if password1 == password2 :
-            user = User.objects.create(username=username, password=password1)
-            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-            #     email=email, no_hp=no_hp)
-            Profile.objects.create(username_id=user.pk,nama=nama, jabatan__pk=jabatan,bidang__pk=bidang,
-                email=email, kd_kantor__pk=kd_kantor, no_hp=no_hp)
-
-            return JsonResponse({'success':'done'})
-        else:
-            return JsonResponse({'error':'Password tidak sama!'})
-    except:
-        return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+        return JsonResponse({'success':'done'})
+    else:
+        return JsonResponse({'error':'Password tidak sama!'})
+    # except:
+    #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
 @csrf_exempt
 def Daftar_Perusahaan(request):

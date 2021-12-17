@@ -38,13 +38,13 @@ function DafarNPP() {
 
 function DaftarPembina() {
     var data = new FormData()
-    data.append("nama", $("#npp").val())
+    data.append("nama_pembina", $("#nama_pembina").val())
     data.append("jabatan", $('select#makeselect option').filter(':selected').val())
     data.append("bidang", $('select#bidang option').filter(':selected').val())
     data.append("kd_user", $("#kd_user").val())
-    data.append("kepala_id", $("#id_jabatan").val())
-    data.append("email",$("#email").val())
-    data.append("no_hp",$("#no_hp").val())
+    data.append("kepala_id", $("#id_jabatan_pembina").val())
+    data.append("email_pembina",$("#email_pembina").val())
+    data.append("no_hp_pembina",$("#no_hp_pembina").val())
     data.append("username", $("#pembaina_username").val())
     data.append("password1", $("#pembina_password1").val())
     data.append("password2", $("#pembina_password2").val())
@@ -58,6 +58,7 @@ function DaftarPembina() {
         data:data,
         success:function(res){
             $("input.clear").val("")
+            console.log($('select#makeselect option').filter(':selected').val())
             
             
             console.log(res)
@@ -67,6 +68,7 @@ function DaftarPembina() {
             console.log(err)
         }
     })
+    
 }
 
 function uploadFile() {
@@ -250,6 +252,10 @@ $(document).ready(function() {
     $("#upload").click(function(e) {
       //  e.preventDefault();
         uploadFile();
+    })
+
+    $("#jabatan_pembina").on('change', function(){
+
     })
 
     $("#daftar_pembina_btn").click(function() {
