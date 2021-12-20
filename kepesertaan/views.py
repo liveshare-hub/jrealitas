@@ -1,6 +1,6 @@
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -15,6 +15,7 @@ from .models import (
     Informasi, Kantor, Jabatan, Profile, 
     Perusahaan, Tenaga_kerja
 )
+
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -54,27 +55,27 @@ def data_user(request):
     }
     return render(request, 'kepesertaan/data_user.html', context)
 
+
+
 @csrf_exempt
 def Daftar_Pembina(request):
     kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
     
     nama = request.POST.get('nama_pembina')
     jabatan = request.POST.get('jabatan')
-    bidang = request.POST.get('bidang')
-    kepala = request.POST.get('kepala_id')
+    # bidang = request.POST.get('bidang')
+    # kepala = request.POST.get('kepala_id')
     email = request.POST.get('email_pembina')
     no_hp = request.POST.get('no_hp_pembina')
     username = request.POST.get('username')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
-    print(nama)
-    print(bidang)
     # try:
     if password1 == password2 :
         user = User.objects.create(username=username, password=password1)
         # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
         #     email=email, no_hp=no_hp)
-        Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,bidang_id=bidang,
+        Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
             email=email, kode_kantor_id=kd_kantor, no_hp=no_hp)
 
         return JsonResponse({'success':'done'})
@@ -165,7 +166,7 @@ def download_excel(request):
     row = 1
     col = 0
     try:
-        datas = Perusahaan.objects.filter(npp="BB0409090").all()
+        datas = Perusahaan.objects.all()[1]
         # npp = datas[0].npp
         for data in datas:
             worksheet.write(row, col, data.npp)

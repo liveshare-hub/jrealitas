@@ -18,20 +18,21 @@ class Kantor(models.Model):
     def __str__(self):
         return f'{self.kode_kantor} - {self.nama_kantor}'
 
-class Jabatan(models.Model):
-    kode_jabatan = models.CharField(max_length=3)
-    nama_jabatan = models.CharField(max_length=100)
-
-    def __str__(self):
-        return f'{self.kode_jabatan} - {self.nama_jabatan}'
-
-
 class Bidang(models.Model):
     kode_bidang = models.CharField(max_length=3)
     nama_bidang = models.CharField(max_length=50)
 
     def __str__(self):
         return f'{self.kode_bidang} - {self.nama_bidang}'
+
+class Jabatan(models.Model):
+    bidang = models.ForeignKey(Bidang, on_delete=models.CASCADE)
+    kode_jabatan = models.CharField(max_length=3)
+    nama_jabatan = models.CharField(max_length=100)
+
+    def __str__(self):
+        return f'{self.kode_jabatan} - {self.nama_jabatan}'
+
     
 
 class Profile(models.Model):
@@ -40,7 +41,6 @@ class Profile(models.Model):
     email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
-    bidang = models.ForeignKey(Bidang, on_delete=models.CASCADE)
     kode_kantor = models.ForeignKey(Kantor, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -60,6 +60,7 @@ class Profile(models.Model):
 class Perusahaan(models.Model):
     nama = models.CharField(max_length=100)
     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
+    jabatan = models.CharField(max_length=50, default="HRD")
     email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     npp = models.CharField(max_length=9)

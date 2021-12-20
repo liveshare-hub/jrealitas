@@ -246,15 +246,7 @@
                                             <label for="makeselect">Jabatan</label>
                                             <span style="color:red;">*</span>
                                             <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="makeselect">
-                                                <option selected style="text-align:center;">---------- PILIH JABATAN ----------</option>
-                                                
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="bidang">Bidang</label>
-                                            <span style="color:red;">*</span>
-                                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="bidang">
-                                                <option selected style="text-align:center;">---------- PILIH BIDANG ----------</option>
+                                                <option selected style="text-align:center;" value="0">---------- PILIH JABATAN ----------</option>
                                                 
                                             </select>
                                         </div>
@@ -397,6 +389,7 @@
                             </form>
                         </div>
                         {% else %}
+                        <!-- Lisit Perusahaan Per Pembina -->
                         <div style="font-size:14px;" class="tab-pane active" id="data_perusahaan">
                             <div class="table-responsive mt-3">
                                 <div class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -479,6 +472,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Pendaftaran Perusahaan Per Pembina -->
                         <div class="tab-pane" id="daftar_perusahaan">
                             <form id="form_registrasi_user_perusahaan" method="POST">
                                 {% csrf_token %}
@@ -687,38 +681,8 @@ $(document).ready(function() {
         }
     })
     
-    $.ajax({
-        method:"POST",
-        url:"{% url 'graphql' %}",
-        contentType:"application/json",
-        data:JSON.stringify({
-            query:bidangQuery,
-        }),
-        dataType:"json",
-        success:function(data){
-            
-            var datas = data['data']['allBidang']
-            var jabatan = $("#id_jabatan, #id_jabatan_pembina").val();
-           
     
-            if((jabatan === '3') || (jabatan === '4')){
-                $.each(datas, function(i,j){
-                    
-                    $("#bidang").append($('<option>', {
-                        
-                        value:j['id'],
-                        text:j['id']+" - "+j['namaBidang'],       
-                    }));
-                })
-            }else{
-                $("#bidang").append($('<option>', {
-                    value:"0",
-                    text:"No DATA"    
-                }));
-            }
-          
-        },
-    })
+    
 })
 </script>
 <script src="{% static 'kepesertaan/js/daftar_perusahaan.js' %}"></script>

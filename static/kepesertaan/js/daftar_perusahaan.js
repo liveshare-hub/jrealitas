@@ -58,7 +58,7 @@ function DaftarPembina() {
         data:data,
         success:function(res){
             $("input.clear").val("")
-            console.log($('select#makeselect option').filter(':selected').val())
+            $('select#makeselect option').val(0).attr(selected,true)
             
             
             console.log(res)
