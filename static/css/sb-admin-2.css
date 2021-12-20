@@ -134,6 +134,11 @@ ul ol {
   margin-bottom: 0;
 }
 
+span:before{
+  box-sizing: border-box;
+  content:" ";
+}
+
 dt {
   font-weight: 700;
 }

@@ -36,11 +36,48 @@ function DafarNPP() {
     })
 }
 
+function DafarNPPAdmin() {
+    var data = new FormData()
+    data.append("npp_admin", $("#npp_admin").val())
+    data.append("nama_pemberi_kerja_admin", $("#nama_pemberi_kerja_admin").val())
+    data.append("nik_admin", $("#nik_admin").val())
+    data.append("nama_lengkap_admin", $("#nama_lengkap_admin").val())
+    data.append("jabatan_perusahaan_admin", $("#jabatan_perusahaan_admin").val())
+    data.append("id_pembina_admin", $('select#id_pembina_admin option').filter(':selected').val())
+    data.append("id_jabatan", $("#id_jabatan").val())
+    data.append("email_admin",$("#email_admin").val())
+    data.append("no_hp_admin",$("#no_hp_admin").val())
+    data.append("alamat_perusahaan_admin",$("#alamat_perusahaan_admin").val())
+    data.append("desa_kel_admin",$("#desa_kel_admin").val())
+    data.append("kecamatan_admin", $("#kecamatan_admin").val())
+    data.append("kota_kab_admin",$("#kota_kab_admin").val())
+    data.append("username_admin", $("#username_admin").val())
+    data.append("password1_admin", $("#password1_admin").val())
+    data.append("password2_admin", $("#password2_admin").val())
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    
+    $.ajax({
+        method:"POST",
+        url:"/create/perusahaan/",
+        contentType:false,
+        processData:false,
+        data:data,
+        success:function(res){
+            $("input").val("")
+            $("#id_pembina_admin").val(0)
+            
+            
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+}
+
 function DaftarPembina() {
     var data = new FormData()
     data.append("nama_pembina", $("#nama_pembina").val())
     data.append("jabatan", $('select#makeselect option').filter(':selected').val())
-    data.append("bidang", $('select#bidang option').filter(':selected').val())
     data.append("kd_user", $("#kd_user").val())
     data.append("kepala_id", $("#id_jabatan_pembina").val())
     data.append("email_pembina",$("#email_pembina").val())
@@ -58,7 +95,7 @@ function DaftarPembina() {
         data:data,
         success:function(res){
             $("input.clear").val("")
-            $('select#makeselect option').val(0).attr(selected,true)
+            $('select#makeselect option').val(0)
             
             
             console.log(res)
@@ -71,6 +108,8 @@ function DaftarPembina() {
     
 }
 
+
+
 function uploadFile() {
 
     var data = new FormData()
@@ -79,6 +118,30 @@ function uploadFile() {
     $.ajax({
         method:"POST",
         url:"/templates/upload/",
+        contentType:false,
+        mimeType:"multipart/form-data",
+        processData:false,
+        data:data,
+        success:function(data){
+            
+            location.href = "/user/data/"
+           
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+
+}
+
+function uploadFileAdmin() {
+
+    var data = new FormData()
+    data.append("file", $("#upload_user_perusahaan_admin")[0].files[0])
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    $.ajax({
+        method:"POST",
+        url:"/templates/admin/upload/",
         contentType:false,
         mimeType:"multipart/form-data",
         processData:false,
@@ -182,6 +245,97 @@ $(document).ready(function() {
         },
     })
 
+    $("#form_registrasi_user_perusahaan_admin").validate({
+        rules:{
+            npp_admin:{
+                required:true,
+            },
+            nama_pemberi_kerja_admin:{
+                required:true,
+            },
+            nik_admin:{
+                required:true,
+            },
+            nama_lengkap_admin:{
+                required:true,
+            },
+            email_admin:{
+                required:true,
+            },
+            no_hp_admin:{
+                required:true,
+            },
+            id_pembina_admin:{
+                required:true,
+            },
+            alamat_perusahaan_admin:{
+                required:true,
+            },
+            desa_kel_admin:{
+                required:true,
+            },
+            kecamatan_admin:{
+                required:true,
+            },
+            kota_kab_admin:{
+                required:true,
+            },
+            password1_admin:{
+                required:true,
+                minlength:8,
+            },
+            password2_admin:{
+                required:true,
+                minlength:8,
+                equalTo:"#password1"
+            }
+        },
+        messages:{
+            npp_admin:{
+                required:"NPP tidak boleh kosong!",
+            },
+            nama_pemberi_kerja_admin:{
+                required:"Nama perusahaan tidak boleh kosong!",
+            },
+            nik_admin:{
+                required:"NIK tidak boleh kosong",
+            },
+            nama_lengkap_admin:{
+                required:"Nama tidak boleh kosong",
+            },
+            email_admin:{
+                required:"Email tidak boleh kosong",
+            },
+            no_hp_admin:{
+                required_admin:"No HP tidak boleh kosong",
+            },
+            id_pembina_admin:{
+                required:"Pembina tidak boleh kosong",
+            },
+            alamat_perusahaan_admin:{
+                required_admin:"Alamat tidak boleh kosong",
+            },
+            desa_kel_admin:{
+                required:"Desa/Kelurahan tidak boleh kosong",
+            },
+            kecamatan_admin:{
+                required:"Kecamatan tidak boleh kosong",
+            },
+            kota_kab_admin:{
+                required:"Kota/Kabupaten tidak boleh kosong",
+            },
+            password1_admin:{
+                required:"Passowrd tidak boleh kosong",
+                minlength:"Password minimal harus 8 karakter",
+            },
+            password2_admin:{
+                required:"Password Konfirmasi tidak boleh kosong",
+                minlength:"Password minimal harus 8 karakter",
+                equalTo:"Password harus sama dengan password di atas"
+            }  
+        },
+    })
+
     $("#form_register_pembina").validate({
         rules:{
             nama:{
@@ -249,10 +403,20 @@ $(document).ready(function() {
         DafarNPP();
     })
 
+    $("#daftar_admin").click(function() {
+        $("#form_registrasi_user_perusahaan_admin").valid();
+        DafarNPPAdmin();
+    })
+
     $("#upload").click(function(e) {
       //  e.preventDefault();
         uploadFile();
     })
+
+    $("#upload_admin").click(function() {
+        //  e.preventDefault();
+        uploadFileAdmin();
+      })
 
     $("#jabatan_pembina").on('change', function(){
 
@@ -261,9 +425,10 @@ $(document).ready(function() {
     $("#daftar_pembina_btn").click(function() {
         DaftarPembina();
     })
-
-    $("#form_edit_password").submit(function(e) {
-        var pk = $("#id_ganti_password").val()
+    var pk = $("#id_ganti_password").val()
+    alert(pk)
+    $(`#form_edit_password${pk}`).submit(function() {
+        console.log($("#id_edit_password1").val())
         
         var data = new FormData()
         data.append("edit_password1",$("#id_edit_password1").val())
@@ -277,6 +442,7 @@ $(document).ready(function() {
             processData:false,
             data:data,
             success:function(res){
+                console.log(res)
                 if(res['status'] === 200){
                     $("#warning").remove()
                     $("#alert").append(
@@ -295,7 +461,7 @@ $(document).ready(function() {
                     )
                     $("#warning").fadeOut(5000)
                 }
-                console.log(res['error'])
+                
             },
             error:function(err){
                 console.log(err)

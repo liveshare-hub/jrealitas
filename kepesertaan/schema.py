@@ -40,8 +40,8 @@ class Query(graphene.ObjectType):
             return Bidang.objects.none
 
     def resolve_all_jabatans(root, info, id):
-        if info.context.user.is_authenticated:
-            return Jabatan.objects.select_related('bidang').filter(bidang__pk=id)
+        if info.context.user.is_authenticated or id == 3:
+            return Jabatan.objects.select_related('bidang').all().exclude(id=id)
         else:
             return Jabatan.objects.none
 
