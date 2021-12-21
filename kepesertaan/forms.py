@@ -1,42 +1,33 @@
 from django import forms
+from django.db.models import fields
 from django.forms import widgets
 
-from .models import Profile, Jabatan, Bidang
+from .models import Informasi
 
 class UploadForm(forms.Form):
     file = forms.FileField()
 
-# class PembinaForm(forms.ModelForm):
-#     bidang = forms.ModelChoiceField(queryset=Bidang.objects.all(),
-#         widget=forms.Select(attrs={'class':'form-control'}))
-    
-#     class Meta:
-#         model = Profile
-#         exclude = ('username','kode_kantor',)
+class InformasiForm(forms.ModelForm):
+    class Meta:
+        model = Informasi
+        fields = '__all__'
 
-#         widgets = {
-#             'nama':forms.TextInput(attrs={
-#                 'class':'form-control', 'onkeyup':"this.value = this.value.toUpperCase()",
-#                 'id':'nama',
-#             }),
-#             'email':forms.EmailInput(attrs={
-#                 'class':'form-control'
-#             }),
-#             'no_hp':forms.TextInput(attrs={
-#                 'class':'form-control'
-#             }),
+        widgets = {
+            'judul':forms.TextInput(attrs={
+                'class':'form-control','maxlength':'100'
+            }),
+            'isi':forms.Textarea(attrs={
+                'class':'form-control', 'maxlength':'500'
+            }),
+            'attachment':forms.FileInput(attrs={
+                'class':'from-control'
+            }),
+            'npp':forms.Select(attrs={
+                'class':'form-control'
+            })
+        }
 
-#         }
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         self.fields['jabatan'].queryset = Jabatan.objects.none()
+    def __init__(self, *args, **kwargs):
+        super(InformasiForm, self).__init__(*args, **kwargs)
+        self.fields['npp'].required = False
 
-#         if 'bidang' in self.data:
-#             try:
-#                 id_bidang = int(self.data.get('bidang'))
-#                 self.fields['jabatan'].queryset = Jabatan.objects.filter(bidang_id=id_bidang).order_by('-kode_jabatan')
-#             except (ValueError, TypeError):
-#                 pass
-#         elif self.instance.pk:
-#             self.fields['jabatan'].queryset = self.instance.jabatan.bidang.order_by('-kode_jabatan')

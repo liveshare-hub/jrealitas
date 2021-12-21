@@ -1,0 +1,34 @@
+{% if infos %}
+    {% for info in infos %}
+    <section class="notification-section">
+        <div class="group-header">
+            <div class="group-title">Hari Ini</div>
+            <div class="group-date">{{info.created}}</div>
+        </div>
+        <div class="notification-grid">
+            <div class="avatar">
+                <img src="" alt="">
+            </div>
+            <div class="notification-card">
+                <div class="notification-header">
+                    <div class="notification-title">
+                        {{info.judl}}
+                    </div>
+                    <div class="notification-time">09:00am</div>
+                </div>
+                <div class="notification-content">
+                    {{info.isi}}
+
+                    {% if info.attachment %}
+                        <p>
+                            <a href="{{info.attachment.url}}">Klik</a>
+                        </p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endfor %}
+{% else %}
+<h3>Belum ada informasi Terkini</h3>
+{% endif %}

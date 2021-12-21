@@ -20,7 +20,7 @@
                                 {% if kepala %}
                                 <li class="nav-item dropdown mr-2">
                                     <a href="#" class="nav-link color-nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-fw fa-users"> </i><span>Data</span>
+                                        <i class="fas fa-fw fa-users"> </i> Data
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#show_pembina" data-toggle="tab">Pembina</a>
@@ -29,27 +29,17 @@
                                 </li>
                                 <li class="nav-item dropdown mr-2">
                                     <a href="#" class="nav-link color-nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-fw fa-users"> </i><span>Registrasi<span>
+                                        <i class="fas fa-fw fa-users"> </i> Registrasi
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#register_pembina" data-toggle="tab">Pembina</a>
                                         <a class="dropdown-item" href="#register_perusahaan" data-toggle="tab">Perusahaan</a>
                                     </div>
                                 </li>
-                                <li class="nav-item mr-2">
-                                    <a href="#" class="color-nav-link nav-link" data-toggle="modal" data-target="#modal_upload_template_admin">
-                                        <i class="fas fa-file-upload"> </i><span>Upload Template</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item mr-2">
-                                    <a href="{% url 'download-npp-admin' %}" class="color-nav-link nav-link">
-                                        <i class="fas fa-fw fa-download">  </i><span>Download Template<span>
-                                    </a>
-                                </li>
                                 {% else %}
                                 <li class="nav-item mr-2">
                                     <a href="#data_perusahaan" class="color-nav-link nav-link active" data-toggle="tab">
-                                        <i class="fas fa-fw fa-users"> </i><span>Data User</span>
+                                        <i class="fas fa-fw fa-users"> </i> Data User  
                                     </a>
                                 </li>
                                 <li class="nav-item mr-2">
@@ -127,9 +117,9 @@
                                                                     </button>
                                                                 </div>
                                                                 <div id="alert" class="mt-2"></div>
-                                                                <form method="POST" name="form_edit_password{{data.pk}}" id="form_edit_password">
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
                                                                     {% csrf_token %}
-                                                                    <input type="hidden" value="{{data.username.username.pk}}" id="id_ganti_password">
+                                                                    <input type="hidden" value="{{data.username__username.pk}}" id="id_ganti_password_pembina">
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
                                                                         <label for="id_edit_password1">Password Baru</label>
@@ -266,15 +256,15 @@
                                             <input type="text" class="form-control clear" id="kd_user" name="kd_user" onkeyup="this.value = this.value.toUpperCase()" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="email_pembina" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
-                                        </div>
-                                        <div class="form-group">
                                             <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan_pembina" hidden>
                                         </div>
                                     </div>
                                     <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="email_pembina" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                        </div>
                                         <div class="form-group">
                                             <label for="no_hp">No Handphone</label>
                                             <span style="color:red;">*</span>
@@ -305,52 +295,49 @@
                         </div>
                         <!-- Pendaftaran Perusahaan -->
                         <div class="tab-pane" id="register_perusahaan">
-                            <form id="form_registrasi_user_perusahaan_admin" method="POST">
+                            <form id="form_registrasi_user_perusahaan" method="POST">
                                 {% csrf_token %}
                                 <div class="row justify-content-center">
                                     <div class="col md-5">
                                         <div class="form-group">
                                             <label for="npp">NPP</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="npp_admin" id="npp_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
+                                            <input type="text" name="npp" id="npp" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
                                         </div>
                                         <div class="form-group">
                                             <label for="nama_pemberi_kerja">Nama Pemeberi Kerja</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nama_pemberi_kerja_admin" id="nama_pemberi_kerja_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="nama_pemberi_kerja" id="nama_pemberi_kerja" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
                                             <label for="nik">No Identitas (KTP)</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nik_admin" id="nik_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
+                                            <input type="text" name="nik" id="nik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
                                         </div>
                                         <div class="form-group">
                                             <label for="nama_lengkap">Nama Lengkap</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nama_lengkap_admin" id="nama_lengkap_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                            <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
                                         </div>
                                         <div class="form-group">
                                             <label for="jabatan_perusahaan">Jabatan</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="jabatan_perusahaan_admin" id="jabatan_perusahaan_admin" class="form-control clear" value="HRD" disabled>
+                                            <input type="text" name="jabatan_perusahaan" id="jabatan_perusahaan" class="form-control clear" value="HRD" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="pembina">Kode Pembina</label>
                                             <span style="color:red;">*</span>
-                                            <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="id_pembina_admin">
-                                                <option selected style="text-align:center;" value="0">---------- PILIH PEMBINA ----------</option>
-                                                
-                                            </select>
+                                            //select
                                         </div>
                                         <div class="form-group">
                                             <label for="email">Email</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="email_admin" name="email_admin" onkeyup="this.value = this.value.toUpperCase()" required>
+                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="no_hp">No Handphone</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="no_hp_admin" name="no_hp_admin" maxlength="13" required>
+                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
@@ -360,70 +347,45 @@
                                         <div class="form-group">
                                             <label for="alamat_perusahaan">Alamat Perusahaan</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="alamat_perusahaan_admin" id="alamat_perusahaan_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="alamat_perusahaan" id="alamat_perusahaan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
                                             <label for="desa_kel">Desa/Kelurahan</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="desa_kel_admin" id="desa_kel_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="desa_kel" id="desa_kel" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
                                             <label for="kecamatan">Kecamatan</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="kecamatan_admin" id="kecamatan_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="kecamatan" id="kecamatan" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
                                             <label for="kota_kab">Kota/Kabupaten</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="kota_kab_admin" id="kota_kab_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="kota_kab" id="kota_kab" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="username_admin" id="username_admin" class="form-control" required onkeyup="this.value = this.value.toUpperCase()" disabled>
+                                            <input type="text" name="username" id="username" class="form-control" required onkeyup="this.value = this.value.toUpperCase()" disabled>
                                         </div>
                                         <div class="form-group">
                                             <label for="password1">Password</label>
                                             <span style="color:red;">*</span>
-                                            <input type="password" name="password1_admin" id="password1_admin" class="form-control clear" minlength="8" required>
+                                            <input type="password" name="password1" id="password1" class="form-control clear" minlength="8" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="password2">Password</label>
                                             <span style="color:red;">*</span>
-                                            <input type="password" name="password2_admin" id="password2_admin" class="form-control clear" minlength="8" required>
+                                            <input type="password" name="password2" id="password2" class="form-control clear" minlength="8" required>
                                         </div>
                                         
                                        <div class="form-group">
-                                            <button type="button" class="btn btn-success float-right mt-4" id="daftar_admin">Daftar</button>
+                                            <button type="button" class="btn btn-success float-right mt-4" id="daftar">Daftar</button>
                                        </div>
                                     </div>
                                 </div>
                             </form>
-                        </div>
-                        <div class="modal fade" id="modal_upload_template_admin" tabindex="-1" role="dialog" aria-labelledby="modal_upload_template_adminLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Upload Template Perusahaan</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <form method="POST" enctype="multipart/form-data">
-                                        {% csrf_token %}
-                                        <div class="modal-body mt-2 mb-2">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" id="upload_user_perusahaan_admin" required accept=".xlsx">
-                                                <label id="upload_user_perusahaan_label_admin" class="custom-file-label" for="upload_user_perusahaan_admin">Pilih file...</label>
-                                             </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" id="upload_admin">Simpan</button>
-                                         </div>
-                                    </form>
-                                </div>
-                            </div>
                         </div>
                         {% else %}
                         <!-- Lisit Perusahaan Per Pembina -->
@@ -649,15 +611,14 @@
 {% block javascripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-    var jabatan = $("#id_jabatan, #id_jabatan_pembina").val();
     $(document).ready(function() {
         $('#example').DataTable();
     })
 </script>
 
 <script>
-var superQuery = `query ($id: ID!){
-allJabatans(id:$id){
+var superQuery = `query{
+allJabatan{
     id
     kodeJabatan
     namaJabatan
@@ -680,12 +641,6 @@ $(document).ready(function() {
         $("#username").val(nppVal)
     })
 
-    $("#npp_admin").on("focusout", function() {
-        var nppVal = $(this).val()
-        
-        $("#username_admin").val(nppVal)
-    })
-
     $("#kd_user").on("focusout", function() {
         var kd_user = $(this).val()
         $("#pembaina_username").val(kd_user)
@@ -697,12 +652,11 @@ $(document).ready(function() {
         contentType:"application/json",
         data:JSON.stringify({
             query:superQuery,
-            variables:{"id":jabatan}
         }),
         dataType:"json",
         success:function(data){
-            var datas = data['data']['allJabatans']
-
+            var datas = data['data']['allJabatan']
+            var jabatan = $("#id_jabatan, #id_jabatan_pembina").val();
             
             if((jabatan === '3') || (jabatan === '4')){
                 $.each(datas, function(i,j){
@@ -731,5 +685,4 @@ $(document).ready(function() {
 })
 </script>
 <script src="{% static 'kepesertaan/js/daftar_perusahaan.js' %}"></script>
-<script src="{% static 'kepesertaan/js/profilesQuery.js' %}"></script>
 {% endblock javascripts %}

@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %}{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 px-5">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper" style="font-size: small; font-weight: bold;">
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="nav-item mr-2">
+                                <a href="#list_informasi" class="nav-link color-nav-link active" data-toggle="tab">
+                                    <i class="fas fa-info-circle"></i>  Informasi
+                                </a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a href="#buat_informasi" class="nav-link color-nav-link" data-toggle="tab">
+                                    <i class="far fa-clipboard"></i>  Buat Informasi
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="list_informasi">
+                        {% include 'kepesertaan/informasi_section.html' %}
+                    </div>
+                    <div class="tab-pane" id="buat_informasi">
+                        
+                        <form method="post" ecntype="multipart/form-data">
+                            <div class="row justify-content-center">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <label for="id_judul">Judul</label>
+                                        {{form.judul}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_isi">Isi</label>
+                                        {{form.isi}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="id_attachment">Attachment</label>
+                                        {{form.attachment}}
+                                    </div>
+                                    {% if kepala %}
+                                    <div class="form-group">
+                                        <label for="id_npp">NPP</label>
+                                        {{form.npp}}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary float-right">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock  %}
