@@ -11,6 +11,8 @@ import pandas as pd
 from io import StringIO, BytesIO
 import xlsxwriter
 
+from .forms import InformasiForm
+
 from .models import (
     Informasi, Kantor, Jabatan, Profile, 
     Perusahaan, Tenaga_kerja
@@ -190,6 +192,22 @@ def download_excel(request):
     response.write(output.getvalue())
     return response
 
+@csrf_exempt
+def buat_info(request):
+    kepala = Profile.objects.select_related('username').filter(username__username=request.user)
+    form = InformasiForm()
+    if request.method == 'POST':
+        form = InformasiForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('buat-info')
+    context = {
+        'form':form,
+        'kepala':kepala
+    }
+    return render(request, 'kepesertaan/create_informasi.html',context)
+
+@csrf_exempt
 def informasi(request):
 
     # user = Profile.objects.select_related('username').filter(username__username=request.user)
