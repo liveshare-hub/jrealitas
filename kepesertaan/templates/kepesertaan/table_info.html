@@ -1,0 +1,15 @@
+<div class="scroll">
+    <table class="table table-borderless" id="id_tbl_check_npp">
+        <tbody>
+            {% for data in datas %}
+            <tr>
+              <td>
+                <input id="id_cek_npp" type="checkbox" name="cek_npp[]" value="{{data.pk}}">
+              </td>
+              <td>{{data.npp}}</td>
+              <td>{{data.nama_perusahaan}}</td>  
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

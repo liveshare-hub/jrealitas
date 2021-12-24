@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n!!p$myo-z4e$+^todrqdqpk0+p#sl#*4tji7u(oqwdjc2nah-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0','e9f1-202-162-196-156.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"7b83-202-162-196-156.ngrok.io"]
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'graphene_django',
 
     # 'import_export',
+    "corsheaders",
     'kepesertaan',
      #graphene
     
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -152,3 +154,21 @@ PASSWORD_HASHERS = [
 GRAPHENE = {
     "SCHEMA": "kepesertaan.schema.schema"
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "https://7b83-202-162-196-156.ngrok.io",
+    "http://127.0.0.1:8000",
+    "http://localhost:8000"
+]
+
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "accept-encoding",
+    "authorization",
+    "content-type",
+    "dnt",
+    "origin",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+]

@@ -86,6 +86,7 @@ def Daftar_Pembina(request):
     # except:
     #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
+
 @csrf_exempt
 def Daftar_Perusahaan(request):
     npp = request.POST.get('npp')
@@ -195,6 +196,8 @@ def download_excel(request):
 @csrf_exempt
 def buat_info(request):
     kepala = Profile.objects.select_related('username').filter(username__username=request.user)
+    factories = Perusahaan.objects.all()
+    infos = Informasi.objects.all()
     form = InformasiForm()
     if request.method == 'POST':
         form = InformasiForm(request.POST, request.FILES)
@@ -203,7 +206,9 @@ def buat_info(request):
             return redirect('buat-info')
     context = {
         'form':form,
-        'kepala':kepala
+        'kepala':kepala,
+        'infos':infos,
+        'datas':factories
     }
     return render(request, 'kepesertaan/create_informasi.html',context)
 

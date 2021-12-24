@@ -113,3 +113,8 @@
     color: var(--subdued-color);
     font-size: 0.85rem;
 }
+
+.scroll {
+    height: 300px;
+    overflow-y: scroll;
+}

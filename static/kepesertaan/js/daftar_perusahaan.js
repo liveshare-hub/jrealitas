@@ -428,7 +428,6 @@ $(document).ready(function() {
     var pk = $("#id_ganti_password").val()
     alert(pk)
     $(`#form_edit_password${pk}`).submit(function() {
-        console.log($("#id_edit_password1").val())
         
         var data = new FormData()
         data.append("edit_password1",$("#id_edit_password1").val())

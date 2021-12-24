@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}{% endblock title %}
 
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link rel="stylesheet" href="{% static 'kepesertaan/css/informasi.css' %}">
+{% endblock stylesheets %}
 
 {% block content %}
 <div class="row">
@@ -32,30 +35,39 @@
                     </div>
                     <div class="tab-pane" id="buat_informasi">
                         
-                        <form method="post" ecntype="multipart/form-data">
+                        <form method="post" ecntype="multipart/form-data" id="id_kirim_informasi">
                             <div class="row justify-content-center">
                                 <div class="col">
                                     <div class="form-group">
                                         <label for="id_judul">Judul</label>
-                                        {{form.judul}}
+                                        <input type="text" class="form-control" id="id_judul" maxlength="100">
                                     </div>
                                     <div class="form-group">
                                         <label for="id_isi">Isi</label>
-                                        {{form.isi}}
+                                        <textarea name="isi" id="id_isi" rows="5%" cols="100%" class="form-control"></textarea>
                                     </div>
                                     <div class="form-group">
                                         <label for="id_attachment">Attachment</label>
-                                        {{form.attachment}}
+                                        <input type="file" name="attachment" id="id_attachment" class="form-control-file">
                                     </div>
                                     {% if kepala %}
                                     <div class="form-group">
-                                        <label for="id_npp">NPP</label>
-                                        {{form.npp}}
+                                        <label for="id_kirim_ke_npp">Kirim Ke</label>
+                                        <select class="form-control" id="id_kirim_ke_npp" name="kirim_ke_npp">
+                                            <option value="0">.....</option>
+                                            <option value="1">Semua</option>
+                                            <option value="2">Pilih NPP</option>
+                                        </select>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12" id="id_check_npp">
+                                            {% include 'kepesertaan/table_info.html' %}
+                                        </div>
                                     </div>
                                     {% endif %}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-sm btn-primary float-right">Submit</button>
+                            <button type="submit" class="btn btn-sm btn-primary float-right mt-3">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -63,4 +75,8 @@
         </div>
     </div>
 </div>
+{% endblock  %}
+
+{% block javascripts %}
+<script src="{% static 'kepesertaan/js/informasi.js' %}"></script>
 {% endblock  %}

@@ -1,6 +1,6 @@
 import graphene
 from graphene_django import DjangoObjectType
-from .models import Jabatan, Profile, Bidang
+from .models import Jabatan, Profile, Bidang, Perusahaan
 
 from django.contrib.auth.models import User
 
@@ -16,6 +16,10 @@ class ProfileType(DjangoObjectType):
     class Meta:
         model = Profile
 
+class PerusahaanType(DjangoObjectType):
+    class Meta:
+        model = Perusahaan
+
 class UserType(DjangoObjectType):
     class Meta:
         model = User
@@ -24,6 +28,7 @@ class Query(graphene.ObjectType):
     all_jabatan = graphene.List(JabatanType)
     all_bidang = graphene.List(BidangType)
     all_jabatans = graphene.List(JabatanType, id=graphene.ID())
+    all_npp = graphene.List(PerusahaanType)
     all_profile = graphene.List(ProfileType)
     all_users = graphene.List(UserType)
 
@@ -48,5 +53,9 @@ class Query(graphene.ObjectType):
     def resolve_all_profile(root, info):
         if info.context.user.is_authenticated:
             return Profile.objects.select_related('username','jabatan','kode_kantor').all().exclude(jabatan_id=3)
+
+    def resolve_all_npp(root, info):
+        if info.context.user.is_authenticated:
+            return Perusahaan.objects.select_related('username','pembina').all()
 
 schema = graphene.Schema(query=Query)
