@@ -1,3 +1,4 @@
+from django.core.checks.messages import Info
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
@@ -193,24 +194,37 @@ def download_excel(request):
     response.write(output.getvalue())
     return response
 
+@login_required(login_url='/accounts/login')
 @csrf_exempt
 def buat_info(request):
     kepala = Profile.objects.select_related('username').filter(username__username=request.user)
     factories = Perusahaan.objects.all()
-    infos = Informasi.objects.all()
-    form = InformasiForm()
-    if request.method == 'POST':
-        form = InformasiForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('buat-info')
+    # infos = Informasi.objects.all()
+    # form = InformasiForm()
+    
     context = {
-        'form':form,
+        # 'form':form,
         'kepala':kepala,
-        'infos':infos,
+        # 'infos':infos,
         'datas':factories
     }
     return render(request, 'kepesertaan/create_informasi.html',context)
+
+def create_info_user(request):
+    if request.method == 'POST':
+        judul = request.POST.get('judul')
+        print(judul)
+        isi = request.POST.get('isi')
+        attach = request.POST.get('attach')
+        print(attach)
+        user = request.POST.get('user')
+        print(user)
+        user_id = User.objects.get(username=user)
+        created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach, user_id=user_id.id)
+        if created:
+            return JsonResponse({'success':'Berhasil'})
+        else:
+            return JsonResponse({'errors':'Data Gagal Disimpan!'})
 
 @csrf_exempt
 def informasi(request):

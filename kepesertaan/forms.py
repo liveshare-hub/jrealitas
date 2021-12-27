@@ -10,7 +10,8 @@ class UploadForm(forms.Form):
 class InformasiForm(forms.ModelForm):
     class Meta:
         model = Informasi
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ('user',)
 
         widgets = {
             'judul':forms.TextInput(attrs={
@@ -22,12 +23,9 @@ class InformasiForm(forms.ModelForm):
             'attachment':forms.FileInput(attrs={
                 'class':'from-control'
             }),
-            'npp':forms.Select(attrs={
-                'class':'form-control'
-            })
         }
 
-    def __init__(self, *args, **kwargs):
-        super(InformasiForm, self).__init__(*args, **kwargs)
-        self.fields['npp'].required = False
+    # def __init__(self, *args, **kwargs):
+    #     super(InformasiForm, self).__init__(*args, **kwargs)
+    #     self.fields['user'].required = False
 

@@ -4,6 +4,8 @@ from django.db import models
 
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 
 # User = get_user_model()
 
@@ -33,8 +35,11 @@ class Jabatan(models.Model):
     def __str__(self):
         return f'{self.kode_jabatan} - {self.nama_jabatan}'
 
+# @receiver(post_save, sender=User)
+# def post_profile(sender, instance, created, **kwargs):
+#     if created:
+#         Profile.objects.create(username=instance)
     
-
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     nama = models.CharField(max_length=100)
@@ -46,16 +51,7 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.username} - {self.nama}'
 
-# class User_Profile(models.Model):
-#     username = models.ForeignKey(User, on_delete=models.CASCADE)
-#     nama = models.CharField(max_length=100)
-#     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
-#     email = models.EmailField(max_length=100)
-#     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
-#     Jabatan = models.CharField(default='HRD', max_length=10)
 
-#     def __str__(self):
-#         return f'{self.nama} - {self.Jabatan}'
 
 class Perusahaan(models.Model):
     nama = models.CharField(max_length=100)
@@ -107,7 +103,7 @@ class Tenaga_kerja(models.Model):
         return f'{self.no_kartu} - {self.nama}'
 
 class Informasi(models.Model):
-    npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=200)
     attachment = models.FileField(upload_to='informasi/attachment/', blank=True, null=True)
     isi = models.TextField()
@@ -115,7 +111,7 @@ class Informasi(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f'{self.npp.npp} - {self.judul}'
+        return f'{self.judul} - {self.isi}'
 
     def filename(self):
         return os.path.basename(self.attachment.name)
