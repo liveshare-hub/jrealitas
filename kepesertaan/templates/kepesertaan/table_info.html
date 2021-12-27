@@ -4,7 +4,7 @@
             {% for data in datas %}
             <tr>
               <td>
-                <input id="id_cek_npp" type="checkbox" name="cek_npp[]" value="{{data.pk}}">
+                <input id="id_cek_npp" type="checkbox" name="cek_npp" value="{{data.username.pk}}">
               </td>
               <td>{{data.npp}}</td>
               <td>{{data.nama_perusahaan}}</td>  

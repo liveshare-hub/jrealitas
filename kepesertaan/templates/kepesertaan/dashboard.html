@@ -4,7 +4,8 @@
 {% block title %}DASHBOARD{% endblock title %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{% static 'kepesertaan/css/article.css' %}">
+<link rel="stylesheet" href="{% static 'kepesertaan/css/informasi.css' %}">
+{% comment %} <link rel="stylesheet" href="{% static 'kepesertaan/css/article.css' %}"> {% endcomment %}
 {% endblock stylesheets %}
 
 {% block content %}
@@ -134,22 +135,7 @@
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                    {% if info %}
-                    {% for data in info %}
-                    
-                        <h5 class="card-title">{{data.judul}}</h5>
-                        <p class="card-text">{{data.isi}}</p>
-                        {% if data.attachment %}
-                            <a class="card-link" href="{{data.attachment.url}}">Lihat</a>
-                        {% else %}
-                            <p class="card-text">No Attachement!</p>
-                        {% endif %}
-                        <p class="article"><i>Created On : {{data.created}}</i></p>
-                        <hr>
-                    {% endfor %}
-                    {% else %}
-                        <h3 class="card-title">Tidak ada informasi terbaru</h3>
-                    {% endif %}
+                    {% include 'kepesertaan/informasi_section.html' %}
                 </div>
             </div>
         </div>

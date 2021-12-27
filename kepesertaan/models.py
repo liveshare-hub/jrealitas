@@ -1,6 +1,7 @@
 import os
 from django.db import models
 # from django.contrib.auth import get_user_model
+# from django.core.files.storage import FileSystemStorage
 
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
@@ -8,6 +9,8 @@ from django.core.validators import RegexValidator
 # from django.dispatch import receiver
 
 # User = get_user_model()
+
+
 
 NIK_VALIDATOR = RegexValidator("^\d{16}$","Format NIK Tidak Sesuai")
 HP_VALIDATOR = RegexValidator("^(08+[1-9])([0-9]{7,10})$", "Format NO HP TIDAK SESUA!!!")
@@ -105,7 +108,7 @@ class Tenaga_kerja(models.Model):
 class Informasi(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=200)
-    attachment = models.FileField(upload_to='informasi/attachment/', blank=True, null=True)
+    attachment = models.FileField(upload_to='informasi/attachment', blank=True, null=True)
     isi = models.TextField()
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -113,5 +116,4 @@ class Informasi(models.Model):
     def __str__(self):
         return f'{self.judul} - {self.isi}'
 
-    def filename(self):
-        return os.path.basename(self.attachment.name)
+    # 

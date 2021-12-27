@@ -1,9 +1,16 @@
-{% if infos %}
-    {% for info in infos %}
+{% if info %}
+    {% for data in info %}
     <section class="notification-section">
         <div class="group-header">
-            <div class="group-title">Hari Ini</div>
-            <div class="group-date">{{info.created}}</div>
+            <div class="group-title">
+                {% now "d" as current_date %}
+                {% if data.created|date:"d" == current_date %}
+                    Hari Ini
+                {% else %}
+                    Kemarin
+                {% endif %}
+            </div>
+            <div class="group-date">{{data.created|date:"D, d-m-Y"}}</div>
         </div>
         <div class="notification-grid">
             <div class="avatar">
@@ -12,22 +19,27 @@
             <div class="notification-card">
                 <div class="notification-header">
                     <div class="notification-title">
-                        {{info.judul}}
+                        {{data.judul}}
                     </div>
-                    <div class="notification-time">09:00am</div>
+                    <div class="notification-time">{{data.created|time:"g:iA"|lower}}</div>
                 </div>
                 <div class="notification-content">
-                    {{info.isi}}
+                    {{data.isi}}
 
-                    {% if info.attachment %}
-                        <p>
-                            <a href="{{info.attachment.url}}">Klik</a>
+                    {% if data.attachment %}
+                        <p class="mt-3">
+                            <a href="{{data.attachment.url}}" class="btn btn-sm btn-primary">Unduh File</a>
+                            <span class="mt-4 float-right span-c">created: {{data.created_by.nama}}</span>
                         </p>
                     {% endif %}
+                    
                 </div>
+                
             </div>
         </div>
+        
     </section>
+    <hr />
     {% endfor %}
 {% else %}
 <h3>Belum ada informasi Terkini</h3>

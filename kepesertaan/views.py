@@ -10,7 +10,7 @@ from django.core.files.storage import FileSystemStorage
 
 import pandas as pd
 from io import StringIO, BytesIO
-import xlsxwriter
+import xlsxwriter, json
 
 from .forms import InformasiForm
 
@@ -19,6 +19,7 @@ from .models import (
     Perusahaan, Tenaga_kerja
 )
 
+fs = FileSystemStorage(location='/informasi/attachment')
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -129,9 +130,9 @@ def save_to_models(request):
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
         
-        fs = FileSystemStorage()
-        filename = fs.save(myfile.name, myfile)
-        uploaded_url = fs.url(filename)
+        fss = FileSystemStorage()
+        filename = fss.save(myfile.name, myfile)
+        uploaded_url = fss.url(filename)
         excel_file = uploaded_url
         
         exceldata = pd.read_excel("."+excel_file)
@@ -213,18 +214,33 @@ def buat_info(request):
 def create_info_user(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
-        print(judul)
+        
         isi = request.POST.get('isi')
-        attach = request.POST.get('attach')
-        print(attach)
-        user = request.POST.get('user')
-        print(user)
-        user_id = User.objects.get(username=user)
-        created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach, user_id=user_id.id)
-        if created:
-            return JsonResponse({'success':'Berhasil'})
+        attach = request.FILES['attach']
+        file1 = fs.save(attach.name, attach)
+        attach_url = fs.url(file1)
+        
+        users = json.loads(request.POST.get('user'))
+        
+        if users:
+            for user in users:
+            
+                user_id = User.objects.get(pk=user['value'])
+                profile_id = Profile.objects.get(username__username=request.user)
+                created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=user_id.id, created_by_id=profile_id.id)
+            if created:
+                return JsonResponse({'success':'Berhasil'})
+            else:
+                return JsonResponse({'errors':'Data Gagal Disimpan!'})
         else:
-            return JsonResponse({'errors':'Data Gagal Disimpan!'})
+            factories = Perusahaan.objects.all()
+            for npp in factories:
+                profile_id = Profile.objects.get(username__username=request.user)
+                created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=npp.username.id, created_by_id=profile_id.id)
+            if created:
+                return JsonResponse({'success':'Berhasil'})
+            else:
+                return JsonResponse({'errors':'Data Gagal Disimpan'})
 
 @csrf_exempt
 def informasi(request):
