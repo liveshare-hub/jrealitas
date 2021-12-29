@@ -30,7 +30,7 @@ def login_view(request):
     else:
         form = LoginForm()
         
-    return render(request, 'registration/login.html',{'form':form, 'msg':msg})
+    return render(request, 'registration/signin.html',{'form':form, 'msg':msg})
 
 def logout_view(request):
     logout(request)
