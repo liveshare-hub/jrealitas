@@ -19,11 +19,13 @@
                                     <i class="fas fa-info-circle"></i>  Informasi
                                 </a>
                             </li>
+                            {% if kepala %}
                             <li class="nav-item mr-2">
                                 <a href="#buat_informasi" class="nav-link color-nav-link" data-toggle="tab">
                                     <i class="far fa-clipboard"></i>  Buat Informasi
                                 </a>
                             </li>
+                            {% endif %}
                         </ul>
                     </div>
                 </div>
@@ -34,8 +36,8 @@
                     <div class="tab-pane active" id="list_informasi">
                         {% include 'kepesertaan/informasi_section.html' %}
                     </div>
+                    {% if kepala %}
                     <div class="tab-pane" id="buat_informasi">
-                        
                         <form method="post" ecntype="multipart/form-data" id="id_kirim_informasi">
                             {% csrf_token %}
                             <div class="row justify-content-center">
@@ -52,7 +54,7 @@
                                         <label for="id_attachment">Attachment</label>
                                         <input type="file" name="attachment" id="id_attachment" class="form-control-file">
                                     </div>
-                                    {% if kepala %}
+                                    
                                     <div class="form-group">
                                         <label for="id_kirim_ke_npp">Kirim Ke</label>
                                         <select class="form-control" id="id_kirim_ke_npp" name="kirim_ke_npp">
@@ -66,12 +68,13 @@
                                             {% include 'kepesertaan/table_info.html' %}
                                         </div>
                                     </div>
-                                    {% endif %}
+                                    
                                 </div>
                             </div>
                             <button type="button" class="btn btn-sm btn-primary float-right mt-3" id="id_submit_info" disabled>Submit</button>
                         </form>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -38,11 +38,11 @@ $(document).ready(function(){
         }
     })
     
-    $("#id_check_npp").hide();
-    
+    $("#id_check_npp").hide().prop('checked',false)
     $("#id_kirim_ke_npp").on('change',function(){
        
         if($(this).val() === '2'){
+            $("#id_cek_npp").prop('checked',false)
             $("#id_submit_info").removeAttr("disabled")
             $("#id_tbl_check_npp > tbody").show();
             $("#id_check_npp").show();
@@ -68,6 +68,9 @@ $(document).ready(function(){
                             $("#id_isi").val("")
                             $("#id_attachment").val(null)
                             $("#id_kirim_ke_npp").val("0")
+                            $("#id_check_npp").hide()
+                            $("#id_cek_npp").prop('checked',false)
+                            
                         },
                         errors:function(err){
                             console.log(err)
@@ -80,6 +83,7 @@ $(document).ready(function(){
             
             
         }else if($(this).val() === '1'){
+            $("#id_cek_npp").prop('checked',false)
             $("#id_submit_info").removeAttr("disabled")
             $("#id_tbl_check_npp > tbody").hide("")
             $("#id_check_npp").hide();
@@ -105,6 +109,8 @@ $(document).ready(function(){
                             $("#id_isi").val("")
                             $("#id_attachment").val(null)
                             $("#id_kirim_ke_npp").val("0")
+                            $("#id_check_npp").hide()
+                            $("#id_cek_npp").prop('checked',false)
                             
                         },
                         errors:function(err){
