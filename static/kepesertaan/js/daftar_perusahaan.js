@@ -1,3 +1,13 @@
+var profileQuery = `query{
+    allProfile{
+      id
+      username{
+        id
+        username
+      }
+    }
+}`
+
 function DafarNPP() {
     var data = new FormData()
     data.append("npp", $("#npp").val())
@@ -56,14 +66,16 @@ function DafarNPPAdmin() {
     data.append("password2_admin", $("#password2_admin").val())
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
     
+
     $.ajax({
         method:"POST",
-        url:"/create/perusahaan/",
+        url:"/create/npp/",
         contentType:false,
         processData:false,
         data:data,
         success:function(res){
-            $("input").val("")
+            
+            $("input.clear").val("")
             $("#id_pembina_admin").val(0)
             
             
@@ -465,9 +477,34 @@ $(document).ready(function() {
                 console.log(err)
             }
         });
-        e.preventDefault()
+        
         $("#id_edit_password1").val("")
         $("#id_edit_password2").val("")
-    })
-})
+    });
+    $.ajax({
+        method:"POST",
+        url:"/graphql",
+        contentType:"application/json",
+        data:JSON.stringify({
+            query:profileQuery,
+        }),
+        dataType:"json",
+        success:function(data){
+            var datas = data['data']['allProfile']
+
+            $.each(datas, function(i,j){
+
+                $("#id_pembina_admin").append($('<option>', {
+                    
+                    value:j['id'],
+                    text:j['username']['username'],       
+                }));
+            })
+          
+        },
+        error:function(err){
+            console.log(err)
+        }
+    });
+});
     

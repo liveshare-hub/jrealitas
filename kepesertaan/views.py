@@ -91,23 +91,24 @@ def Daftar_Pembina(request):
 
 @csrf_exempt
 def Daftar_Perusahaan(request):
-    npp = request.POST.get('npp')
-    nama_pers = request.POST.get('nama_pemberi_kerja')
-    nik = request.POST.get('nik')
-    nama = request.POST.get('nama_lengkap')
-    # jabatan = request.POST.get('jabatan')
-    pembina = request.POST.get('pembina_id')
-    email = request.POST.get('email')
-    no_hp = request.POST.get('no_hp')
-    alamat = request.POST.get('alamat_perusahaan')
-    desa_kel = request.POST.get('desa_kel')
-    kecamatan = request.POST.get('kecamatan')
-    kota_kab = request.POST.get('kota_kab')
-    username = request.POST.get('username')
-    password1 = request.POST.get('password1')
-    password2 = request.POST.get('password2')
+    npp = request.POST.get('npp') or request.POST.get('npp_admin')
+    nama_pers = request.POST.get('nama_pemberi_kerja') or request.POST.get('nama_pemberi_kerja_admin')
+    nik = request.POST.get('nik') or request.POST.get('nik_admin')
+    nama = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
+    jabatan = request.POST.get('id_jabatan')
+    pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
+    email = request.POST.get('email') or request.POST.get('email_admin')
+    no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
+    alamat = request.POST.get('alamat_perusahaan') or request.POST.get('alamat_perusahaan_admin')
+    desa_kel = request.POST.get('desa_kel') or request.POST.get('desa_kel_admin')
+    kecamatan = request.POST.get('kecamatan') or request.POST.get('kecamatan_admin')
+    kota_kab = request.POST.get('kota_kab') or request.POST.get('kota_kab_admin')
+    username = request.POST.get('username') or request.POST.get('username_admin')
+    password1 = request.POST.get('password1') or request.POST.get('password1_admin')
+    password2 = request.POST.get('password2') or request.POST.get('password2_admin')
 
-    try:
+
+    if jabatan == 3:
         if password1 == password2 :
             user = User.objects.create(username=username, password=password1)
             # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
@@ -115,14 +116,25 @@ def Daftar_Perusahaan(request):
             Perusahaan.objects.create(username_id=user.pk,nama=nama, nik=nik, email=email,
                 no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers,
                 alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
-                pembina_id=pembina)
+                pembina_id=int(pembina))
 
             return JsonResponse({'success':'done'})
         else:
             return JsonResponse({'error':'Password tidak sama!'})
-    except:
-        return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+    else:
+        if password1 == password2 :
+            user = User.objects.create(username=username, password=password1)
+            
+            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+            #     email=email, no_hp=no_hp)
+            Perusahaan.objects.create(username_id=user.pk,nama=nama, nik=nik, email=email,
+                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers,
+                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
+                pembina_id=int(pembina))
 
+            return JsonResponse({'success':'done'})
+        else:
+            return JsonResponse({'error':'Password tidak sama!'})
 
 def save_to_models(request):
     pembina = request.user.profile_set.values('pk')[0]['pk']
