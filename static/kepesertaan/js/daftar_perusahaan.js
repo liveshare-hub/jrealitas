@@ -426,7 +426,6 @@ $(document).ready(function() {
         DaftarPembina();
     })
     var pk = $("#id_ganti_password").val()
-    alert(pk)
     $(`#form_edit_password${pk}`).submit(function() {
         
         var data = new FormData()

@@ -33,7 +33,7 @@
                                     </a>
                                     <div class="dropdown-menu">
                                         <a class="dropdown-item" href="#register_pembina" data-toggle="tab">Pembina</a>
-                                        <a class="dropdown-item" href="#register_perusahaan" data-toggle="tab">Perusahaan</a>
+                                        <a class="dropdown-item" href="#register_perusahaan_admin" data-toggle="tab">Perusahaan</a>
                                     </div>
                                 </li>
                                 {% else %}
@@ -294,50 +294,52 @@
                             </form>
                         </div>
                         <!-- Pendaftaran Perusahaan -->
-                        <div class="tab-pane" id="register_perusahaan">
-                            <form id="form_registrasi_user_perusahaan" method="POST">
+                        <div class="tab-pane" id="register_perusahaan_admin">
+                            <form id="form_registrasi_user_perusahaan_admin" method="POST">
                                 {% csrf_token %}
                                 <div class="row justify-content-center">
                                     <div class="col md-5">
                                         <div class="form-group">
-                                            <label for="npp">NPP</label>
+                                            <label for="npp_admin">NPP</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="npp" id="npp" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
+                                            <input type="text" name="npp" id="npp_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="9">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_pemberi_kerja">Nama Pemeberi Kerja</label>
+                                            <label for="nama_pemberi_kerja_admin">Nama Pemeberi Kerja</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nama_pemberi_kerja" id="nama_pemberi_kerja" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                            <input type="text" name="nama_pemberi_kerja" id="nama_pemberi_kerja_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nik">No Identitas (KTP)</label>
+                                            <label for="nik_admin">No Identitas (KTP)</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nik" id="nik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
+                                            <input type="text" name="nik" id="nik_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <label for="nama_lengkap_admin">Nama Lengkap</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                            <input type="text" name="nama_lengkap" id="nama_lengkap_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
                                         </div>
                                         <div class="form-group">
-                                            <label for="jabatan_perusahaan">Jabatan</label>
+                                            <label for="jabatan_perusahaan_admin">Jabatan</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" name="jabatan_perusahaan" id="jabatan_perusahaan" class="form-control clear" value="HRD" disabled>
+                                            <input type="text" name="jabatan_perusahaan" id="jabatan_perusahaan_admin" class="form-control clear" value="HRD" disabled>
                                         </div>
                                         <div class="form-group">
-                                            <label for="pembina">Kode Pembina</label>
+                                            <label for="id_pembina_admin">Kode Pembina</label>
                                             <span style="color:red;">*</span>
-                                            //select
+                                            <select class="form-control" id="id_pembina_admin" name="pembina">
+                                                <option value="0">.....</option>
+                                            </select>
                                         </div>
                                         <div class="form-group">
-                                            <label for="email">Email</label>
+                                            <label for="email_admin">Email</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="email" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                            <input type="text" class="form-control clear" id="email_admin" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="no_hp">No Handphone</label>
+                                            <label for="no_hp_admin">No Handphone</label>
                                             <span style="color:red;">*</span>
-                                            <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
+                                            <input type="text" class="form-control clear" id="no_hp_admin" name="no_hp" maxlength="13" required>
                                         </div>
                                         <div class="form-group">
                                             <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
