@@ -40,6 +40,7 @@ var/
 wheels/
 share/python-wheels/
 *.egg-info/
+redis/
 .installed.cfg
 *.egg
 MANIFEST
@@ -149,5 +150,9 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# other extensions
+*.zip
+
 
 # End of https://www.toptal.com/developers/gitignore/api/django

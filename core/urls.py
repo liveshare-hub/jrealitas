@@ -12,6 +12,7 @@ from graphene_django.views import GraphQLView
 
 urlpatterns = [
     path('', include('kepesertaan.urls')),
+    path('chat/', include('chat.urls')),
     path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)), name="graphql"),
     path('accounts/login/', login_view, name='login'),
     path('accounts/logout/', logout_view, name='logout'),

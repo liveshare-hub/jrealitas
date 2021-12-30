@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n!!p$myo-z4e$+^todrqdqpk0+p#sl#*4tji7u(oqwdjc2nah-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"e148-202-162-196-156.ngrok.io"]
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"9e47-202-162-196-156.ngrok.io"]
 
 
 # Application definition
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     # 'import_export',
     "corsheaders",
     'kepesertaan',
+    'chat',
+    'channels',
      #graphene
     
 ]
@@ -140,6 +142,13 @@ MEDIA_URL = 'media/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ASGI_APPLICATION = "core.routing.application"
+CHANNEL_LAYERS = {
+    "default":{
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
