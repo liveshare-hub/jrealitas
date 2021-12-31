@@ -9,12 +9,25 @@
 
 {% block content %}
 <div class="container">
-    <textarea id="chat-text" cols="80" rows="30" class="form-control"></textarea><br>
-    <input id="input" type="text" class="form-control" size="80"></br>
-    <input id="submit" type="button" class="btn btn-sm btn-primary" value="Send">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <form>
+                
+                <div class="form-group">
+                    <label for="exampleFormControlTextarea1" class="h4 pt-5">Chat Room</label>
+                    <textarea id="chat-text" rows="10" class="form-control" disabled></textarea><br>
+                </div>
+                <div class="form-group">
+                    <input id="input" type="text" class="form-control"></br>
+                </div>
+                <input id="submit" type="button" class="btn btn-sm btn-primary" value="Send">
+            </form>
+        </div>
+    </div>
 </div>
 <div id="user-hello"></div>
 {{ room_name|json_script:"room-name"}}
+{{ request.user.username|json_script:"user_username"}}
 {% endblock  %}
 
 {% block javascripts %}
