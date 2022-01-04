@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}BAK{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="col">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    BERITA ACARA KUNJUNGAN
+                </div>
+                <div class="card-body">
+                    <input type="text" value="{{request.user}}" class="form-control" hidden>
+                    <table id="id_kunjungan" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Petugas</th>
+                                <th>Tujuan</th>
+                                <th>alamat</th>
+                                <th>Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in datas %}
+                                <tr>
+                                    <td>{{forloop.counter}}</td>
+                                    <td>{{data.petugas.username.username}}</td>
+                                    <td>{{data.get_tujuan_display}}</td>
+                                    <td>{{data.alamat}}</td>
+                                    <td>{{data.created|date:"dd-mm-yyyy"}}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}{% endblock javascripts %}

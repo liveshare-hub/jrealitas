@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'kepesertaan',
     'chat',
+    'kunjungan',
     'channels',
      #graphene
     
