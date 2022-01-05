@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import berita_kunjungan
+
+admin.site.register(berita_kunjungan)

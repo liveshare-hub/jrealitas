@@ -60,7 +60,7 @@ def data_user(request):
     return render(request, 'kepesertaan/data_user.html', context)
 
 
-
+@login_required(login_url='/accounts/login/')
 @csrf_exempt
 def Daftar_Pembina(request):
     kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
@@ -88,7 +88,7 @@ def Daftar_Pembina(request):
     # except:
     #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
-
+@login_required(login_url='/accounts/login/')
 @csrf_exempt
 def Daftar_Perusahaan(request):
     npp = request.POST.get('npp') or request.POST.get('npp_admin')
@@ -136,6 +136,7 @@ def Daftar_Perusahaan(request):
         else:
             return JsonResponse({'error':'Password tidak sama!'})
 
+@login_required(login_url='/accounts/login/')
 def save_to_models(request):
     pembina = request.user.profile_set.values('pk')[0]['pk']
     
@@ -163,6 +164,7 @@ def save_to_models(request):
  
     # return render(request, 'kepesertaan/upload.html')
 
+@login_required(login_url='/accounts/login/')
 def download_excel(request):
     output = BytesIO()
     workbook = xlsxwriter.Workbook(output)
@@ -223,6 +225,7 @@ def buat_info(request):
     }
     return render(request, 'kepesertaan/create_informasi.html',context)
 
+@login_required(login_url='/accounts/login/')
 def create_info_user(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
@@ -253,7 +256,8 @@ def create_info_user(request):
                 return JsonResponse({'success':'Berhasil'})
             else:
                 return JsonResponse({'errors':'Data Gagal Disimpan'})
-
+                
+@login_required(login_url='/accounts/login/')
 @csrf_exempt
 def informasi(request):
 

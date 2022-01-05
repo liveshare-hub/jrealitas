@@ -20,7 +20,7 @@ class KunjunganForm(forms.ModelForm):
                 'class':'form-control','maxlength':'13'
             }),
             'hasil':forms.Textarea(attrs={
-                'class':'form-control'
+                'class':'form-control','rows':'20'
             }),
             'tujuan':forms.Select(attrs={
                 'class':'form-control'

@@ -6,37 +6,145 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<div class="container">
-    <div class="col">
-        <div class="row">
-            <div class="card">
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card mb-3">
                 <div class="card-header">
-                    BERITA ACARA KUNJUNGAN
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item mr-2">
+                                    <a href="#id_list_kunjungan" class="color-nav-link nav-link active" data-toggle="tab">
+                                        <i class="fas fa-fw fa-users"> </i> List Kunjungan  
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="#id_buat_kunjungan" class="color-nav-link nav-link" data-toggle="tab">
+                                        <i class="fas fa-fw fa-user-plus"> </i>Buat Kunjungan
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
-                    <input type="text" value="{{request.user}}" class="form-control" hidden>
-                    <table id="id_kunjungan" class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Petugas</th>
-                                <th>Tujuan</th>
-                                <th>alamat</th>
-                                <th>Tanggal</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for data in datas %}
-                                <tr>
-                                    <td>{{forloop.counter}}</td>
-                                    <td>{{data.petugas.username.username}}</td>
-                                    <td>{{data.get_tujuan_display}}</td>
-                                    <td>{{data.alamat}}</td>
-                                    <td>{{data.created|date:"dd-mm-yyyy"}}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="id_list_kunjungan">
+                            <div class="table-responsive mt-3">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table id="kunjungan_id" class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Petugas</th>
+                                                    <th>Tujuan</th>
+                                                    <th>alamat</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for data in datas %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{data.petugas.username.username}}</td>
+                                                        <td>{{data.get_tujuan_display}}</td>
+                                                        <td>{{data.to_alamat}}</td>
+                                                        <td>{{data.created|date:"D, d-m-Y"}}</td>
+                                                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="id_buat_kunjungan">
+                            
+                            <h6 class="text-center font-weight-bold">BERITA ACARA KUNJUNGAN</h6>
+                            <hr>
+                            <form action="POST" id="kunjungan_form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_tujuan">TUJUAN</label>
+                                            {{form.tujuan}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_to_nama">NAMA</label>
+                                            {{form.to_nama}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_to_jabatan">JABATAN</label>
+                                            {{form.to_jabatan}}
+                                        </div>
+                                    </div>
+                                    <div class="col col-md-6">
+                                        <div class="form-group">
+                                            <label for="id_to_alamat">ALAMAT</label>
+                                            {{form.to_alamat}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_to_no_hp">NO HANDPHONE</label>
+                                            {{form.to_no_hp}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_petugas">PETUGAS</label>
+                                            <input type="text" name="petugas" id="id_petugas" class="form-control" value="{{request.user}}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <label for="id_hasil">HASIL KUNJUNGAN</label>
+                                            {{form.hasil}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <button id="id_buat" class="btn btn-primary float-right" type="button">Simpan</button>
+                            </form>
+                            <div
+                            class="modal fade"
+                            id="exampleModal"
+                            tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="exampleModalLabel"
+                            aria-hidden="true"
+                            >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">SUCCESS</h5>
+                                    <button
+                                    type="button"
+                                    class="close"
+                                    data-dismiss="modal"
+                                    aria-label="Close"
+                                    >
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button
+                                    type="button"
+                                    class="btn btn-secondary"
+                                    data-dismiss="modal"
+                                    >
+                                    Close
+                                    </button>
+                                   
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,4 +152,6 @@
 </div>
 {% endblock content %}
 
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script src="{% static 'kunjungan/js/kunjungan.js' %}"></script>
+{% endblock javascripts %}
