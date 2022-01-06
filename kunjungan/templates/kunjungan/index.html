@@ -53,7 +53,7 @@
                                                         <td>{{data.get_tujuan_display}}</td>
                                                         <td>{{data.to_alamat}}</td>
                                                         <td>{{data.created|date:"D, d-m-Y"}}</td>
-                                                        <td><a href="#" class="btn btn-sm btn-primary">Detail</a></td>
+                                                        <td><a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary">Detail</a></td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
@@ -81,6 +81,10 @@
                                         <div class="form-group">
                                             <label for="id_to_jabatan">JABATAN</label>
                                             {{form.to_jabatan}}
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_to_jabatan">LOKASI</label>
+                                            {{form.to_lokasi}}
                                         </div>
                                     </div>
                                     <div class="col col-md-6">

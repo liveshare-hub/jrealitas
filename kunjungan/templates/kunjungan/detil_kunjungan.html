@@ -1,17 +1,151 @@
-{% extends 'base.html' %}
+{% load static %}
+{% get_media_prefix as MEDIA_URL %}
 
-{% block title %}Detil Kunjungan{% endblock title %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BERITA ACARA KUNJUNGAN</title>
 
-{% block stylesheets %}{% endblock stylesheets %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
+    <link rel="stylesheet" href="/static/kunjungan/css/kunjungan.css" rel="stylesheet">
 
-{% block content %}
-<div class="container">
-    <div class="col">
-        <div class="row">
-            <h1>BERITA ACARA KUNJUNGAN</h1>
+</head>
+<body>
+    <div class="container">
+        <div class="col">
+            <div class="card">
+                <div class="card-body border border-dark rounded">
+                    <div class="col">
+                        <div class="row justify-content-center">
+                            <h4 class="font-weight-bold text-dark">BERITA ACARA KUNJUNGAN / INFORMASI</h4>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="number">
+                            I.
+                        </div>
+                        <div class="col-4">
+                            HARI TANGGAL
+                        </div>
+                        <div class="col-1">
+                            :
+                        </div>
+                        <div class="col-3">
+                            {{data.created|date:"l, d-m-Y"}}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="number">
+                            II.
+                        </div>
+                        <div class="col-4">
+                            PETUGAS YANG MELAKSANAKAN
+                        </div>
+                        <div class="col-1">
+                            :
+                        </div>
+                        <div class="col-3">
+                            {{data.petugas.nama}}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="number">
+                            III.
+                        </div>
+                        <div class="col-4">
+                            PIHAK YANG DIKUNJUNGI/KONFIRMASI</br>
+                            PERUSAHAAN/PEMERINTAHAN/SAKSI
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="angka">1.</div>
+                        <div class="nama">NAMA</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3">{{data.to_nama}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="angka">2.</div>
+                        <div class="nama">JABATAN</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3">{{data.to_jabatan}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="angka">3.</div>
+                        <div class="nama">ALAMAT</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3">{{data.to_alamat}}</div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="angka">4.</div>
+                        <div class="nama">NO. HP</div>
+                        <div class="col-1">:</div>
+                        <div class="col-3">{{data.to_no_hp}}</div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="number">
+                            IV.
+                        </div>
+                        <div class="col-4">
+                            MAKSUD DAN TUJUAN
+                        </div>
+                        <div class="col-1">
+                            :
+                        </div>
+                        <div class="col-3">
+                            {{data.get_tujuan_display}}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="number">
+                            V.
+                        </div>
+                        <div class="col-4">
+                            HASIL WAWANCARA
+                        </div>
+                        <div class="col-1">
+                            :
+                        </div>
+                        <div class="col-3">
+                            {{data.hasil}}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col text-right">
+                            TANJUNG MORAWA, {{data.created|date:"d-m-Y"}}
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6 text-center">
+                            INFORMAN
+                        </div>
+                        <div class="col-6 text-center">
+                            PETUGAS PELAKSANA KUNJUNGAN
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6 text-center">
+                            {{svg2|safe}}
+                        </div>
+                        <div class="col-6 text-center">
+                            {{svg1|safe}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6 text-center">
+                            {{data.to_nama}}
+                        </div>
+                        <div class="col-6 text-center">
+                            {{data.petugas.nama}}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endblock content %}
-
-{% block javascripts %}{% endblock javascripts %}
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

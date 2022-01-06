@@ -25,4 +25,7 @@ class KunjunganForm(forms.ModelForm):
             'tujuan':forms.Select(attrs={
                 'class':'form-control'
             }),
+            'to_lokasi':forms.TextInput(attrs={
+                'class':'form-control', 'maxlength':'100'
+            })
         }

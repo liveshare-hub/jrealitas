@@ -18,6 +18,7 @@ class berita_kunjungan(models.Model):
     to_jabatan = models.CharField(max_length=50)
     to_alamat = models.CharField(max_length=500)
     to_no_hp = models.CharField(max_length=13)
+    to_lokasi = models.CharField(max_length=100)
     tujuan = models.CharField(choices=TUJUAN, max_length=2)
     hasil = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

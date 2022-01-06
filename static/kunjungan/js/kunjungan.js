@@ -6,6 +6,7 @@ function SimpanKunjungan(){
     data.append("no_hp",$("#id_to_no_hp").val())
     data.append("petugas",$("#id_petugas").val())
     data.append("hasil",$("#id_hasil").val())
+    data.append("lokasi",$("#id_to_lokasi").val())
     data.append("tujuan", $('select#id_tujuan option').filter(':selected').val())
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
 
@@ -17,18 +18,12 @@ function SimpanKunjungan(){
         data:data,
         success:function(res){
             var notif = res['success']
-
-            var myModal = new bootstrap.Modal(document.getElementById("exampleModal"), {});
-            console.log(myModal)
-            document.onreadystatechange = function () {
-            myModal.show();
-            $(".modal-body").append(notif)
-            };
             
             $("#id_to_nama").val("")
             $("#id_to_jabatan").val("")
             $("#id_to_alamat").val("")
             $("#id_to_no_hp").val("")
+            $("#id_to_lokasi").val("")
             $("#id_tujuan").val("0")
             $("#id_hasil").val("")
         },

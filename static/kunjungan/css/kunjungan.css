@@ -1,0 +1,26 @@
+div.col-1
+{
+    flex: 0 0 8.333333%;
+    max-width: 2%;
+}
+
+
+.number
+{
+    flex: 0 0 8.5%;
+    max-width: 2%;
+}
+
+.angka
+{
+    flex: 0 0 4%;
+    max-width: 5%;
+    padding-left: 30px;
+}
+
+.nama
+{
+    flex: 0 0 31.222%;
+    max-width: 31.222%;
+    margin-left: 5px;
+}
