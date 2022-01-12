@@ -43,9 +43,37 @@
             <span> RealBAK</span>
         </a>
     </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'page-tk' %}">
+            <i class="fas fa-fw fa-users"> </i>
+            <span>Data TK</span>
+        </a>
+    </li>
     {% else %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'user_data' %}">
+            <i class="fas fa-fw fa-users"> </i>
+            <span>Data User</span>
+        </a>
+    </li>
+
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'buat-info' %}">
+            <i class="far fa-newspaper"> </i>
+            <span> RealInfo</span>
+        </a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'kunjungan-list' %}">
+            <i class="fas fa-book-open"> </i>
+            <span> RealBAK</span>
+        </a>
+    </li>
+    
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'page-tk' %}">
             <i class="fas fa-fw fa-users"> </i>
             <span>Data TK</span>
         </a>

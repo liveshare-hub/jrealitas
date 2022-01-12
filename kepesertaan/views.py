@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 
+from datetime import datetime
 from cryptography.fernet import Fernet
 import pandas as pd
 from io import StringIO, BytesIO
@@ -150,13 +151,7 @@ def save_to_models(request):
     
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
-        # print(pd.read_excel(myfile))
-        # fss = FileSystemStorage()
-        # filename = fss.save(myfile.name, myfile)
-        # uploaded_url = fss.url(filename)
-        # excel_file = uploaded_url
         
-        # exceldata = pd.read_excel("."+excel_file)
         exceldata = pd.read_excel(myfile)
         
         dbframe = exceldata
@@ -270,16 +265,114 @@ def create_info_user(request):
             else:
                 return JsonResponse({'errors':'Data Gagal Disimpan'})
                 
+
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
 def informasi(request):
 
-    # user = Profile.objects.select_related('username').filter(username__username=request.user)
-    # if user.exists():
-    #     datas = Informasi.objects.select_related('npp').filter(npp__pembina__username__username=request.user)
-    #     return render(request, 'kepesertaan/informasi.html', {'datas':datas})
-    # else:
-    #     datas = Informasi.objects.select_related('npp').filter(npp__npp=request.user)
     return render(request, 'kepesertaan/informasi.html')
-        
+
+
+
+@login_required(login_url='/accounts/login/')
+@csrf_exempt
+def page_tk(request):
+    user = request.user
+    npp = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
     
+    context = {
+        'npps':npp
+    }
+
+    return render(request, 'kepesertaan/page_tk.html', context)
+
+
+@login_required(login_url='/accounts/login/')
+def list_tk_npp(request, npp):
+    workers = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=npp).all()
+    is_npp = Perusahaan.objects.filter(npp=npp)
+
+    context = {
+        'workers':workers,
+        'is_npp':is_npp
+    }
+
+    return render(request, 'kepesertaan/list_tk.html', context)
+
+
+@login_required(login_url='/accounts/login/')
+def download_tk_excel(request):
+    output = BytesIO()
+    workbook = xlsxwriter.Workbook(output)
+    bold = workbook.add_format({'bold':True})
+    worksheet = workbook.add_worksheet()
+    worksheet.write('A1','NPP',bold)
+    worksheet.write('B1','NAMA_LENGKAP', bold)
+    worksheet.write('C1','NO_KPJ', bold)
+    worksheet.write('D1','TGL_LAHIR',bold)
+    worksheet.write('E1','TGL_KEPS', bold)
+    worksheet.write('F1','TGL_NA', bold)
+    worksheet.write('G1','EMAIL', bold)
+    worksheet.write('H1','NO_HANDPHONE', bold)
+    
+
+    row = 1
+    col = 0
+    # try:
+    #     datas = Tenaga_kerja.objects.all()[1]
+    #     # npp = datas[0].npp
+    #     for data in datas:
+    #         worksheet.write(row, col, data.npp)
+    #         worksheet.write(row, col+1, data.nama_perusahaan)
+    #         worksheet.write(row, col+2, data.nama)
+    #         worksheet.write(row, col+3, data.nik)
+    #         worksheet.write(row, col+4, "HRD")
+    #         worksheet.write(row, col+5, data.email)
+    #         worksheet.write(row, col+6, data.no_hp)
+    #         worksheet.write(row, col+7, data.alamat)
+    #         worksheet.write(row, col+8, data.desa_kel)
+    #         worksheet.write(row, col+9, data.kecamatan)
+    #         worksheet.write(row, col+10, data.kota_kab)
+    # except:
+    #     pass
+    worksheet.write_string(row, col, "BB040001")
+    worksheet.write(row, col+1, "SI POLAN")
+    worksheet.write(row, col+2, "21013210001")
+    worksheet.write(row, col+3, "01-01-1997")
+    worksheet.write(row, col+4, "01-2021")
+    worksheet.write(row, col+5, "10-2021")
+    worksheet.write(row, col+6, "siplan@mail.com")
+    worksheet.write_string(row, col+7, "082121234561")
+        
+    workbook.close()
+    response = HttpResponse(content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment;filename="upload_tk.xlsx"'
+
+    response.write(output.getvalue())
+    return response
+
+@login_required(login_url='/accounts/login/')
+def save_tk_to_models(request):
+    
+    if request.method == 'POST' and request.FILES['file']:
+        myfile = request.FILES['file']
+        
+        exceldata = pd.read_excel(myfile)
+        
+        dbframe = exceldata
+        for dbframe in dbframe.itertuples():
+            tgl_lhr = datetime.strptime(dbframe.TGL_LAHIR, '%d-%m-%Y')
+            tgl_keps = datetime.strptime(dbframe.TGL_KEPS, '%m-%Y')
+            no_hp = '0'+str(dbframe.NO_HANDPHONE)
+            if dbframe.TGL_NA is not None:
+                tgl_na = datetime.strptime(dbframe.TGL_NA, '%m-%Y')
+            else:
+                return False
+            npp = Perusahaan.objects.get(npp=dbframe.NPP)
+            if npp:
+
+                obj = Tenaga_kerja.objects.select_related('npp').create(npp_id=npp.pk, nama=dbframe.NAMA_LENGKAP, no_kartu=str(dbframe.NO_KPJ), tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
+                    tgl_na=tgl_na, email=dbframe.EMAIL, no_hp=no_hp)
+            else:
+                return JsonResponse({'Error':'Cek File anda kembali'})
+        return JsonResponse({'success':'Done'})

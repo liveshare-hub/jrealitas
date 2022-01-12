@@ -116,4 +116,3 @@ class Informasi(models.Model):
     def __str__(self):
         return f'{self.judul} - {self.isi}'
 
-    # 

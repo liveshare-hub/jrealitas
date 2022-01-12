@@ -25,7 +25,4 @@ class InformasiForm(forms.ModelForm):
             }),
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     super(InformasiForm, self).__init__(*args, **kwargs)
-    #     self.fields['user'].required = False
 

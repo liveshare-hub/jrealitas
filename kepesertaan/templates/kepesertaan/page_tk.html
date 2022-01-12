@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Informasi Detil Perusahaan{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-3">
+                <div class="card-header">
+                    <div class="nav-tabs-navigation">
+                        <div class="nav-tabs-wrapper">
+                            <ul class="nav nav-tabs" data-tabs="tabs">
+                                <li class="nav-item mr-2">
+                                    <a href="#detil_tk" class="color-nav-link nav-link active" data-toggle="tab">
+                                        <i class="fas fa-fw fa-users"> </i> List Perusahaan  
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="#" class="color-nav-link nav-link" data-toggle="modal" data-target="#upload_tk_id">
+                                        <i class="fas fa-file-upload"> </i><span>Upload Template</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="{% url 'download-tk-excel' %}" class="color-nav-link nav-link">
+                                        <i class="fas fa-fw fa-download">  </i>Download Template
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="detil_tk">
+                            <form action="post">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label for="list_npp_id">Pilih NPP</label>
+                                            <select name="list_npp" id="list_npp_id" class="form-control">
+                                                <option value="" selected>----</option>
+                                                {% for npp in npps %}
+                                                <option value="{{npp.npp}}">{{npp.npp}} - {{npp.nama_perusahaan}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#" class="btn btn-primary" id="list_tk_id">Lihat</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="upload_tk_id" tabindex="-1" role="dialog" aria-labelledby="upload_tk_idLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Tenaga Kerja</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body mt-2 mb-2">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="id_upload_tk" required accept=".xlsx">
+                            <label id="upload_user_perusahaan_label" class="custom-file-label" for="id_upload_tk">Pilih file...(.xlsx)</label>
+                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="upload_tk">Simpan</button>
+                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    function uploadFileTk() {
+
+        var data = new FormData()
+        data.append("file", $("#id_upload_tk")[0].files[0])
+        data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+        $.ajax({
+            method:"POST",
+            url: "{% url 'upload-tk' %}",
+            contentType:false,
+            mimeType:"multipart/form-data",
+            processData:false,
+            data:data,
+            success:function(data){
+                
+                location.href = "/page/perusahaan/"
+               
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+    
+    }
+
+    $(document).ready(function(){
+        var npp = $("#list_npp_id option:selected").val()
+        $("#list_npp_id").change(function(){
+            npp = $(this).val()
+            $("a#list_tk_id").attr("href",`/informasi/${npp}/list/tk/`)
+        })
+
+        $("#upload_tk").click(function(){
+            uploadFileTk();
+        })
+    })
+</script>
+{% endblock javascripts %}

@@ -3,7 +3,7 @@
 span.logo-green {
     position: relative;
     font-family: 'Poppins', sans-serif;
-    font-size: 3vw;
+    font-size: 2.3vw;
     color: var(--primary);
     -webkit-text-stroke: 0.08vw white;
     text-transform: uppercase;
