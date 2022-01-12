@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title> JRealitas | 
+    <title> Realitas | 
         {% block title %}{% endblock title %}
     </title>
     
@@ -25,6 +25,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/logo.css' %}">
 
     {% block stylesheets %}{% endblock stylesheets %}
 
@@ -45,7 +46,7 @@
             <div id="content">
 
                 <!-- Topbar -->
-                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                <nav class="navbar navbar-expand navbar-light bg-gradient-primary topbar mb-4 static-top shadow">
 
                     <!-- Sidebar Toggle (Topbar) -->
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -216,7 +217,7 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small" id="user_name">{{request.user}}</span>
+                                <span class="mr-2 d-none d-lg-inline text-white-600 small" id="user_name">{{request.user}}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{% static 'img/undraw_profile.svg' %}">
                             </a>
@@ -298,6 +299,7 @@
     {% include 'javascript.html' %}
 
     {% block javascripts %}{% endblock javascripts %}
+    {% block extra_js %}{% endblock extra_js %}
 
 </body>
 

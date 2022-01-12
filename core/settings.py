@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n!!p$myo-z4e$+^todrqdqpk0+p#sl#*4tji7u(oqwdjc2nah-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"9e47-202-162-196-156.ngrok.io"]
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"7956-114-122-13-97.ngrok.io"]
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'graphene_django',
-
+    'django_private_chat',
     # 'import_export',
     "corsheaders",
     'kepesertaan',
@@ -117,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'id-ID'
 
 TIME_ZONE = 'Asia/Jakarta'
 
@@ -166,7 +166,7 @@ GRAPHENE = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://7b83-202-162-196-156.ngrok.io",
+    "https://7956-114-122-13-97.ngrok.io",
     "http://127.0.0.1:8000",
     "http://localhost:8000"
 ]
@@ -182,3 +182,7 @@ CORS_ALLOW_HEADERS = [
     "x-csrftoken",
     "x-requested-with",
 ]
+
+CHAT_WS_SERVER_HOST = '127.0.0.1'
+CHAT_WS_SERVER_PORT = 5002
+CHAT_WS_SERVER_PROTOCOL = 'ws'

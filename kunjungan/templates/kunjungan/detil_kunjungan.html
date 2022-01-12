@@ -1,5 +1,4 @@
 {% load static %}
-{% get_media_prefix as MEDIA_URL %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,9 +8,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BERITA ACARA KUNJUNGAN</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous" />
-    <link rel="stylesheet" href="/static/kunjungan/css/kunjungan.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <style>
+        @page{
+            size:letter;
+            margin: 5px 10px 5px 10px
+        }
+        div.col-1
+        {
+            flex: 0 0 8.333333%;
+            max-width: 4.3333%;
+        }
+
+
+        .number
+        {
+            flex: 0 0 3%;
+            max-width: 3%;
+        }
+
+        .angka
+        {
+            flex: 0 0 4.7777%;
+            max-width: 4.7777%;
+            padding-left: 30px;
+        }
+
+        .nama
+        {
+            flex: 0 0 43.333%;
+            /* flex: content; */
+            max-width: 43.333%;
+            margin-left: 40px;
+        }
+        .xlogo
+        {   
+            position: sticky;
+            top:5px;
+            left: 13px;
+            width: 120px;
+            height: 83px;
+            
+        }
+        .mt-10
+        {
+            margin-top: 50px;
+        }
+    </style>
 
 </head>
 <body>
@@ -20,15 +64,17 @@
             <div class="card">
                 <div class="card-body border border-dark rounded">
                     <div class="col">
+                        <img src="https://1.bp.blogspot.com/-I0G-yzv1z1U/YDJUmAqUMfI/AAAAAAAAH9o/fGB7cliS9RwLCkGXdBrA5kcoYQmvbP_GQCLcBGAsYHQ/w640-h204/bpjs-ketenagakerjaan.png" alt="" class="xlogo" />
                         <div class="row justify-content-center">
-                            <h4 class="font-weight-bold text-dark">BERITA ACARA KUNJUNGAN / INFORMASI</h4>
+                            <h4 class="font-weight-bold text-dark text-center">BERITA ACARA KUNJUNGAN / INFORMASI</h4>
                         </div>
+                        
                     </div>
                     <div class="row mt-5">
                         <div class="number">
                             I.
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                             HARI TANGGAL
                         </div>
                         <div class="col-1">
@@ -42,13 +88,13 @@
                         <div class="number">
                             II.
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                             PETUGAS YANG MELAKSANAKAN
                         </div>
                         <div class="col-1">
                             :
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             {{data.petugas.nama}}
                         </div>
                     </div>
@@ -56,7 +102,7 @@
                         <div class="number">
                             III.
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                             PIHAK YANG DIKUNJUNGI/KONFIRMASI</br>
                             PERUSAHAAN/PEMERINTAHAN/SAKSI
                         </div>
@@ -89,7 +135,7 @@
                         <div class="number">
                             IV.
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                             MAKSUD DAN TUJUAN
                         </div>
                         <div class="col-1">
@@ -103,17 +149,19 @@
                         <div class="number">
                             V.
                         </div>
-                        <div class="col-4">
+                        <div class="col-5">
                             HASIL WAWANCARA
                         </div>
                         <div class="col-1">
                             :
                         </div>
-                        <div class="col-3">
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col">
                             {{data.hasil}}
                         </div>
                     </div>
-                    <div class="row mt-4">
+                    <div class="row mt-10">
                         <div class="col text-right">
                             TANJUNG MORAWA, {{data.created|date:"d-m-Y"}}
                         </div>

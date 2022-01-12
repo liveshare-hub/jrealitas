@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from django.core.checks.messages import Info
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
@@ -8,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.files.storage import FileSystemStorage
 
+from cryptography.fernet import Fernet
 import pandas as pd
 from io import StringIO, BytesIO
 import xlsxwriter, json
@@ -48,11 +50,17 @@ def data_user(request):
     if kepala.exists() or ply.exists():
         datas = Perusahaan.objects.all()
         profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2))
-    else:
-        datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
-    context = {
+        context = {
         'datas':datas,
         'profiles':profiles,
+        'kepala':kepala,
+        'keps':keps,
+        'ply':ply,
+    }
+    else:
+        datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
+        context = {
+        'datas':datas,
         'kepala':kepala,
         'keps':keps,
         'ply':ply,
@@ -142,18 +150,23 @@ def save_to_models(request):
     
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
+        # print(pd.read_excel(myfile))
+        # fss = FileSystemStorage()
+        # filename = fss.save(myfile.name, myfile)
+        # uploaded_url = fss.url(filename)
+        # excel_file = uploaded_url
         
-        fss = FileSystemStorage()
-        filename = fss.save(myfile.name, myfile)
-        uploaded_url = fss.url(filename)
-        excel_file = uploaded_url
-        
-        exceldata = pd.read_excel("."+excel_file)
+        # exceldata = pd.read_excel("."+excel_file)
+        exceldata = pd.read_excel(myfile)
         
         dbframe = exceldata
         for dbframe in dbframe.itertuples():
+            key = Fernet.generate_key()
+            fernet = Fernet(key)
+            encsalt = fernet.encrypt(dbframe.NPP.encode())
             
-            user = User.objects.create(username=dbframe.NPP, password=dbframe.NPP)
+            password = make_password(dbframe.NPP, salt=[encsalt.decode('utf-8')])
+            user = User.objects.create(username=dbframe.NPP, password=password)
             obj = Perusahaan.objects.select_related('pembina','username').create(nama=dbframe.NAMA_LENGKAP, nik=dbframe.NIK, email=dbframe.EMAIL,
                 no_hp=dbframe.NO_HANDPHONE, npp=dbframe.NPP, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, alamat=dbframe.ALAMAT_PERUSAHAAN,
                 desa_kel=dbframe.DESA_KELURAHAN, kecamatan=dbframe.KECAMATAN, kota_kab=dbframe.KOTA_KABUPATEN, username_id=user.pk, pembina_id=pembina)

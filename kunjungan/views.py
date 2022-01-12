@@ -1,17 +1,22 @@
-# import os
-# os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
+import os
+
+os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
+
 
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from weasyprint import HTML
+from weasyprint import HTML, default_url_fetcher
+
 import tempfile
 # import pdfkit
 import qrcode
 import qrcode.image.svg
 from io import BytesIO
+
+import logging
 
 from kepesertaan.models import Profile
 from .models import berita_kunjungan
@@ -87,23 +92,24 @@ def detail_kunjungan(request,pk):
         'svg2':svg2
     }
 
-    response = HttpResponse(content_type="application_pdf")
-    response["Content-Disposition"] = f'attachment;filename="BAK-{data.petugas.username.username}.pdf"'
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
     response["Content-Transfer-Encoding"] = "binary"
 
     html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
     # result = pdfkit.from_string(html_string, f'BAK_{data.petugas.username.username}')
     html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    # html = HTML(string=html_string, base_url=".", url_fetcher=default_url_fetcher)
     result = html.write_pdf()
+
+    logger = logging.getLogger('weasyprint')
+    logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
 
     with tempfile.NamedTemporaryFile(delete=False) as output:
         output.write(result)
         output.flush()
         output = open(output.name, "rb")
         response.write(output.read())
-
-    # with open(f'BAK-{data.petugas.username.username}.pdf', encoding="utf-8", errors='ignore') as f:
-    #     response = f.write(result, "rb")
 
     return response
     # return render(request,'kunjungan/detil_kunjungan.html',context)
