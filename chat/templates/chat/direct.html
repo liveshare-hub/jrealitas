@@ -18,6 +18,7 @@
                         {% for hrd in hrds %}
                         <ul class="list-group">
                             <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)">{{hrd.username.username}}</a>
+                            
                         </ul>
                         {% endfor %}
                         {% else %}
@@ -40,18 +41,21 @@
                 <div class="col col-xl-12">
                     <div id="id_pesan" style="overflow-y: scroll; height:350px;"></div>
                 </div>
-                <div id="id_footer">
-                    <div class="col mb-3">
-                        <form method="POST" class="form-inline">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <label for="pesan_id" class="sr-only">Pesan</label>
-                                <div contenteditable class="form-control" id="pesan_id"></div>
-                              </div>
-                              <button type="button" class="btn btn-primary mb-2 mx-2">Kirim</button>
-                        </form>
-                    </div>
-                   
+                <div class="col">
+                    <div id="id_footer">
+                        <div class="row">
+                             <div class="col-md-10">
+                                 <div class="form-group">   
+                                     <div contenteditable class="form-control" id="pesan_id"></div>
+                                 </div>
+                             </div>
+                             <div class="col-md-2">
+                                 <div class="form-group">
+                                     <button type="button" class="btn btn-primary">Kirim</button>
+                                 </div>
+                             </div>
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>

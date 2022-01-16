@@ -68,3 +68,11 @@ class Message(models.Model):
             })
 
         return users
+
+class ThreadChat(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='th_from_user')
+    recipent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='th_to_user')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.pk} - {self.sender}'

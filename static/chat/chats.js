@@ -3,7 +3,7 @@ $(document).ready(function(){
     $("a").click(function(){
         var data = new FormData()
     data.append("to_user", $(this).text())
-    data.append("csrfmiddlewaretoken",$("input[name='csrfmiddlewaretoken']").val())
+    // data.append("csrfmiddlewaretoken",$("input[name='csrfmiddlewaretoken']").val())
         $.ajax({
             method:"POST",
             url:'/chat/load/chat/',
