@@ -170,6 +170,26 @@ function uploadFileAdmin() {
 
 }
 
+
+function uploadTK(){
+    var data = new FormData()
+    data.append("file",$("#file_tk")[0].files[0])
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    $.ajax({
+        method:"POST",
+        url:"/templates/tk/upload/",
+        contentType:false,
+        mimeType:"multipart/form-data",
+        processData:false,
+        data:data,
+        success:function(data){
+            location.href = "/user/data/"
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+}
 $(document).ready(function() {
     
     $("#form_registrasi_user_perusahaan").validate({
@@ -506,5 +526,9 @@ $(document).ready(function() {
             console.log(err)
         }
     });
+
+    $("#upload_tk").click(function(){
+        uploadTK();
+    })
 });
     

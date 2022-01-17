@@ -36,18 +36,15 @@
                                         <a class="dropdown-item" href="#register_perusahaan_admin" data-toggle="tab">Perusahaan</a>
                                     </div>
                                 </li>
-                                {% else %}
-                                <!--
-                                    
-                                -->
+                                {% elif pembina %}
                                 <li class="nav-item mr-2">
-                                    <a href="#data_perusahaan" class="color-nav-link nav-link active" data-toggle="tab">
-                                        <i class="fas fa-fw fa-users"> </i> Koteh  
+                                    <a href="#show_perusahaan" class="color-nav-link nav-link active" data-toggle="tab">
+                                        <i class="fas fa-fw fa-users"> </i> Perusahaan
                                     </a>
                                 </li>
                                 <li class="nav-item mr-2">
                                     <a href="#daftar_perusahaan" class="color-nav-link nav-link" data-toggle="tab">
-                                        <i class="fas fa-fw fa-user-plus"> </i>Registrasi User
+                                        <i class="fas fa-fw fa-user-plus"> </i>Registrasi Perusahaan
                                     </a>
                                 </li>
                                 <li class="nav-item mr-2">
@@ -57,6 +54,25 @@
                                 </li>
                                 <li class="nav-item mr-2">
                                     <a href="{% url 'download-npp' %}" class="color-nav-link nav-link">
+                                        <i class="fas fa-fw fa-download">  </i>Download Template
+                                    </a>
+                                </li>
+                                {% else %}
+                                <!--
+                                    PIC Perusahaan
+                                -->
+                                <li class="nav-item mr-2">
+                                    <a href="#data_tenagakerja" class="color-nav-link nav-link active" data-toggle="tab">
+                                        <i class="fas fa-fw fa-users"> </i> Tenaga Kerja 
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="#" class="color-nav-link nav-link" data-toggle="modal" data-target="#modal_upload_template_tk">
+                                        <i class="fas fa-file-upload"> </i><span>Upload Template</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item mr-2">
+                                    <a href="{% url 'download-tk-excel' %}" class="color-nav-link nav-link">
                                         <i class="fas fa-fw fa-download">  </i>Download Template
                                     </a>
                                 </li>
@@ -392,7 +408,7 @@
                                 </div>
                             </form>
                         </div>
-                        {% else %}
+                        {% elif pembina %}
                         <!-- KOREKSI DATA TK dan INPUT TK -->
 
                         <!-- Lisit Perusahaan Per Pembina -->
@@ -477,6 +493,9 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <div class="tab-pane" id="upload_template">
+                            
                         </div>
                         <!-- Pendaftaran Perusahaan Per Pembina -->
                         <div class="tab-pane" id="daftar_perusahaan">
@@ -576,6 +595,97 @@
                                 </div>
                             </form>
                         </div>
+                        {% else %}
+                        <div style="font-size:14px;" class="tab-pane active" id="data_tenagakerja">
+                            <div class="table-responsive mt-3">
+                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <table id="example" class="table table-bordered dataTable no-footer text-center">
+                                                <thead>
+                                                    <tr>
+                                                        <th>NO</th>
+                                                        <th>NPP</th>
+                                                        <th>NAMA TK</th>
+                                                        <th>NO KPJ</th>
+                                                        <th>TGL. LAHIR</th>
+                                                        <th>EMAIL</th>
+                                                        <th>NO HANDPHONE</th>
+                                                        <th>TGL. KEPS</th>
+                                                        <th>TGL. NA</th>
+                                                        <th>ACTION</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for data in workers %}
+                                                    <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{data.npp.npp}}</td>
+                                                        <td>{{data.nama}}</td>
+                                                        <td>{{data.no_kartu}}</td>
+                                                        <td>{{data.tgl_lahir|date:'d-m-Y'}}</td>
+                                                        <td>{{data.email}}</td>
+                                                        <td>{{data.no_hp}}</td>
+                                                        <td>{{data.tgl_keps|date:'m-Y'}}</td>
+                                                        {% if data.tgl_na %}
+                                                        <td>{{data.tgl_na|date:'m-Y'}}</td>
+                                                        {% else %}
+                                                        <td>-</td>
+                                                        {% endif %}
+                                                        <td>
+                                                            <div class="btn-group">
+                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <i class="far fa-edit">edit</i>
+                                                                </a>
+                                                                <div class="dropdown-menu">
+                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <!-- Modal Change Password -->
+                                                    <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                        Ganti Password {{data.npp}}
+                                                                    </h6>
+                                                                    
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">x</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="alert" class="mt-2"></div>
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password1">Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         {% endif %}
                         
                         <div class="tab-pane" id="upload_template">
@@ -606,6 +716,31 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" id="upload">Simpan</button>
+                     </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="modal_upload_template_tk" tabindex="-1" role="dialog" aria-labelledby="modal_upload_template_tkLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Upload Template Tenaga Kerja</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="modal-body mt-2 mb-2">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="file_tk" required accept=".xlsx">
+                            <label id="upload_user_perusahaan_label" class="custom-file-label" for="file_tk">Pilih file...(.xlsx)</label>
+                         </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="upload_tk">Simpan</button>
                      </div>
                 </form>
             </div>

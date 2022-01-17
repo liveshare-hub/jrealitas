@@ -58,7 +58,7 @@ def data_user(request):
         'keps':keps,
         'ply':ply,
     }
-    else:
+    elif keps.exists():
         datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
         context = {
         'datas':datas,
@@ -66,6 +66,12 @@ def data_user(request):
         'keps':keps,
         'ply':ply,
     }
+    else:
+        tk_npp = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user)
+
+        context = {
+            'workers':tk_npp
+        }
     return render(request, 'kepesertaan/data_user.html', context)
 
 
@@ -302,6 +308,7 @@ def list_tk_npp(request, npp):
 
 @login_required(login_url='/accounts/login/')
 def download_tk_excel(request):
+    npp = request.user.username
     output = BytesIO()
     workbook = xlsxwriter.Workbook(output)
     bold = workbook.add_format({'bold':True})
@@ -318,24 +325,8 @@ def download_tk_excel(request):
 
     row = 1
     col = 0
-    # try:
-    #     datas = Tenaga_kerja.objects.all()[1]
-    #     # npp = datas[0].npp
-    #     for data in datas:
-    #         worksheet.write(row, col, data.npp)
-    #         worksheet.write(row, col+1, data.nama_perusahaan)
-    #         worksheet.write(row, col+2, data.nama)
-    #         worksheet.write(row, col+3, data.nik)
-    #         worksheet.write(row, col+4, "HRD")
-    #         worksheet.write(row, col+5, data.email)
-    #         worksheet.write(row, col+6, data.no_hp)
-    #         worksheet.write(row, col+7, data.alamat)
-    #         worksheet.write(row, col+8, data.desa_kel)
-    #         worksheet.write(row, col+9, data.kecamatan)
-    #         worksheet.write(row, col+10, data.kota_kab)
-    # except:
-    #     pass
-    worksheet.write_string(row, col, "BB040001")
+
+    worksheet.write_string(row, col, npp)
     worksheet.write(row, col+1, "SI POLAN")
     worksheet.write(row, col+2, "21013210001")
     worksheet.write(row, col+3, "01-01-1997")
@@ -360,14 +351,16 @@ def save_tk_to_models(request):
         exceldata = pd.read_excel(myfile)
         
         dbframe = exceldata
+        na = dbframe.TGL_NA
+        print(dbframe.NO_KPJ)
         for dbframe in dbframe.itertuples():
             tgl_lhr = datetime.strptime(dbframe.TGL_LAHIR, '%d-%m-%Y')
             tgl_keps = datetime.strptime(dbframe.TGL_KEPS, '%m-%Y')
             no_hp = '0'+str(dbframe.NO_HANDPHONE)
-            if dbframe.TGL_NA is not None:
+            if (len(na.value_counts())) > 0:
                 tgl_na = datetime.strptime(dbframe.TGL_NA, '%m-%Y')
             else:
-                return False
+                tgl_na = None
             npp = Perusahaan.objects.get(npp=dbframe.NPP)
             if npp:
 

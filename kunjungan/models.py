@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-from kepesertaan.models import Profile
+from kepesertaan.models import Perusahaan, Profile
 
 User = get_user_model()
 
@@ -14,6 +14,7 @@ TUJUAN = (
 
 class berita_kunjungan(models.Model):
     petugas = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    to_perusahaan = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
     to_nama = models.CharField(max_length=50)
     to_jabatan = models.CharField(max_length=50)
     to_alamat = models.CharField(max_length=500)

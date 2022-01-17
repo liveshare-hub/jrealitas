@@ -151,8 +151,10 @@
                             <a class="nav-link dropdown-toggle" href="#" id="roleDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-white small">
-                                    {% if kepala %}
+                                    {% if kepala or pembina %}
                                     {{request.user}} | {{request.user.profile_set.values.0.nama}}
+                                    {% else %}
+                                    {{request.user}} | {{pic}}
                                     {% endif %}
                                 </span>
                             </a>

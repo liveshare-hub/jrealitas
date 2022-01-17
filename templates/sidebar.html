@@ -22,7 +22,7 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     
-    {% if kepala %}
+    {% if kepala or pembina %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'user_data' %}">
             <i class="fas fa-fw fa-users"> </i>
@@ -54,7 +54,7 @@
     <li class="nav-item">
         <a class="nav-link" href="{% url 'user_data' %}">
             <i class="fas fa-fw fa-users"> </i>
-            <span>Data User</span>
+            <span>Data Perusahaan</span>
         </a>
     </li>
 
@@ -66,9 +66,9 @@
     </li>
     
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'kunjungan-list' %}">
+        <a class="nav-link" href="#">
             <i class="fas fa-book-open"> </i>
-            <span> RealBAK</span>
+            <span> RealChat</span>
         </a>
     </li>
     
