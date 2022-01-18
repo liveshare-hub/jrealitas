@@ -1,8 +1,57 @@
+function createThread(el){
+    var data = new FormData()
+    data.append("to_user", el)
+    $.ajax({
+        method:"POST",
+        url:'/chat/create/thread/',
+        data:data,
+        contentType:false,
+        processData:false,
+        success:function(data){
+            const obj = JSON.parse(data.data)
+
+            html = `<p class="hidden" data=${obj[0].pk} data-user=${obj[0].fields.to_user} id="id_thread"></p>`
+            $("#sender").append(html)
+        },
+        error:function(err){
+            console.log(err)
+        },
+    })
+}
+
 $(document).ready(function(){
-    
-    $("a").click(function(){
+    $("#kirim_pesan").click(function(){
         var data = new FormData()
-    data.append("to_user", $(this).text())
+        data.append("pesan",$("#pesan_id").text())
+        data.append("thread_id",$("p#id_thread").attr('data'))
+        data.append("to_user",$("p#id_thread").attr('data-user'))
+
+        $.ajax({
+            method:'POST',
+            url:'/chat/save/chat/',
+            dataType:"json",
+            data:data,
+            contentType:false,
+            processData:false,
+            success:function(data){
+                $("#pesan_id").text("")
+                console.log(data)
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+        
+    })
+    // $("div#pesan_id").focusout(function(){ 
+    //     console.log($(this).text())
+    // })
+    $("a").click(function(){
+
+        createThread($(this).text())
+        $("p.hidden").remove()
+        var data = new FormData()
+        data.append("to_user", $(this).text())
     // data.append("csrfmiddlewaretoken",$("input[name='csrfmiddlewaretoken']").val())
         $.ajax({
             method:"POST",
@@ -15,7 +64,6 @@ $(document).ready(function(){
                 
                 let html = '';
                 var size = Object.keys(data).length;
-                console.log(size)
                 
                for (let count = 0; count < size; count++) {
                   const obj = JSON.parse(data.data)
@@ -36,4 +84,6 @@ $(document).ready(function(){
             }
         })
     })
+
+
 })

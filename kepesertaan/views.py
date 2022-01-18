@@ -109,28 +109,35 @@ def Daftar_Perusahaan(request):
     npp = request.POST.get('npp') or request.POST.get('npp_admin')
     nama_pers = request.POST.get('nama_pemberi_kerja') or request.POST.get('nama_pemberi_kerja_admin')
     nik = request.POST.get('nik') or request.POST.get('nik_admin')
-    nama = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
+    nama_pic = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
     jabatan = request.POST.get('id_jabatan')
     pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
     email = request.POST.get('email') or request.POST.get('email_admin')
     no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
+    pemilik = request.POST.get('nama_pemilik') or request.POST.get('nama_pemilik_admin')
+    npwp = request.POST.get('npwp') or request.POST.get('npwp_admin')
     alamat = request.POST.get('alamat_perusahaan') or request.POST.get('alamat_perusahaan_admin')
     desa_kel = request.POST.get('desa_kel') or request.POST.get('desa_kel_admin')
     kecamatan = request.POST.get('kecamatan') or request.POST.get('kecamatan_admin')
     kota_kab = request.POST.get('kota_kab') or request.POST.get('kota_kab_admin')
+    kode_pos = request.POST.get('kode_pos') or request.POST.get('kode_pos_admin')
     username = request.POST.get('username') or request.POST.get('username_admin')
     password1 = request.POST.get('password1') or request.POST.get('password1_admin')
     password2 = request.POST.get('password2') or request.POST.get('password2_admin')
 
+    key = Fernet.generate_key()
+    fernet = Fernet(key)
 
     if jabatan == 3:
         if password1 == password2 :
-            user = User.objects.create(username=username, password=password1)
+            encsalt = fernet.encrypt(npp.encode())
+            password = make_password(password1, salt=[encsalt.decode('utf-8')])
+            user = User.objects.create(username=username, password=password)
             # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
             #     email=email, no_hp=no_hp)
-            Perusahaan.objects.create(username_id=user.pk,nama=nama, nik=nik, email=email,
-                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers,
-                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
+            Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
+                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
+                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
                 pembina_id=int(pembina))
 
             return JsonResponse({'success':'done'})
@@ -138,13 +145,15 @@ def Daftar_Perusahaan(request):
             return JsonResponse({'error':'Password tidak sama!'})
     else:
         if password1 == password2 :
-            user = User.objects.create(username=username, password=password1)
+            encsalt = fernet.encrypt(npp.encode())
+            password = make_password(password1, salt=[encsalt.decode('utf-8')])
+            user = User.objects.create(username=username, password=password)
             
             # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
             #     email=email, no_hp=no_hp)
-            Perusahaan.objects.create(username_id=user.pk,nama=nama, nik=nik, email=email,
-                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers,
-                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab,
+            Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
+                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
+                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
                 pembina_id=int(pembina))
 
             return JsonResponse({'success':'done'})
@@ -180,21 +189,25 @@ def save_to_models(request):
 
 @login_required(login_url='/accounts/login/')
 def download_excel(request):
+    
     output = BytesIO()
     workbook = xlsxwriter.Workbook(output)
     bold = workbook.add_format({'bold':True})
     worksheet = workbook.add_worksheet()
     worksheet.write('A1','NPP',bold)
     worksheet.write('B1','NAMA_PERUSAHAAN', bold)
-    worksheet.write('C1','NAMA_LENGKAP', bold)
+    worksheet.write('C1','NAMA_PIC', bold)
     worksheet.write('D1','NIK', bold)
     worksheet.write('E1','JABATAN',bold)
     worksheet.write('F1','EMAIL', bold)
     worksheet.write('G1','NO_HANDPHONE', bold)
-    worksheet.write('H1','ALAMAT_PERUSAHAAN', bold)
-    worksheet.write('I1','DESA_KELURAHAN', bold)
-    worksheet.write('J1','KECAMATAN', bold)
-    worksheet.write('K1','KOTA_KABUPATEN', bold)
+    worksheet.write('H1', 'NAMA_PEMILIK_PERUSAHAAN', bold)
+    worksheet.write('I1', 'NPWP_PERUSAHAAN', bold)
+    worksheet.write('J1','ALAMAT_PERUSAHAAN', bold)
+    worksheet.write('K1','DESA_KELURAHAN', bold)
+    worksheet.write('L1','KECAMATAN', bold)
+    worksheet.write('M1','KOTA_KABUPATEN', bold)
+    worksheet.write('N1','KODE_POS', bold)
 
     row = 1
     col = 0
@@ -204,15 +217,18 @@ def download_excel(request):
         for data in datas:
             worksheet.write(row, col, data.npp)
             worksheet.write(row, col+1, data.nama_perusahaan)
-            worksheet.write(row, col+2, data.nama)
+            worksheet.write(row, col+2, data.nama_pic)
             worksheet.write(row, col+3, data.nik)
             worksheet.write(row, col+4, "HRD")
             worksheet.write(row, col+5, data.email)
             worksheet.write(row, col+6, data.no_hp)
-            worksheet.write(row, col+7, data.alamat)
-            worksheet.write(row, col+8, data.desa_kel)
-            worksheet.write(row, col+9, data.kecamatan)
-            worksheet.write(row, col+10, data.kota_kab)
+            worksheet.write(row, col+7, data.nama_pemilik)
+            worksheet.write(row, col+8, data.npwp_prsh)
+            worksheet.write(row, col+9, data.alamat)
+            worksheet.write(row, col+10, data.desa_kel)
+            worksheet.write(row, col+11, data.kecamatan)
+            worksheet.write(row, col+12, data.kota_kab)
+            worksheet.write(row, col+13, data.kode_pos)
     except:
         pass
         

@@ -97,6 +97,13 @@
     border-radius: .25rem;
 }
 
+.notification-content p.content{
+    max-height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align:justify;
+}
+
 .icon>path {
     fill: var(--subdued-color);
 }

@@ -57,14 +57,14 @@ class Profile(models.Model):
 
 
 class Perusahaan(models.Model):
-    nama = models.CharField(max_length=100)
+    nama_pemilik = models.CharField(max_length=100)
     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
     jabatan = models.CharField(max_length=50, default="HRD")
     email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     npp = models.CharField(max_length=9)
     nama_perusahaan = models.CharField(max_length=200)
-    nama_pic = models.CharField(max_length=150)
+    nama_pic = models.CharField(max_length=100)
     alamat = models.CharField(max_length=250)
     kode_pos = models.CharField(max_length=5)
     npwp_prsh = models.CharField(max_length=15)
@@ -117,5 +117,5 @@ class Informasi(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f'{self.judul} - {self.isi}'
+        return f'{self.created_by.username.username} - {self.judul}'
 

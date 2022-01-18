@@ -6,5 +6,7 @@ from . import views
 urlpatterns = [
     path('', views.inbox, name='inbox'),
     path('<str:room_name>/', views.chatbox, name='chat'),
+    path('create/thread/', views.create_chat, name='create-thread'),
+    path('save/chat/', views.save_chat, name='save-chat'),
     path('load/chat/', views.load_chat),
 ]

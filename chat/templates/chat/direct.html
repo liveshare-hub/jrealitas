@@ -14,17 +14,17 @@
             <div class="card">
                 <div class="card-body">
                     <div id="id_from_user" style="overflow-y: scroll; height:350px;">
-                        {% if users %}
+                        {% if users_jab %}
                         {% for hrd in hrds %}
                         <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)">{{hrd.username.username}}</a>
+                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user">{{hrd.username.username}}</a>
                             
                         </ul>
                         {% endfor %}
                         {% else %}
                         {% for user in users %}
                         <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)">{{user.username}}</a>
+                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user">{{user.username}}</a>
                         </ul>
                         {% endfor %}
                         {% endif %}
@@ -36,6 +36,7 @@
             <div class="card">
                 <div class="col">
                     <p class="mt-2" id="sender" data="{{request.user.id}}">{{request.user}}</p>
+                    
                     <hr />
                 </div>
                 <div class="col col-xl-12">
@@ -51,7 +52,7 @@
                              </div>
                              <div class="col-md-2">
                                  <div class="form-group">
-                                     <button type="button" class="btn btn-primary">Kirim</button>
+                                     <button type="button" class="btn btn-primary" id="kirim_pesan">Kirim</button>
                                  </div>
                              </div>
                         </div>

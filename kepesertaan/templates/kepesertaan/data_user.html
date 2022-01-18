@@ -334,7 +334,7 @@
                                             <input type="text" name="nik" id="nik_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_lengkap_admin">Nama Lengkap</label>
+                                            <label for="nama_lengkap_admin">Nama PIC</label>
                                             <span style="color:red;">*</span>
                                             <input type="text" name="nama_lengkap" id="nama_lengkap_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
                                         </div>
@@ -361,10 +361,20 @@
                                             <input type="text" class="form-control clear" id="no_hp_admin" name="no_hp" maxlength="13" required>
                                         </div>
                                         <div class="form-group">
+                                            <label for="nama_pemilik_admin">Nama Pemilik Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="nama_pemilik_admin" name="nama_pemilik" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
+                                        <div class="form-group">
                                             <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
                                         </div>
                                     </div>
                                     <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="npwp_admin">NPWP Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="npwp_admin" name="npwp" required  maxlength="15" onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
                                         <div class="form-group">
                                             <label for="alamat_perusahaan_admin">Alamat Perusahaan</label>
                                             <span style="color:red;">*</span>
@@ -384,6 +394,11 @@
                                             <label for="kota_kab_admin">Kota/Kabupaten</label>
                                             <span style="color:red;">*</span>
                                             <input type="text" name="kota_kab" id="kota_kab_admin" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kode_pos_admin">Kode Pos</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kode_pos" id="kode_pos_admin" class="form-control clear" required maxlength="5">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username</label>
@@ -519,7 +534,7 @@
                                             <input type="text" name="nik" id="nik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" maxlength="16">
                                         </div>
                                         <div class="form-group">
-                                            <label for="nama_lengkap">Nama Lengkap</label>
+                                            <label for="nama_lengkap">Nama PIC</label>
                                             <span style="color:red;">*</span>
                                             <input type="text" name="nama_lengkap" id="nama_lengkap" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
                                         </div>
@@ -548,10 +563,20 @@
                                             <input type="text" class="form-control clear" id="no_hp" name="no_hp" maxlength="13" required>
                                         </div>
                                         <div class="form-group">
+                                            <label for="nama_lengkap">Nama Pemilik Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="nama_pemilik" id="nama_pemilik" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
+                                        <div class="form-group">
                                             <input type="text" value="{{request.user.profile_set.values.0.jabatan_id}}" id="id_jabatan" hidden>
                                         </div>
                                     </div>
                                     <div class="col md-5">
+                                        <div class="form-group">
+                                            <label for="npwp">NPWP Perusahaan</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" class="form-control clear" id="npwp" name="npwp" required maxlength="15" onkeyup="this.value = this.value.toUpperCase()" placeholder="">
+                                        </div>
                                         <div class="form-group">
                                             <label for="alamat_perusahaan">Alamat Perusahaan</label>
                                             <span style="color:red;">*</span>
@@ -571,6 +596,11 @@
                                             <label for="kota_kab">Kota/Kabupaten</label>
                                             <span style="color:red;">*</span>
                                             <input type="text" name="kota_kab" id="kota_kab" class="form-control clear" required onkeyup="this.value = this.value.toUpperCase()">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="kode_pos">Kode Pos</label>
+                                            <span style="color:red;">*</span>
+                                            <input type="text" name="kode_pos" id="kode_pos" class="form-control clear" required maxlength="5">
                                         </div>
                                         <div class="form-group">
                                             <label for="username">Username</label>

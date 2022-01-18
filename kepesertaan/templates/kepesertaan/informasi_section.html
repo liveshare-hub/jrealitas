@@ -24,7 +24,15 @@
                     <div class="notification-time">{{data.created|time:"g:iA"|lower}}</div>
                 </div>
                 <div class="notification-content">
-                    {{data.isi}}
+                    {% if data.isi|length > 300 %}
+                    <p class="mt-2 content">
+                        {{data.isi|truncatechars:250}}<span><small>read more</small></span>
+                    </p>
+                    {% else %}
+                    <p class="mt-2">
+                        {{data.isi}}
+                    </p>
+                    {% endif %}
 
                     {% if data.attachment %}
                         <p class="mt-4">
@@ -42,5 +50,5 @@
     <hr />
     {% endfor %}
 {% else %}
-<h3>Belum ada informasi Terkini</h3>
+<h3 class="text-secondary">Belum ada informasi Terkini</h3>
 {% endif %}

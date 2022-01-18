@@ -9,6 +9,7 @@ var profileQuery = `query{
 }`
 
 function DafarNPP() {
+    
     var data = new FormData()
     data.append("npp", $("#npp").val())
     data.append("nama_pemberi_kerja", $("#nama_pemberi_kerja").val())
@@ -18,10 +19,13 @@ function DafarNPP() {
     data.append("pembina_id", $("#pembina_id").val())
     data.append("email",$("#email").val())
     data.append("no_hp",$("#no_hp").val())
+    data.append("nama_pemilik",$("#nama_pemilik").val())
+    data.append("npwp",$("#npwp").val())
     data.append("alamat_perusahaan",$("#alamat_perusahaan").val())
     data.append("desa_kel",$("#desa_kel").val())
     data.append("kecamatan", $("#kecamatan").val())
     data.append("kota_kab",$("#kota_kab").val())
+    data.append("kode_pos",$("#kode_pos").val())
     data.append("username", $("#username").val())
     data.append("password1", $("#password1").val())
     data.append("password2", $("#password2").val())
@@ -57,10 +61,13 @@ function DafarNPPAdmin() {
     data.append("id_jabatan", $("#id_jabatan").val())
     data.append("email_admin",$("#email_admin").val())
     data.append("no_hp_admin",$("#no_hp_admin").val())
+    data.append("nama_pemilik_admin",$("#nama_pemilik_admin").val())
+    data.append("npwp_admin",$("#npwp_admin").val())
     data.append("alamat_perusahaan_admin",$("#alamat_perusahaan_admin").val())
     data.append("desa_kel_admin",$("#desa_kel_admin").val())
     data.append("kecamatan_admin", $("#kecamatan_admin").val())
     data.append("kota_kab_admin",$("#kota_kab_admin").val())
+    data.append("kode_pos_admin",$("#kode_pos_admin").val())
     data.append("username_admin", $("#username_admin").val())
     data.append("password1_admin", $("#password1_admin").val())
     data.append("password2_admin", $("#password2_admin").val())

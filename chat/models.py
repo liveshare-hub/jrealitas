@@ -29,11 +29,20 @@ from django.db.models.aggregates import Max
 #     message = models.TextField()
 #     timestamp = models.DateTimeField(auto_now_add=True)
 
+class ThreadChat(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.pk}'
+
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
     recipent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
     body = models.TextField(max_length=1000, blank=True, null=True)
+    thread = models.ForeignKey(ThreadChat, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
@@ -68,11 +77,3 @@ class Message(models.Model):
             })
 
         return users
-
-class ThreadChat(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='th_from_user')
-    recipent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='th_to_user')
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f'{self.pk} - {self.sender}'
