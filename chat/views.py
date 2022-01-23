@@ -40,13 +40,16 @@ def chatbox(request, username):
 @csrf_exempt
 def load_chat(request):
     user = request.user.pk
-    to_user = request.POST.get('to_user')
-    to_user_pk = User.objects.get(username=to_user)
-    threads = ThreadChat.objects.all().filter(Q(user_id=user)|Q(to_user_id=user),Q(user_id=to_user_pk.pk)|Q(to_user_id=to_user_pk.pk))
+    # to_user = request.POST.get('to_user')
+    thread_id = request.POST.get('thread_id')
+    # to_user_pk = User.objects.get(username=to_user)
+    # threads = ThreadChat.objects.filter(Q(user_id=user)|Q(to_user_id=user),Q(user_id=to_user)|Q(to_user_id=to_user))
+    threads = ThreadChat.objects.filter(pk=int(thread_id))
 
-    messages = Message.objects.all().filter(thread_id=threads[0].id)
-    
-    if messages.exists():
+    if threads.exists():
+        messages = Message.objects.filter(thread_id=threads[0].id)
+        
+    # if messages.exists():
         list_messages = serializers.serialize('json',messages)
         
         return JsonResponse({'data':list_messages})
@@ -58,24 +61,29 @@ def create_chat(request):
     from_user = request.user.pk
 
     to_user = request.POST.get('to_user')
-    to_user_pk = User.objects.get(username=to_user)
-    cek_id = ThreadChat.objects.select_related('user','to_user').filter(user=from_user, to_user=to_user_pk.id)
+    # to_user_pk = User.objects.get(username=to_user)
+    cek_id = ThreadChat.objects.select_related('user','to_user').filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
     threads = serializers.serialize('json', cek_id)
     if cek_id.exists():
         return JsonResponse({'data':threads})
     else:
-        threads = ThreadChat.objects.create(user_id=from_user, to_user_id=to_user_pk.id)
+        threads = ThreadChat.objects.create(user_id=from_user, to_user_id=to_user)
 
         return JsonResponse({'success':'Save!'})
 
 @csrf_exempt
 def save_chat(request):
     user = request.user.pk
+    thread_id = request.POST.get('thread_id')
     to_user = request.POST.get('to_user')
     body = request.POST.get('pesan')
     # to_user_pk = User.objects.get(username=to_user)
-    cek_id = ThreadChat.objects.filter(Q(user_id=user)|Q(to_user_id=user),Q(user_id=int(to_user)|Q(to_user_id=int(to_user))))
-    if cek_id.exists():  
-        pesan = Message.objects.create(thread_id=cek_id.id, user_id=user, sender_id=user, recipent_id=int(to_user), body=body)
+    cek_id = ThreadChat.objects.filter(pk=int(thread_id))
     
-    return JsonResponse({'success':'message save'})
+    if cek_id.exists():  
+        _ = Message.objects.create(thread_id=int(thread_id), user_id=user, sender_id=user, recipent_id=int(to_user), body=body)
+        last_pesan = Message.objects.filter(thread_id=int(thread_id)).order_by('-date')[0]
+        pesan = serializers.serialize('json', [last_pesan])
+        # print(pesan)
+        # print(last_pesan.order_by('-date')[0])
+        return JsonResponse({'data':pesan})

@@ -17,14 +17,14 @@
                         {% if users_jab %}
                         {% for hrd in hrds %}
                         <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user">{{hrd.username.username}}</a>
+                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user="{{hrd.username.pk}}">{{hrd.username.username}}</a>
                             
                         </ul>
                         {% endfor %}
                         {% else %}
                         {% for user in users %}
                         <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user">{{user.username}}</a>
+                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user={{user.username.pk}}>{{user.username}}</a>
                         </ul>
                         {% endfor %}
                         {% endif %}
@@ -34,7 +34,7 @@
         </div>
         <div class="col col-8">
             <div class="card">
-                <div class="col">
+                <div class="col" id="pesan">
                     <p class="mt-2" id="sender" data="{{request.user.id}}">{{request.user}}</p>
                     
                     <hr />
