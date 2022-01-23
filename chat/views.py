@@ -48,7 +48,10 @@ def load_chat(request):
 
     if threads.exists():
         messages = Message.objects.filter(thread_id=threads[0].id)
-        
+        # data = []
+        # for message in messages:
+        #     user = message.user
+            
     # if messages.exists():
         list_messages = serializers.serialize('json',messages)
         

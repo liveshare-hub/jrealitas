@@ -24,6 +24,7 @@ function loadChat(el){
     // console.log(from)
     let recipent = $("p#id_thread").attr('data-to-user')
     // console.log(recipent, sender)
+    
     var data = new FormData()
         data.append("thread_id", el)
         $.ajax({
@@ -41,8 +42,10 @@ function loadChat(el){
                 for (let count = 0; count < size; count++) {
                 
                     html += '<div class="row" style="margin-left:0; margin-right:0"><div class="col-md">';
+                    var d = new Date(obj[count].fields.date)
+                    var tgl = d.getDate()+'-'+String(d.getMonth()+1).padStart(2,"0")+'-'+d.getFullYear()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,"0")
                     if (obj[count].fields.sender === parseInt(from)) {
-                        html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + obj[count].fields.date + '</b></small></span></div></div>';
+                        html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
                         html += '<div class="row justify-content-end"><div align="right" class="col-md-8 alert alert-success">';
                         html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>'; 
                     }
@@ -52,7 +55,7 @@ function loadChat(el){
                 //     html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>';
                 //   }
                     else {
-                        html += '<div class="row"><div align="left" class="col-md"><span class = "text-muted"><small><b>' + obj[count].fields.date + '</b></small></span></div></div>';
+                        html += '<div class="row"><div align="left" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
                         html += '<div class="row"><div align="left" class="col-md-8  alert alert-secondary">';
                         html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>';
                     }
