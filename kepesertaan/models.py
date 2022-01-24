@@ -82,18 +82,6 @@ class Perusahaan(models.Model):
         npp = Perusahaan.objects.select_related('pembina').filter(pembina__username__username=kwargs['kwargs'])
         return npp.count()
 
-# class Perusahaan_user(models.Model):
-#     nama = models.CharField(max_length=100)
-#     username = models.ForeignKey(User, on_delete=models.CASCADE)
-#     npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
-#     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
-#     email = models.EmailField(max_length=100)
-#     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
-#     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f'{self.username} - {self.nama}'
-
 
 class Tenaga_kerja(models.Model):
     npp = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)

@@ -46,11 +46,11 @@ def data_user(request):
     user = request.user
     profile = Profile.objects.select_related('username').filter(username__username=user)
     kepala = profile.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701))
-    keps = profile.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2))
+    keps = profile.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8))
     ply = profile.filter(jabatan__kode_jabatan=703)
     if kepala.exists() or ply.exists():
         datas = Perusahaan.objects.all()
-        profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2))
+        profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8))
         context = {
         'datas':datas,
         'profiles':profiles,
@@ -111,6 +111,7 @@ def Daftar_Perusahaan(request):
     nik = request.POST.get('nik') or request.POST.get('nik_admin')
     nama_pic = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
     jabatan = request.POST.get('id_jabatan')
+    print(jabatan)
     pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
     email = request.POST.get('email') or request.POST.get('email_admin')
     no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
@@ -177,9 +178,10 @@ def save_to_models(request):
             
             password = make_password(dbframe.NPP, salt=[encsalt.decode('utf-8')])
             user = User.objects.create(username=dbframe.NPP, password=password)
-            obj = Perusahaan.objects.select_related('pembina','username').create(nama=dbframe.NAMA_LENGKAP, nik=dbframe.NIK, email=dbframe.EMAIL,
-                no_hp=dbframe.NO_HANDPHONE, npp=dbframe.NPP, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, alamat=dbframe.ALAMAT_PERUSAHAAN,
-                desa_kel=dbframe.DESA_KELURAHAN, kecamatan=dbframe.KECAMATAN, kota_kab=dbframe.KOTA_KABUPATEN, username_id=user.pk, pembina_id=pembina)
+            obj = Perusahaan.objects.select_related('pembina','username').create(nama_pemilik=dbframe.NAMA_PEMILIK_PERUSAHAAN, nik=dbframe.NIK, email=dbframe.EMAIL,
+                no_hp=dbframe.NO_HANDPHONE, npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, alamat=dbframe.ALAMAT_PERUSAHAAN,
+                npwp_prsh=dbframe.NPWP_PERUSAHAAN, kode_pos=dbframe.KODE_POS, desa_kel=dbframe.DESA_KELURAHAN, kecamatan=dbframe.KECAMATAN,
+                kota_kab=dbframe.KOTA_KABUPATEN, username_id=user.pk, pembina_id=pembina)
             obj.save()
 
         return JsonResponse({'success':'Done'})

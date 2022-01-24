@@ -72,33 +72,47 @@
                                     <div class="col col-md-6">
                                         <div class="form-group">
                                             <label for="id_tujuan">TUJUAN</label>
+                                            <span style="color:red;">*</span>
                                             {{form.tujuan}}
                                         </div>
                                         <div class="form-group">
                                             <label for="id_to_nama">NAMA</label>
+                                            <span style="color:red;">*</span>
                                             {{form.to_nama}}
                                         </div>
                                         <div class="form-group">
                                             <label for="id_to_jabatan">JABATAN</label>
+                                            <span style="color:red;">*</span>
                                             {{form.to_jabatan}}
                                         </div>
                                         <div class="form-group">
                                             <label for="id_to_jabatan">LOKASI</label>
+                                            <span style="color:red;">*</span>
                                             {{form.to_lokasi}}
                                         </div>
                                     </div>
                                     <div class="col col-md-6">
                                         <div class="form-group">
                                             <label for="id_to_alamat">ALAMAT</label>
+                                            <span style="color:red;">*</span>
                                             {{form.to_alamat}}
                                         </div>
                                         <div class="form-group">
                                             <label for="id_to_no_hp">NO HANDPHONE</label>
+                                            <span style="color:red;">*</span>
                                             {{form.to_no_hp}}
                                         </div>
                                         <div class="form-group">
                                             <label for="id_petugas">PETUGAS</label>
+                                            <span style="color:red;">*</span>
                                             <input type="text" name="petugas" id="id_petugas" class="form-control" value="{{request.user}}" disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="id_npp">Kode Pembina</label>
+                                            <span style="color:red;">*</span>
+                                            <select class="form-control" id="id_npp" name="npp">
+                                                <option value="0">.....</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col">

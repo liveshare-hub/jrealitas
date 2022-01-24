@@ -27,5 +27,5 @@ class KunjunganForm(forms.ModelForm):
             }),
             'to_lokasi':forms.TextInput(attrs={
                 'class':'form-control', 'maxlength':'100'
-            })
+            }),
         }

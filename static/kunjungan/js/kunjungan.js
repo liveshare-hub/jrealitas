@@ -1,6 +1,17 @@
+var NppPembinaQuery = `
+query{
+    allNppPembina{
+      id
+      npp
+    }
+  }
+`
+
+
 function SimpanKunjungan(){
     var data = new FormData()
     data.append("nama",$("#id_to_nama").val())
+    data.append("npp", $('select#id_npp option').filter(':selected').val())
     data.append("jabatan",$("#id_to_jabatan").val())
     data.append("alamat",$("#id_to_alamat").val())
     data.append("no_hp",$("#id_to_no_hp").val())
@@ -25,6 +36,7 @@ function SimpanKunjungan(){
             $("#id_to_no_hp").val("")
             $("#id_to_lokasi").val("")
             $("#id_tujuan").val("0")
+            $("#id_npp").val("0")
             $("#id_hasil").val("")
         },
         error:function(err){
@@ -35,4 +47,30 @@ function SimpanKunjungan(){
 
 $("#id_buat").click(function(){
     SimpanKunjungan();
+})
+
+$(document).ready(function(){
+    $.ajax({
+        method:'POST',
+        url:'/graphql',
+        contentType:"application/json",
+        data:JSON.stringify({
+          query:NppPembinaQuery,
+        }),
+        dataType:"json",
+        success:function(data){
+          users = data['data']['allNppPembina']
+          
+          $.each(users, function(user,index) {
+            
+            $("#id_npp").append($('<option>', {
+              value:index['id'],
+              text:index['npp']
+            }));
+          });
+        },
+        error:function(err){
+          console.log(err)
+        }
+      })
 })

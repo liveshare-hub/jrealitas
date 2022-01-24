@@ -8,7 +8,7 @@ function createThread(el){
         contentType:false,
         processData:false,
         success:function(data){
-            const obj = JSON.parse(data.data)
+            var obj = JSON.parse(data.data)
             html = `<p class="hidden" data-thread=${obj[0].pk} data-user=${obj[0].fields.user} data-to-user=${obj[0].fields.to_user} id="id_thread"></p>`
             $("#sender").after(html)
             loadChat($("p#id_thread").attr('data-thread'))

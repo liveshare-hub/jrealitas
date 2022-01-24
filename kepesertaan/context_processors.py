@@ -13,7 +13,7 @@ def info_context(request):
     if request.user.is_authenticated:
         pejabat = Profile.objects.select_related('username','jabatan').all()
         kepala = pejabat.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701),username__username=request.user)
-        pembina = pejabat.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2), username__username=request.user)
+        pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8), username__username=request.user)
         # pejabat = Profile.objects.select_related('username','jabatan').filter(jabatan__kode_jabatan=jabatan[0]['jabatan__kode_jabatan'],username__username=request.user)
         if kepala.exists() or request.user.is_superuser:
             infos = Informasi.objects.all().order_by('-created')[:5]
@@ -39,12 +39,16 @@ def info_context(request):
         else:
             infos = Informasi.objects.select_related('user').filter(user__username=request.user).order_by('-created')[:5]
             total_tk = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user).count()
-            perusahaan = Perusahaan.objects.get(npp=request.user)
+            perusahaan = Perusahaan.objects.filter(npp=request.user)
+            if perusahaan.exists():
+                pic = perusahaan[0].nama_pic
+            else:
+                pic = None
             kunjungan_pembina = berita_kunjungan.objects.select_related('petugas').filter(to_perusahaan__npp=request.user).count()
             context = {
                 'info':infos,
                 'total_tk':total_tk,
-                'pic':perusahaan.nama_pic,
+                'pic':pic,
                 'total_kunjungan':kunjungan_pembina
             }
             return context

@@ -54,6 +54,7 @@ def kunjungan(request):
 @csrf_exempt
 def simpan_kunjungan(request):
     petugas = request.POST['petugas']
+    npp = request.POST['npp']
     nama = request.POST['nama']
     jabatan = request.POST['jabatan']
     alamat = request.POST['alamat']
@@ -65,7 +66,7 @@ def simpan_kunjungan(request):
     profile = Profile.objects.select_related('username').get(username__username=petugas)
     if profile:
         buat_bak = berita_kunjungan.objects.create(petugas_id=profile.pk, to_nama=nama, to_jabatan=jabatan,
-            to_alamat=alamat, to_no_hp=no_hp, tujuan=tujuan, hasil=hasil, to_lokasi=lokasi)
+            to_perusahaan_id=npp, to_alamat=alamat, to_no_hp=no_hp, tujuan=tujuan, hasil=hasil, to_lokasi=lokasi)
         return JsonResponse({'success':'Berita Acara Berhasil di simpan'})
     return JsonResponse({'error':'Gagal Disimpan! Periksa Kembali Data Anda'})
 
@@ -102,8 +103,8 @@ def detail_kunjungan(request,pk):
     # html = HTML(string=html_string, base_url=".", url_fetcher=default_url_fetcher)
     result = html.write_pdf()
 
-    logger = logging.getLogger('weasyprint')
-    logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
+    # logger = logging.getLogger('weasyprint')
+    # logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
 
     with tempfile.NamedTemporaryFile(delete=False) as output:
         output.write(result)

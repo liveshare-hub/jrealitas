@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{% endblock title %}
+{% block title %}RealChat{% endblock title %}
 
 {% block stylesheets %}
 
@@ -13,11 +13,11 @@
         <div class="col col-4">
             <div class="card">
                 <div class="card-body">
-                    <div id="id_from_user" style="overflow-y: scroll; height:350px;">
+                    <div id="id_from_user" style="overflow-y: scroll; height:430px;">
                         {% if users_jab %}
                         {% for hrd in hrds %}
                         <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user="{{hrd.username.pk}}">{{hrd.username.username}}</a>
+                            <a class="list-group-item nav-link text-grey mb-2 mx-2" href="javascript:void(0)" id="to_user" data-user="{{hrd.username.pk}}">{{hrd.username.username}}</a>
                             
                         </ul>
                         {% endfor %}

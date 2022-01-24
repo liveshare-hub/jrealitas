@@ -1,27 +1,18 @@
+import asyncio
 import json
-from channels.generic.websocket import AsyncWebsocketConsumer
+from django.contrib.auth import get_user_model
+from channels.consumer import AsyncConsumer
 from channels.db import database_sync_to_async
 
-class PersonalChatConsumer(AsyncWebsocketConsumer):
-    async def connect(self):
-        my_id = self.scope['user'].id
-        other_user_id = self.scope['url_route']['kwargs']['id']
-        if int(my_id) > int(other_user_id):
-            self.room_name = f'{my_id}-{other_user_id}'
-        else:
-            self.room_name = f'{other_user_id}-{my_id}'
-        
-        self.room_group_name = 'chat_%s' % self.room_name
+#from .models import Thread, Message
 
-        await self.channel_layer.group_add(
-            self.room_group_name,
-            self.channel_name
-        )
+class ChatConsumer(AsyncConsumer):
+    async def websocket_connect(self, event):
+        print("connected", event)
 
-        await self.accept()
 
-    async def disconnect(self, code):
-        self.channel_layer.group_discard(
-            self.room_group_name,
-            self.channel_layer
-        )
+    async def websocket_receive(self, event):
+        print("receive", event)
+
+    async def websocket_disconnect(self, event):
+        print("disconnected", event)
