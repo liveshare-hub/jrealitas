@@ -1,21 +1,19 @@
 from django.contrib.auth.hashers import make_password
-from django.core.checks.messages import Info
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from django.contrib import messages
+
 from django.core.files.storage import FileSystemStorage
 
 from datetime import datetime
 from cryptography.fernet import Fernet
 import pandas as pd
-from io import StringIO, BytesIO
+from io import BytesIO
 import xlsxwriter, json
 
-from .forms import InformasiForm
 
 from .models import (
     Informasi, Kantor, Jabatan, Profile, 

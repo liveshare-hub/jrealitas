@@ -85,6 +85,8 @@ img{ max-width:100%;}
   font-size: 12px;
   margin: 8px 0 0;
 }
+
+
 .received_withd_msg { width: 57%;}
 .mesgs {
   float: left;
@@ -92,7 +94,7 @@ img{ max-width:100%;}
   width: 60%;
 }
 
- .sent_msg p {
+.sent_msg p {
   background: #05728f none repeat scroll 0 0;
   border-radius: 3px;
   font-size: 14px;

@@ -8,7 +8,7 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
-from weasyprint import HTML, default_url_fetcher
+from weasyprint import HTML
 
 import tempfile
 # import pdfkit
@@ -16,7 +16,6 @@ import qrcode
 import qrcode.image.svg
 from io import BytesIO
 
-import logging
 
 from kepesertaan.models import Profile
 from .models import berita_kunjungan

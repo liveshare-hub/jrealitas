@@ -54,14 +54,14 @@ function loadChat(el){
                     var tgl = d.getDate()+'-'+String(d.getMonth()+1).padStart(2,"0")+'-'+d.getFullYear()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,"0")
                     
                     if (obj[count].user__username === username) {
-                        console.log(obj[count].user__username)
+                        
                         html += '<div class="time sender">'+ tgl +'</div><div class="message sender">'+ obj[count].body+'</div>'
             //             html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
             //             html += '<div class="row justify-content-end"><div align="right" class="col-md-8 alert alert-success">';
             //             html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>'; 
                     }
                     else{
-                        console.log(obj[count].user__username)
+                        
                         html += '<div class="time">'+ tgl +'</div><div class="message '+obj[count].recipent__username +'">'+ obj[count].body+'</div>'
                     }
             //         else {

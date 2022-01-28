@@ -53,4 +53,13 @@
     e.preventDefault();
   });
 
+  $(function() {
+    $("li.nav-item").click(function() {
+       // remove classes from all
+       $("li.nav-item").removeClass("active");
+       // add class to the one we clicked
+       $(this).addClass("active");
+    });
+ });
+
 })(jQuery); // End of use strict

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db.models import Q
 from django.core import serializers
 from django.http.response import JsonResponse
@@ -6,26 +5,21 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from .models import Message, ThreadChat
-from django.http import HttpResponse
-from django.template import loader
 
-from .chatencoder import ChatEncoder
 from kepesertaan.models import Perusahaan, Profile
 
-import json
 
 #testing channels
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, DetailView
 from django.http import Http404, HttpResponseForbidden
-from django.urls import reverse
 from django.views.generic.edit import FormMixin
 
 from .forms import ComposeForm
 from .models import Thread, ChatMessage
 
 
-
+@login_required
 def index(request):
     users_jab = Profile.objects.select_related('username').filter(username__username=request.user)
     if users_jab.exists() :
@@ -66,6 +60,7 @@ def inbox(request):
 def chatbox(request, username):
     pass
 
+@login_required
 @csrf_exempt
 def load_chat(request):
     user = request.user.pk
