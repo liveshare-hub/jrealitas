@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block title %}DASHBOARD{% endblock title %}
 
@@ -159,7 +160,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                 <a href="#" class="fancy-link">Tenaga Kerja</a></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_tk}}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="jlh_tk">{{total_tk}}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fa fa-briefcase fa-2x text-gray-300">
@@ -195,8 +196,8 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                <a href="#" class="fancy-link">Pending Requests</a></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                <a href="#" class="fancy-link">% Validitas</a></div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ persen_val|stringformat:"0.2f %%" }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -242,6 +243,26 @@
 <!-- Page level custom scripts -->
 <script src="/static/js/demo/chart-area-demo.js"></script>
 <script src="/static/js/demo/chart-pie-demo.js"></script>
+
+<script>
+    $(document).ready(()=> {
+        let jlh_tk = parseInt($("#jlh_tk").text());
+        console.log(jlh_tk)
+        if(jlh_tk === 0){
+            swal({
+                title:"PERINGATAN!",
+                text:"Tenaga Kerja Anda Masih 0",
+                icon:"warning",
+                
+                dangerMode:true,
+            })
+            .then((willDelete)=> {
+                location.href = '/page/perusahaan/'
+            })
+        }
+    })
+</script>
+
 {% endblock javascripts %}
 
 

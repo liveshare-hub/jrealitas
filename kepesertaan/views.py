@@ -1,21 +1,19 @@
 from django.contrib.auth.hashers import make_password
-from django.core.checks.messages import Info
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
-from django.contrib import messages
+
 from django.core.files.storage import FileSystemStorage
 
 from datetime import datetime
 from cryptography.fernet import Fernet
 import pandas as pd
-from io import StringIO, BytesIO
+from io import BytesIO
 import xlsxwriter, json
 
-from .forms import InformasiForm
 
 from .models import (
     Informasi, Kantor, Jabatan, Profile, 
@@ -162,6 +160,7 @@ def Daftar_Perusahaan(request):
             return JsonResponse({'error':'Password tidak sama!'})
 
 @login_required(login_url='/accounts/login/')
+@csrf_exempt
 def save_to_models(request):
     pembina = request.user.profile_set.values('pk')[0]['pk']
     
@@ -214,23 +213,24 @@ def download_excel(request):
     row = 1
     col = 0
     try:
-        datas = Perusahaan.objects.all()[1]
+        data = Perusahaan.objects.all()[0]
         # npp = datas[0].npp
-        for data in datas:
-            worksheet.write(row, col, data.npp)
-            worksheet.write(row, col+1, data.nama_perusahaan)
-            worksheet.write(row, col+2, data.nama_pic)
-            worksheet.write(row, col+3, data.nik)
-            worksheet.write(row, col+4, "HRD")
-            worksheet.write(row, col+5, data.email)
-            worksheet.write(row, col+6, data.no_hp)
-            worksheet.write(row, col+7, data.nama_pemilik)
-            worksheet.write(row, col+8, data.npwp_prsh)
-            worksheet.write(row, col+9, data.alamat)
-            worksheet.write(row, col+10, data.desa_kel)
-            worksheet.write(row, col+11, data.kecamatan)
-            worksheet.write(row, col+12, data.kota_kab)
-            worksheet.write(row, col+13, data.kode_pos)
+        # for data in datas:
+        #     print(data.npp)
+        worksheet.write(row, col, data.npp)
+        worksheet.write(row, col+1, data.nama_perusahaan)
+        worksheet.write(row, col+2, data.nama_pic)
+        worksheet.write(row, col+3, data.nik)
+        worksheet.write(row, col+4, "HRD")
+        worksheet.write(row, col+5, data.email)
+        worksheet.write(row, col+6, data.no_hp)
+        worksheet.write(row, col+7, data.nama_pemilik)
+        worksheet.write(row, col+8, data.npwp_prsh)
+        worksheet.write(row, col+9, data.alamat)
+        worksheet.write(row, col+10, data.desa_kel)
+        worksheet.write(row, col+11, data.kecamatan)
+        worksheet.write(row, col+12, data.kota_kab)
+        worksheet.write(row, col+13, data.kode_pos)
     except:
         pass
         
@@ -314,7 +314,7 @@ def page_tk(request):
 @login_required(login_url='/accounts/login/')
 def list_tk_npp(request, npp):
     workers = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=npp).all()
-    is_npp = Perusahaan.objects.filter(npp=npp)
+    is_npp = Perusahaan.objects.filter(npp=npp)[0]
 
     context = {
         'workers':workers,
@@ -344,13 +344,13 @@ def download_tk_excel(request):
     row = 1
     col = 0
 
-    worksheet.write_string(row, col, npp)
+    worksheet.write_string(row, col, "BB04xxxxx")
     worksheet.write(row, col+1, "SI POLAN")
-    worksheet.write(row, col+2, "21013210001")
-    worksheet.write(row, col+3, "01-01-1997")
-    worksheet.write(row, col+4, "01-2021")
-    worksheet.write(row, col+5, "10-2021")
-    worksheet.write(row, col+6, "siplan@mail.com")
+    worksheet.write_string(row, col+2, "21013210001")
+    worksheet.write_string(row, col+3, "01-01-1997")
+    worksheet.write_string(row, col+4, "01-2021")
+    worksheet.write_string(row, col+5, "10-2021")
+    worksheet.write_string(row, col+6, "siplan@mail.com")
     worksheet.write_string(row, col+7, "082121234561")
         
     workbook.close()

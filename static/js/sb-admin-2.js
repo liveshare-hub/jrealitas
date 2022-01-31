@@ -53,4 +53,14 @@
     e.preventDefault();
   });
 
+//   $(function() {
+//     $("li.nav-item").click(function(e) {
+//        // remove classes from all
+//        $("li.nav-item").removeClass("active");
+//        // add class to the one we clicked
+//        $(this).addClass("active");
+//       //  e.preventDefault();
+//     });
+//  });
+
 })(jQuery); // End of use strict

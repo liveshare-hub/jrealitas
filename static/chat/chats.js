@@ -8,9 +8,13 @@ function createThread(el){
         contentType:false,
         processData:false,
         success:function(data){
-            var obj = JSON.parse(data.data)
-            html = `<p class="hidden" data-thread=${obj[0].pk} data-user=${obj[0].fields.user} data-to-user=${obj[0].fields.to_user} id="id_thread"></p>`
+            var obj = data.data
+            // var obj = JSON.parse(data.data)
+            html = `<p class="hidden" data-thread=${obj[0].pk} data-user=${obj[0].user__pk} data-to-user=${obj[0].to_user__pk} id="id_thread"></p>`
+            pesan = `<p class="mt-2" id="username_id">${obj[0].to_user__username}</p>`
+            
             $("#sender").after(html)
+            $("p#sender").after(pesan)
             loadChat($("p#id_thread").attr('data-thread'))
         },
         error:function(err){
@@ -21,7 +25,7 @@ function createThread(el){
 
 function loadChat(el){
     let from = $("p#id_thread").attr('data-user')
-    // console.log(from)
+    var username = $("p#sender").text();
     let recipent = $("p#id_thread").attr('data-to-user')
     // console.log(recipent, sender)
     
@@ -35,19 +39,22 @@ function loadChat(el){
             contentType:false,
             processData:false,
             success:function(data){
-                const obj = JSON.parse(data.data)
+                // const obj = JSON.parse(data.data)
+                const obj = data.data;
                 let html = '';
-                var size = Object.keys(obj).length;
+                // var size = Object.keys(obj).length;
+                var size = obj.length;
                 
                 for (let count = 0; count < size; count++) {
                 
                     html += '<div class="row" style="margin-left:0; margin-right:0"><div class="col-md">';
-                    var d = new Date(obj[count].fields.date)
+                    var d = new Date(obj[count].date)
                     var tgl = d.getDate()+'-'+String(d.getMonth()+1).padStart(2,"0")+'-'+d.getFullYear()+' '+d.getHours()+':'+String(d.getMinutes()).padStart(2,"0")
-                    if (obj[count].fields.sender === parseInt(from)) {
-                        html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
-                        html += '<div class="row justify-content-end"><div align="right" class="col-md-8 alert alert-success">';
-                        html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>'; 
+                    if (obj[count].user__username === username) {
+                        html += '<div class="time sender">'+ tgl +'</div><div class="message sender">'+ obj[count].body+'</div></div></div>'
+                        // html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
+                        // html += '<div class="row justify-content-end"><div align="right" class="col-md-8 alert alert-success">';
+                        // html += '<div style="font-size:14px;">' + obj[count].body + '</div></div></div></div></div>'; 
                     }
                 //   if(obj[count].fields.recipent == parseInt(recipent)){
                 //     html += '<div class="row"><div align="right" class="col-md"><span class = "text-muted"><small><b>' + obj[count].fields.date + '</b></small></span></div></div>';
@@ -55,9 +62,10 @@ function loadChat(el){
                 //     html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>';
                 //   }
                     else {
-                        html += '<div class="row"><div align="left" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
-                        html += '<div class="row"><div align="left" class="col-md-8  alert alert-secondary">';
-                        html += '<div style="font-size:14px;">' + obj[count].fields.body + '</div></div></div></div></div>';
+                        html += '<div class="time">'+ tgl +'</div><div class="message '+obj[count].recipent__username +'">'+ obj[count].body+'</div></div></div>'
+                        // html += '<div class="row"><div align="left" class="col-md"><span class = "text-muted"><small><b>' + tgl + '</b></small></span></div></div>';
+                        // html += '<div class="row"><div align="left" class="col-md-8  alert alert-secondary">';
+                        // html += '<div style="font-size:14px;">' + obj[count].body + '</div></div></div></div></div>';
                     }
                   
                }
@@ -87,6 +95,7 @@ $(document).ready(function(){
         }
     })
     $("#kirim_pesan").click(function(){
+        
         if(pesan.textContent !== ""){
             
             $(this).attr('disabled',false)
@@ -127,7 +136,8 @@ $(document).ready(function(){
         createThread($(this).attr('data-user'))
         $(this).data('clicked',true)
 
-        // $("p.hidden").remove()
+        $("p.hidden").remove();
+        $("p#username_id").remove();
         
     })
 

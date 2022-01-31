@@ -40,16 +40,33 @@ def info_context(request):
             infos = Informasi.objects.select_related('user').filter(user__username=request.user).order_by('-created')[:5]
             total_tk = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user).count()
             perusahaan = Perusahaan.objects.filter(npp=request.user)
+            cek_valid = perusahaan.filter(Q(email__isnull=True) | Q(no_hp__isnull=True) | Q(npwp_prsh__isnull=True))
             if perusahaan.exists():
                 pic = perusahaan[0].nama_pic
             else:
                 pic = None
+
+            if cek_valid.exists():
+                total = 14
+                counter = 0
+                if cek_valid[0].email is None:
+                    counter +=1
+                if cek_valid[0].no_hp is None:
+                    counter +=1
+                if cek_valid[0].npwp_prsh is None:
+                    counter +=1
+                
+                persen_val = 100 - (100 * float(counter)/float(total))
+                
+            
             kunjungan_pembina = berita_kunjungan.objects.select_related('petugas').filter(to_perusahaan__npp=request.user).count()
             context = {
                 'info':infos,
                 'total_tk':total_tk,
                 'pic':pic,
-                'total_kunjungan':kunjungan_pembina
+                'total_kunjungan':kunjungan_pembina,
+                'cek_valid':cek_valid,
+                'persen_val':persen_val,
             }
             return context
     else:
