@@ -17,11 +17,7 @@ Daftar TK
             <div class="card">
                 <div class="card-header">
                     <div class="card-title text-center">
-                        {% if workers %}
-                        Data Peserta :  {{workers.0.npp.nama_perusahaan}}
-                        {% else %}
-                        Data Peserta : -
-                        {% endif %}
+                        Data Peserta :  {{is_npp.npp}} - {{is_npp.nama_perusahaan}}
                     </div>
                 </div>
                 <div class="card-body">

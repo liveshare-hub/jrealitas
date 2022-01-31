@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n!!p$myo-z4e$+^todrqdqpk0+p#sl#*4tji7u(oqwdjc2nah-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"e305-150-107-136-49.ngrok.io"]
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"912f-150-107-136-49.ngrok.io"]
 
 
 # Application definition
@@ -172,9 +172,13 @@ GRAPHENE = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://e305-150-107-136-49.ngrok.io",
+    "https://912f-150-107-136-49.ngrok.io",
     "http://127.0.0.1:8000",
     "http://localhost:8000"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://912f-150-107-136-49.ngrok.io"
 ]
 
 CORS_ALLOW_HEADERS = [

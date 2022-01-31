@@ -11,7 +11,7 @@ function createThread(el){
             var obj = data.data
             // var obj = JSON.parse(data.data)
             html = `<p class="hidden" data-thread=${obj[0].pk} data-user=${obj[0].user__pk} data-to-user=${obj[0].to_user__pk} id="id_thread"></p>`
-            pesan = `<p class="mt-2">${obj[0].to_user__username}</p>`
+            pesan = `<p class="mt-2" id="username_id">${obj[0].to_user__username}</p>`
             
             $("#sender").after(html)
             $("p#sender").after(pesan)
@@ -137,6 +137,7 @@ $(document).ready(function(){
         $(this).data('clicked',true)
 
         $("p.hidden").remove();
+        $("p#username_id").remove();
         
     })
 

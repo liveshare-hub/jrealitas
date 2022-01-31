@@ -121,6 +121,11 @@ address {
   line-height: inherit;
 }
 
+
+.swal-footer {
+  text-align: center;
+}
+
 ol,
 ul,
 dl {
