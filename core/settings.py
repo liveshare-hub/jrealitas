@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n!!p$myo-z4e$+^todrqdqpk0+p#sl#*4tji7u(oqwdjc2nah-'
+SECRET_KEY = config('SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',"912f-150-107-136-49.ngrok.io"]
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0',config('SERVER')]
 
 
 # Application definition
@@ -45,7 +46,7 @@ INSTALLED_APPS = [
     'kepesertaan',
     'chat',
     'kunjungan',
-    'channels',
+    #'channels',
      #graphene
     
 ]
@@ -82,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'core.wsgi.application'
 
 
 # Database
@@ -90,8 +91,14 @@ TEMPLATES = [
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':config('DBNAME'),
+        'USER':config('DBUSER'),
+        'PASSWORD':config('DBPASS'),
+        'HOST':config('DBHOST'),
+        'PORT':'',
     }
 }
 
@@ -145,17 +152,17 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = "core.asgi.application"
+# ASGI_APPLICATION = "core.asgi.application"
 
-CHANNEL_LAYERS = {
-    "default":{
+#CHANNEL_LAYERS = {
+ #   "default":{
         # "BACKEND": "channels.layers.InMemoryChannelLayer"
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG":{
-            "hosts":[("127.0.0.1", 6379)],
-        }
-    }
-}
+  #      "BACKEND": "channels_redis.core.RedisChannelLayer",
+   #     "CONFIG":{
+    #        "hosts":[("127.0.0.1", 6379)],
+    #    }
+    #}
+#}
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -172,13 +179,13 @@ GRAPHENE = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "https://912f-150-107-136-49.ngrok.io",
+    #"https://912f-150-107-136-49.ngrok.io",
     "http://127.0.0.1:8000",
     "http://localhost:8000"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://912f-150-107-136-49.ngrok.io"
+    #"https://912f-150-107-136-49.ngrok.io"
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -193,6 +200,6 @@ CORS_ALLOW_HEADERS = [
     "x-requested-with",
 ]
 
-CHAT_WS_SERVER_HOST = '127.0.0.1'
-CHAT_WS_SERVER_PORT = 5002
-CHAT_WS_SERVER_PROTOCOL = 'ws'
+# CHAT_WS_SERVER_HOST = '127.0.0.1'
+# CHAT_WS_SERVER_PORT = 5002
+# CHAT_WS_SERVER_PROTOCOL = 'ws'
