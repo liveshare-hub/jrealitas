@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -19,6 +19,8 @@ from .models import (
     Informasi, Kantor, Jabatan, Profile, 
     Perusahaan, Tenaga_kerja
 )
+
+from .forms import PembinaForm
 
 fs = FileSystemStorage(location='/informasi/attachment')
 
@@ -72,6 +74,16 @@ def data_user(request):
         }
     return render(request, 'kepesertaan/data_user.html', context)
 
+def edit_profile(request, pk):
+    profile = get_object_or_404(Profile, pk=pk)
+    if request.method == 'POST':
+        form = PembinaForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = PembinaForm(instance=profile)
+        return render(request, 'kepesertaan/edit_profile.html', {'form':form})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt

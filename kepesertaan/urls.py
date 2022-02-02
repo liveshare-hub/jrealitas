@@ -4,11 +4,12 @@ from django.conf.urls.static import static
 
 from .views import (index, data_user, Daftar_Perusahaan, save_to_models, download_excel,
     informasi, Daftar_Pembina, buat_info, create_info_user, page_tk, list_tk_npp, download_tk_excel,
-    save_tk_to_models)
+    save_tk_to_models, edit_profile)
 
 urlpatterns = [
     path('', index, name='dashboard'),
     path('user/data/', data_user, name='user_data'),
+    path('edit/user/<int:pk>/', edit_profile, name='edit-profile'),
     path('create/npp/', Daftar_Perusahaan, name='daftar-npp'),
     path('create/pembina/', Daftar_Pembina, name='daftar-pembina'),
     path('templates/upload/', save_to_models, name='upload-npp'),
