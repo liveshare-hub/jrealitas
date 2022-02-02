@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
+from decouple import config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -45,6 +47,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'kepesertaan',
     'chat',
+    'mychats',
     'kunjungan',
     #'channels',
      #graphene
@@ -91,6 +94,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
+<<<<<<< HEAD
         # 'ENGINE': 'django.db.backends.sqlite3',
         # 'NAME': BASE_DIR / 'db.sqlite3',
         'ENGINE':'django.db.backends.mysql',
@@ -99,6 +103,14 @@ DATABASES = {
         'PASSWORD':config('DBPASS'),
         'HOST':config('DBHOST'),
         'PORT':'',
+=======
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DBNAME'),
+        'USER': config('DBUSER'),
+        'PASSWORD': config('DBPASS'),
+        'HOST': config('DBHOST'),
+        'PORT': '',
+>>>>>>> 0d964c1b6823aee73df8eb0bd27e18d832415514
     }
 }
 
@@ -144,7 +156,10 @@ STATICFILES_DIRS = [
     # BASE_DIR / 'kepesertaan/static'
 ]
 
-MEDIA_ROOT = BASE_DIR / 'media'
+STATIC_ROOT = '/home/reah4319/jrealitas/public/'
+
+# MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = '/home/reah4319/jrealitas/media/'
 MEDIA_URL = 'media/'
 
 # Default primary key field type
@@ -154,6 +169,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ASGI_APPLICATION = "core.asgi.application"
 
+<<<<<<< HEAD
 #CHANNEL_LAYERS = {
  #   "default":{
         # "BACKEND": "channels.layers.InMemoryChannelLayer"
@@ -163,6 +179,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     #    }
     #}
 #}
+=======
+CHANNEL_LAYERS = {
+    "default":{
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+        # "BACKEND": "channels_redis.core.RedisChannelLayer",
+        # "CONFIG":{
+        #     "hosts":[("127.0.0.1", 6379)],
+        # }
+    }
+}
+>>>>>>> 0d964c1b6823aee73df8eb0bd27e18d832415514
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
@@ -179,13 +206,21 @@ GRAPHENE = {
 }
 
 CORS_ALLOWED_ORIGINS = [
+<<<<<<< HEAD
     #"https://912f-150-107-136-49.ngrok.io",
+=======
+    config("SERVER"),
+>>>>>>> 0d964c1b6823aee73df8eb0bd27e18d832415514
     "http://127.0.0.1:8000",
     "http://localhost:8000"
 ]
 
 CSRF_TRUSTED_ORIGINS = [
+<<<<<<< HEAD
     #"https://912f-150-107-136-49.ngrok.io"
+=======
+    config('SERVER')
+>>>>>>> 0d964c1b6823aee73df8eb0bd27e18d832415514
 ]
 
 CORS_ALLOW_HEADERS = [
