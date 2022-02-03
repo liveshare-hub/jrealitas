@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
-import pymsql
-pymsql.install_as_MySQLdb()
+import pymysql
+pymysql.install_as_MySQLdb()
 
 import os
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
