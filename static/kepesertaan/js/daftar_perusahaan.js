@@ -117,7 +117,7 @@ function DaftarPembina() {
             $('select#makeselect option').val("0")
             
             if(res['error']){
-                Swal.fire({
+                swal({
                     icon: 'error',
                     title: 'Error!',
                     text: 'Username sudah terdaftar sebelumnya!',
