@@ -114,10 +114,10 @@ function DaftarPembina() {
         data:data,
         success:function(res){
             $("input.clear").val("")
-            $('select#makeselect option').val(0)
+            $('select#makeselect option').val("0")
             
             
-            console.log(res)
+            console.log(res['error'])
             
         },
         error:function(err){
