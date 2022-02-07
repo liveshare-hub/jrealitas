@@ -125,14 +125,19 @@ function DaftarPembina() {
                   })
             }
             if(res['success']){
-                Swal.fire({
+                swal({
                     icon: 'success',
                     title: 'Success',
                     text: 'Data Berhasil disimpan',
                   })
             }
-            
-            console.log(res['error'])
+            if(res['data_error']){
+                swal({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Password Tidak Sama',
+                  })
+            }
             
         },
         error:function(err){
