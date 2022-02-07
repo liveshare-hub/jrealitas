@@ -36,9 +36,10 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-def edit_password(request, pk):
+def edit_password(request):
     msg = None
     
+    pk = request.POST.get('id_pembina')
     password1 = request.POST.get('edit_password1')
     password2 = request.POST.get('edit_password2')
     if (password1 != password2) or password1 is None or password2 is None:
