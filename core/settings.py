@@ -208,6 +208,7 @@ CORS_ALLOW_HEADERS = [
     "content-type",
     "dnt",
     "origin",
+    "same-origin",
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
