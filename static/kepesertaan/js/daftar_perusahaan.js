@@ -116,6 +116,21 @@ function DaftarPembina() {
             $("input.clear").val("")
             $('select#makeselect option').val("0")
             
+            if(res['error']){
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Username sudah terdaftar sebelumnya!',
+                    
+                  })
+            }
+            if(res['success']){
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Data Berhasil disimpan',
+                  })
+            }
             
             console.log(res['error'])
             

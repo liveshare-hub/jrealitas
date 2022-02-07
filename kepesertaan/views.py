@@ -113,7 +113,7 @@ def Daftar_Pembina(request):
 
             return JsonResponse({'success':'done'})
         else:
-            return JsonResponse({'error':'Password tidak sama!'})
+            return JsonResponse({'data_error':'Password tidak sama!'})
     # except:
     #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
