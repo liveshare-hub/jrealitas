@@ -100,16 +100,20 @@ def Daftar_Pembina(request):
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
     # try:
-    if password1 == password2 :
-        user = User.objects.create(username=username, password=password1)
-        # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-        #     email=email, no_hp=no_hp)
-        Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
-            email=email, kode_kantor_id=kd_kantor, no_hp=no_hp)
-
-        return JsonResponse({'success':'done'})
+    cek_user = User.objects.filter(username=username)
+    if cek_user.exists():
+        return JsonResponse({'error':'User sudah pernah terdaftar!'})
     else:
-        return JsonResponse({'error':'Password tidak sama!'})
+        if password1 == password2 :
+            user = User.objects.create(username=username, password=password1)
+            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
+            #     email=email, no_hp=no_hp)
+            Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
+                email=email, kode_kantor_id=kd_kantor, no_hp=no_hp)
+
+            return JsonResponse({'success':'done'})
+        else:
+            return JsonResponse({'error':'Password tidak sama!'})
     # except:
     #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
 
@@ -121,7 +125,6 @@ def Daftar_Perusahaan(request):
     nik = request.POST.get('nik') or request.POST.get('nik_admin')
     nama_pic = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
     jabatan = request.POST.get('id_jabatan')
-    print(jabatan)
     pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
     email = request.POST.get('email') or request.POST.get('email_admin')
     no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
@@ -139,37 +142,42 @@ def Daftar_Perusahaan(request):
     key = Fernet.generate_key()
     fernet = Fernet(key)
 
+    cek_npp = Perusahaan.objects.filter(username__username=username)
+
     if jabatan == 3:
-        if password1 == password2 :
-            encsalt = fernet.encrypt(npp.encode())
-            password = make_password(password1, salt=[encsalt.decode('utf-8')])
-            user = User.objects.create(username=username, password=password)
-            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-            #     email=email, no_hp=no_hp)
-            Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
-                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
-                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
-                pembina_id=int(pembina))
-
-            return JsonResponse({'success':'done'})
+        if cek_npp.exists():
+            return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
         else:
-            return JsonResponse({'error':'Password tidak sama!'})
+            if password1 == password2 :
+                encsalt = fernet.encrypt(npp.encode())
+                password = make_password(password1, salt=[encsalt.decode('utf-8')])
+                user = User.objects.create(username=username, password=password)
+
+                Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
+                    no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
+                    alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
+                    pembina_id=int(pembina))
+
+                return JsonResponse({'success':'done'})
+            else:
+                return JsonResponse({'error':'Password tidak sama!'})
     else:
-        if password1 == password2 :
-            encsalt = fernet.encrypt(npp.encode())
-            password = make_password(password1, salt=[encsalt.decode('utf-8')])
-            user = User.objects.create(username=username, password=password)
-            
-            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-            #     email=email, no_hp=no_hp)
-            Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
-                no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
-                alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
-                pembina_id=int(pembina))
-
-            return JsonResponse({'success':'done'})
+        if cek_npp.exists():
+            return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
         else:
-            return JsonResponse({'error':'Password tidak sama!'})
+            if password1 == password2 :
+                encsalt = fernet.encrypt(npp.encode())
+                password = make_password(password1, salt=[encsalt.decode('utf-8')])
+                user = User.objects.create(username=username, password=password)
+                
+                Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
+                    no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
+                    alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
+                    pembina_id=int(pembina))
+
+                return JsonResponse({'success':'done'})
+            else:
+                return JsonResponse({'error':'Password tidak sama!'})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
