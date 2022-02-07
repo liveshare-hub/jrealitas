@@ -148,6 +148,7 @@ function DaftarPembina() {
 }
 
 function resetPassword(){
+    var pk = $("#id_ganti_password_pembina").val()
     var data = new FormData()
     data.append("id_pembina",$("#id_ganti_password_pembina").val())
     data.append("password1", $("#id_edit_password1").val())
@@ -155,7 +156,7 @@ function resetPassword(){
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
     $.ajax({
         method:"POST",
-        url:"#",
+        url:`/ganti/password/${pk}`,
         contentType:false,
         processData:false,
         data:data,
