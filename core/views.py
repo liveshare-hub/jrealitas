@@ -36,10 +36,10 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
-def edit_password(request):
+def edit_password(request, pk):
     msg = None
     
-    pk = request.POST.get('id_pembina')
+    # pk = request.POST.get('id_pembina')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
     print(password1, password2)
