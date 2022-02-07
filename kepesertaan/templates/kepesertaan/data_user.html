@@ -138,7 +138,7 @@
                                                                 <div id="alert" class="mt-2"></div>
                                                                 <form method="POST" name="form_edit_password" id="form_edit_password">
                                                                     {% csrf_token %}
-                                                                    <input type="hidden" value="{{data.username.username.id}}" id="id_ganti_password_pembina">
+                                                                    <input type="hidden" value={{data.username.username}} id="id_ganti_password_pembina">
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
                                                                         <label for="id_edit_password1">Password Baru</label>
