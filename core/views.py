@@ -40,8 +40,8 @@ def edit_password(request):
     msg = None
     
     pk = request.POST.get('id_pembina')
-    password1 = request.POST.get('edit_password1')
-    password2 = request.POST.get('edit_password2')
+    password1 = request.POST.get('password1')
+    password2 = request.POST.get('password2')
     if (password1 != password2) or password1 is None or password2 is None:
         msg = "Password tidak sama"
         return JsonResponse({'error':msg, 'status':400})
