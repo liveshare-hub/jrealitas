@@ -147,6 +147,26 @@ function DaftarPembina() {
     
 }
 
+function resetPassword(){
+    var data = new FormData()
+    data.append("id_pembina",$("#id_ganti_password_pembina").val())
+    data.append("password1", $("#id_edit_password1").val())
+    data.append("password2",$("#id_edit_password2").val())
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    $.ajax({
+        method:"POST",
+        url:"#",
+        contentType:false,
+        processData:false,
+        data:data,
+        success:function(data){
+            console.log(data)
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
+}
 
 
 function uploadFile() {
@@ -465,6 +485,10 @@ $(document).ready(function() {
     $("#daftar_admin").click(function() {
         $("#form_registrasi_user_perusahaan_admin").valid();
         DafarNPPAdmin();
+    })
+
+    $("#reset_password").click(function() {
+        resetPassword();
     })
 
     $("#upload").click(function(e) {
