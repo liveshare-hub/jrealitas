@@ -51,4 +51,4 @@ def edit_password(request, pk):
         password = make_password(password1, hasher='default')
         
         User.objects.filter(id=pk).update(password=password)
-        return JsonResponse({'success':'Password berhasil diganti','status':200,'data':password})
+        return JsonResponse({'success':'Password berhasil diganti','status':200})
