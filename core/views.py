@@ -42,7 +42,9 @@ def edit_password(request):
     pk = request.POST.get('id_pembina')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
-    if (password1 != password2) or password1 is None or password2 is None:
+    print(password1, password2)
+    
+    if (password1 != password2) or (password1, password2) is None:
         msg = "Password tidak sama"
         return JsonResponse({'error':msg, 'status':400})
     else:
