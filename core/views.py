@@ -55,6 +55,11 @@ def edit_password(request, pk):
 
 @login_required
 def delete_user(request, pk):
-    user = User.objects.filter(pk=pk)
-    if user.exists():
-        user.delete()
+    try:
+        u = User.objects.get(pk=pk)
+        u.delete()
+        return JsonResponse({'msg':'done'})
+    except User.DoesNotExist:
+        return JsonResponse({'msg':'User Tidak di Temukan'})
+    except Exception as e:
+        return JsonResponse({'msg':e.message})
