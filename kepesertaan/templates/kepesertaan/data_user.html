@@ -473,6 +473,7 @@
                                                                 </a>
                                                                 <div class="dropdown-menu">
                                                                     <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
+                                                                    <a class="dropdown-item tag-a-pindah-binaan" href="#" data-toggle="modal" data-target="#pindah_binaan{{data.pk}}">Pindah Binaan</a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -502,6 +503,43 @@
                                                                     <div class="form-group">
                                                                         <label for="id_edit_password2">Ulangi Password Baru</label>
                                                                         <input type="password" class="form-control" id="id_edit_password2" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Modal Pindah Binaan -->
+                                                    <div class="modal fade" id="pindah_binaan{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                       Pemindahan Binaan NPP {{data.npp}}
+                                                                    </h6>
+                                                                    
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">x</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div id="alert" class="mt-2"></div>
+                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                                <div class="modal-body">
+                                                                    <div class="form-group">
+                                                                        <label for="id_npp_pindah">Password Baru</label>
+                                                                        <input type="text" class="form-control" id="id_npp_pindah" value="{{data.npp}}" disbaled>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selectpembina">
+                                                                            <option selected style="text-align:center;" value="0">---------- PILIH PEMBINA ----------</option>
+                                                                            
+                                                                        </select>
                                                                     </div>
                                                                 </div>
                                                                 <div class="modal-footer">

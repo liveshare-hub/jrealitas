@@ -33,7 +33,7 @@ def index(request):
         total = Perusahaan.objects.all()
     elif jabatan.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2)):
         total = Perusahaan.total_npp(kwargs=user.username)
-        print(total)
+        
     else:
         total = 0
    
@@ -49,10 +49,11 @@ def data_user(request):
     ply = profile.filter(jabatan__kode_jabatan=703)
     if kepala.exists() or ply.exists():
         datas = Perusahaan.objects.all()
-        profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8))
+        # profiles = Profile.objects.select_related('username').filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8))
+
         context = {
         'datas':datas,
-        'profiles':profiles,
+        'profiles':keps,
         'kepala':kepala,
         'keps':keps,
         'ply':ply,
