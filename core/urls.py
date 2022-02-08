@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from core.settings import MEDIA_ROOT
 
-from .views import login_view, logout_view, edit_password
+from .views import delete_user, login_view, logout_view, edit_password
 
 from graphene_django.views import GraphQLView
 
@@ -19,6 +19,7 @@ urlpatterns = [
     path('accounts/login/', login_view, name='login'),
     path('accounts/logout/', logout_view, name='logout'),
     path('ganti/password/<int:pk>', edit_password, name='edit-password'),
+    path('hapus/user/<int:pk>', delete_user, name='hapus-user'),
     path('admin/', admin.site.urls),
 ] 
 

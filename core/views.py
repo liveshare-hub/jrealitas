@@ -1,11 +1,11 @@
 from django.http.response import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 
 from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from .forms import LoginForm
 from django.contrib import messages
 
@@ -36,13 +36,13 @@ def logout_view(request):
     logout(request)
     return redirect('login')
 
+@login_required
 def edit_password(request, pk):
     msg = None
     
     # pk = request.POST.get('id_pembina')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
-    print(password1, password2)
     
     if (password1 != password2) or (password1, password2) is None:
         msg = "Password tidak sama"
@@ -52,3 +52,9 @@ def edit_password(request, pk):
         
         User.objects.filter(id=pk).update(password=password)
         return JsonResponse({'success':'Password berhasil diganti','status':200})
+
+@login_required
+def delete_user(request, pk):
+    user = User.objects.filter(pk=pk)
+    if user.exists():
+        user.delete()

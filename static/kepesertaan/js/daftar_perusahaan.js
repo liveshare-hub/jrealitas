@@ -609,7 +609,7 @@ $('#delete_pembina').on('click', function () {
       return new Promise((resolve) => {
         $.ajax({
             method:'POST',
-            url:"#",
+            url:`hapus/user/${pk}`,
             success:function(data){
                 setTimeout(() => {
                     resolve(true)
