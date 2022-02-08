@@ -29,8 +29,8 @@ class InformasiForm(forms.ModelForm):
 class PembinaForm(forms.ModelForm):
     def __init__(self, bidang_id, *args, **kwargs):
         super(PembinaForm, self).__init__(*args, **kwargs)
-        self.fields['jabatan'].queryset = self.fields['jabatan'].queryset.filter(jabatan__bidang__kode_bidang=bidang_id)
-        
+        self.fields['jabatan'].queryset = self.fields['jabatan'].queryset.filter(bidang__kode_bidang=bidang_id)
+
     class Meta:
         model = Profile
         exclude = ('username','kode_kantor',)
