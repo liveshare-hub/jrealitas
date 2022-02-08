@@ -254,7 +254,7 @@ function updateBinaan(){
         data:data,
         success:function(data){
             console.log(data)
-            location.href = "/user/data/"
+            
         },
         error:function(err){
             console.log(err)
