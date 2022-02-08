@@ -60,11 +60,11 @@ class Query(graphene.ObjectType):
 
     def resolve_all_pembina_bidang(root, info):
         if info.context.user.is_authenticated:
-            return Profile.objects.select_related('username','jabatan','kode_kantor').all()
+            return Profile.objects.select_related('username','jabatan','kode_kantor').filter(jabatan__bidang__kode_bidang=12).exclude(username__username=info.context.user)
 
     def resolve_all_npp(root, info):
         if info.context.user.is_authenticated:
-            return Perusahaan.objects.select_related('username','pembina').filter(jabatan__bidang_kode_bidang=12).exclude(username__username=info.context.user)
+            return Perusahaan.objects.select_related('username','pembina').all()
 
     def resolve_all_npp_pembina(root, info):
         user = info.context.user
