@@ -34,7 +34,7 @@ SECRET_KEY = config('SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0','realitas.site']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0','realitas.site','www.realitas.site']
 
 
 # Application definition
