@@ -95,6 +95,7 @@ def update_binaan(request):
 
     q = Perusahaan.objects.select_related('username','pembina').get(npp=npp)
     q.pembina.id = int(pembina)
+    q.save()
 
     return JsonResponse({'msg':'Berhasil'})
 
