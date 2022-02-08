@@ -75,8 +75,9 @@ def data_user(request):
 
 def edit_profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
+    bidang_id = Profile.objects.filter(pk=pk)
     if request.method == 'POST':
-        form = PembinaForm(request.POST, instance=profile)
+        form = PembinaForm(request.POST, instance=profile, bidang_id=bidang_id[0].jabatan.bidang.kode_bidang)
         if form.is_valid():
             form.save()
             return redirect('dashboard')
