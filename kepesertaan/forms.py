@@ -29,7 +29,7 @@ class InformasiForm(forms.ModelForm):
 class PembinaForm(forms.ModelForm):
     class Meta:
         model = Profile
-        exclude = ('username','kode_kantor','jabatan')
+        exclude = ('username','kode_kantor',)
 
         widgets = {
             'nama':forms.TextInput(attrs={
