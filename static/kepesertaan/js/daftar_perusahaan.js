@@ -243,6 +243,21 @@ function updateBinaan(){
     var data = new FormData()
     data.append("npp", $("#id_npp_pindah").attr('data-npp'))
     data.append("pembina", $('select#selectpembina option').filter(':selected').val())
+    data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+    $.ajax({
+        method:"POST",
+        url:"/pindah/binaan/",
+        contentType:false,
+        processData:false,
+        data:data,
+        success:function(data){
+            console.log(data)
+            location.href = "/user/data/"
+        },
+        error:function(err){
+            console.log(err)
+        }
+    })
 }
 
 $(document).ready(function() {
@@ -516,6 +531,11 @@ $(document).ready(function() {
     $("#daftar_pembina_btn").click(function() {
         DaftarPembina();
     })
+
+    $("#update_binaan").click(function() {
+        updateBinaan();
+    })
+
     var pk = $("#id_ganti_password").val()
     $(`#form_edit_password${pk}`).submit(function() {
         

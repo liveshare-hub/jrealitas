@@ -74,6 +74,7 @@ def data_user(request):
         }
     return render(request, 'kepesertaan/data_user.html', context)
 
+@login_required
 def edit_profile(request, pk):
     profile = get_object_or_404(Profile, pk=pk)
     bidang_id = Profile.objects.filter(pk=pk)
@@ -85,6 +86,14 @@ def edit_profile(request, pk):
     else:
         form = PembinaForm(instance=profile, bidang_id=bidang_id[0].jabatan.bidang.kode_bidang)
         return render(request, 'kepesertaan/edit_profile.html', {'form':form})
+        
+@login_required
+def update_binaan(request):
+    npp = request.POST.get('npp')
+    pembina = request.POST.get('pembina')
+
+    updated = Perusahaan.objects.select_related('username','pembina').filter(npp=npp).update({'pembina__username__username':pembina})
+    return JsonResponse({'msg':'Berhasil'})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
