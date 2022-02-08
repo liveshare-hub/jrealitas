@@ -40,5 +40,8 @@ class PembinaForm(forms.ModelForm):
             }),
             'no_hp':forms.TextInput(attrs={
                 'class':'form-control'
+            }),
+            'jabatan':forms.Select(attrs={
+                'class':'form-control'
             })
         }
