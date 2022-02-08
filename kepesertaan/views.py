@@ -92,7 +92,10 @@ def update_binaan(request):
     npp = request.POST.get('npp')
     pembina = request.POST.get('pembina')
 
-    updated = Perusahaan.objects.select_related('username','pembina').filter(npp=npp).update(pembina__username__username=pembina)
+    q = Perusahaan.objects.select_related('username','pembina').get(npp=npp)
+    q.pembina.username.username = pembina
+    q.save()
+    
     return JsonResponse({'msg':'Berhasil'})
 
 @login_required(login_url='/accounts/login/')
