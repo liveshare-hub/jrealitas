@@ -82,7 +82,7 @@ def edit_profile(request, pk):
             form.save()
             return redirect('dashboard')
     else:
-        form = PembinaForm(instance=profile)
+        form = PembinaForm(instance=profile, bidang_id=bidang_id[0].jabatan.bidang.kode_bidang)
         return render(request, 'kepesertaan/edit_profile.html', {'form':form})
 
 @login_required(login_url='/accounts/login/')
