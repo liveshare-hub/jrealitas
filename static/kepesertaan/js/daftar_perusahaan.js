@@ -600,16 +600,26 @@ $('#delete_pembina').on('click', function () {
     showCancelButton: true,
     customClass: {
       confirmButton: 'btn btn-sm btn-primary',
-      cancelButton: 'btn btn-danger btn-sm p-2',
+      cancelButton: 'btn btn-sm btn-danger',
       loader: 'custom-loader'
     },
     loaderHtml: '<div class="spinner-border text-primary"></div>',
     preConfirm: () => {
       Swal.showLoading()
       return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(true)
-        }, 3000)
+        $.ajax({
+            method:'POST',
+            url:"#",
+            success:function(data){
+                setTimeout(() => {
+                    resolve(true)
+                  }, 3000)
+                console.log(data)
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
       })
     }
   })
