@@ -94,9 +94,9 @@ def update_binaan(request):
     print(type(pembina))
 
     q = Perusahaan.objects.select_related('username','pembina').get(npp=npp)
-    q.pembina.id = pembina
+    q.pembina.id = int(pembina)
 
-    return JsonResponse({'msg':'Berhasil','data':q})
+    return JsonResponse({'msg':'Berhasil'})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
