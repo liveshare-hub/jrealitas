@@ -240,6 +240,8 @@ function uploadTK(){
 }
 
 function updateBinaan(){
+    console.log($("#id_npp_pindah").attr('data-npp'))
+    console.log($('select#selectpembina option').filter(':selected').val())
     var data = new FormData()
     data.append("npp", $("#id_npp_pindah").attr('data-npp'))
     data.append("pembina", $('select#selectpembina option').filter(':selected').val())
