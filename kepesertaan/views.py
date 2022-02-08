@@ -96,7 +96,7 @@ def update_binaan(request):
     q = Perusahaan.objects.select_related('username','pembina').filter(npp=npp)
     q.update(pembina__username__username=pembina)
 
-    return JsonResponse({'msg':'Berhasil'})
+    return JsonResponse({'msg':'Berhasil','data':q})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
