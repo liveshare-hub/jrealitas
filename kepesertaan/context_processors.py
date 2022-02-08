@@ -27,7 +27,7 @@ def info_context(request):
                 'total_kunjungan':total_kunjungan
             }
             return context
-        elif pembina.exists() or pelayanan.exists():
+        elif pembina.exists():
             infos = Informasi.objects.select_related('created_by').filter(created_by__username=request.user).order_by('-created')[:5]
             total_npp = Perusahaan.objects.select_related('pembina').filter(pembina__username__username=request.user).count()
             total_kunjungan = berita_kunjungan.objects.select_related('petugas').filter(petugas__username__username=request.user).count()
