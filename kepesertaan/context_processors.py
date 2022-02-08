@@ -34,7 +34,7 @@ def info_context(request):
             total_tk = Tenaga_kerja.objects.select_related('npp').filter(npp__pembina__username__username=request.user).count()
 
             context = {
-                'info':infos, 'pembina':pembina, 'total_npp':total_npp, 'total_tk':total_tk, 'total_kunjungan':total_kunjungan
+                'info':infos, 'pembina':pembina, 'total_npp':total_npp, 'total_tk':total_tk, 'total_kunjungan':total_kunjungan, 'pelayanan':pelayanan
             }
             return context
         else:
