@@ -473,7 +473,7 @@
                                                                 </a>
                                                                 <div class="dropdown-menu">
                                                                     <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
-                                                                    <a class="dropdown-item tag-a-pindah-binaan" href="#" data-toggle="modal" data-target="#pindah_binaan{{data.pk}}">Pindah Binaan</a>
+                                                                    <a class="dropdown-item tag-a-pindah-binaan" href="#" data-toggle="modal" data-target="#pindah_binaan{{data.pk}}" id="pindah_binaan">Pindah Binaan</a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -514,7 +514,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Modal Pindah Binaan -->
-                                                    <div class="modal fade" id="pindah_binaan{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                                    <div class="modal fade" id="pindah_binaan{{data.pk}}" tabindex="-1" aria-labelledby="pindah_binaanLabel" aria-hidden="true">
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
@@ -843,6 +843,17 @@ allJabatan{
 }
 }`
 
+var pembinaQuery = `
+query{
+    allPembinaBidang{
+      id
+      username{
+        username
+      }
+      nama
+    }
+}
+`
 
 $(document).ready(function() {
    
@@ -857,10 +868,10 @@ $(document).ready(function() {
         $("#pembaina_username").val(kd_user)
     })
     
-$("#npp_admin").on("focusout", function(){
-    var kd_user = $(this).val()
-    $("#username_admin").val(kd_user)
-})
+    $("#npp_admin").on("focusout", function(){
+        var kd_user = $(this).val()
+        $("#username_admin").val(kd_user)
+    })
 
     $.ajax({
         method:"POST",
@@ -895,8 +906,32 @@ $("#npp_admin").on("focusout", function(){
             console.log(err)
         }
     })
-    
-    
+
+    $("#pindah_binaan").on("click", function() {
+
+        $.ajax({
+            method:"POST",
+            url:"{% url 'graphql' %}",
+            contentType:"application/json",
+            data:JSON.stringify({
+                query:pembinaQuery
+            }),
+            dataType:"json",
+            success:function(data){
+                console.log(data)
+                var datas = data['data']['allPembinaBidang']
+                $.each(datas, function(i,j){
+                    $("#selectpembina").append($('<option>', {
+                        value:j['id']
+                        text:j['username']['username']+" - "+j['nama']    
+                    }))
+                })
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+    })
     
 })
 </script>
