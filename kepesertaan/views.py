@@ -91,11 +91,11 @@ def edit_profile(request, pk):
 def update_binaan(request):
     npp = request.POST.get('npp')
     pembina = request.POST.get('pembina')
-    print(type(pembina))
 
     q = Perusahaan.objects.select_related('username','pembina').get(npp=npp)
-    q.pembina.id = int(pembina)
-    q.save()
+    # q.pembina_id = int(pembina)
+    # q.save()
+    print(q)
 
     return JsonResponse({'msg':'Berhasil'})
 
