@@ -94,7 +94,7 @@ def update_binaan(request):
     print(pembina)
 
     q = Perusahaan.objects.select_related('username','pembina').filter(npp=npp)
-    q.update({'pembina__username__username':pembina})
+    q.update({'pembina__id':int(pembina)})
 
     return JsonResponse({'msg':'Berhasil','data':q})
 

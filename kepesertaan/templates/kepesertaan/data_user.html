@@ -922,7 +922,7 @@ $(document).ready(function() {
                 var datas = data['data']['allPembinaBidang']
                 $.each(datas, function(i,j){
                     $("#selectpembina").append($('<option>', {
-                        value:j['username']['username'],
+                        value:j['id'],
                         text:j['username']['username']+" - "+j['nama']    
                     }))
                 })
