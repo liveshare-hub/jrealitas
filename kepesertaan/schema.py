@@ -60,7 +60,7 @@ class Query(graphene.ObjectType):
 
     def reslove_all_pembina_bidang(root, info):
         if info.context.user.is_authenticated:
-            return Profile.objects.select_related('username','jabatan').filter(jabatan__bidang__kode_bidang=12).all().exclude(username__username=info.context.user)
+            return Profile.objects.select_related('username','jabatan').filter(jabatan__bidang__kode_bidang="12").all().exclude(username__username=info.context.user)
 
     def resolve_all_npp(root, info):
         if info.context.user.is_authenticated:
