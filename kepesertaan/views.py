@@ -31,7 +31,6 @@ def index(request):
     
     if jabatan.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=703) | Q(jabatan__kode_jabatan=701)):
         total = Perusahaan.objects.all()
-        print(total)
     elif jabatan.filter(Q(jabatan__kode_jabatan=1) | Q(jabatan__kode_jabatan=2)):
         total = Perusahaan.total_npp(kwargs=user.username)
         print(total)
