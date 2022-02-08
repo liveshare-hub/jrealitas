@@ -58,7 +58,7 @@ class Query(graphene.ObjectType):
             jabatan = Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701)
             return Profile.objects.select_related('username','jabatan','kode_kantor').all().exclude(jabatan)
 
-    def reslove_all_pembina_bidang(root, info):
+    def resolve_all_pembina_bidang(root, info):
         if info.context.user.is_authenticated:
             return Profile.objects.select_related('username','jabatan','kode_kantor').all()
 
