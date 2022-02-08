@@ -91,6 +91,7 @@ def edit_profile(request, pk):
 def update_binaan(request):
     npp = request.POST.get('npp')
     pembina = request.POST.get('pembina')
+    print(pembina)
 
     q = Perusahaan.objects.select_related('username','pembina').filter(npp=npp)
     q.update(pembina__username__username=pembina)
