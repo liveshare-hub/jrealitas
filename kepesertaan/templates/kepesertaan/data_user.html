@@ -532,8 +532,8 @@
                                                                     <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
-                                                                        <label for="id_npp_pindah">Password Baru</label>
-                                                                        <input type="text" class="form-control" id="id_npp_pindah" value="{{data.npp}}" disbaled>
+                                                                        <label for="id_npp_pindah">Perusahaan</label>
+                                                                        <input type="text" class="form-control" id="id_npp_pindah" value="{{data.npp}} - {{data.nama_perusahaan}}" data-npp="{{data.npp}}" disabled>
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selectpembina">
@@ -544,7 +544,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-primary">Update</button>
+                                                                    <button type="button" class="btn btn-primary" id="update_binaan">Update</button>
                                                                 </div>
                                                                 </form>
                                                             </div>
@@ -918,11 +918,11 @@ $(document).ready(function() {
             }),
             dataType:"json",
             success:function(data){
-                console.log(data)
+                
                 var datas = data['data']['allPembinaBidang']
                 $.each(datas, function(i,j){
                     $("#selectpembina").append($('<option>', {
-                        value:j['id'],
+                        value:j['username']['username'],
                         text:j['username']['username']+" - "+j['nama']    
                     }))
                 })
