@@ -589,15 +589,18 @@ $.fn.modal.Constructor.prototype._enforceFocus = function () {}
 
 $('#myModal').modal()
 
-$('.trigger-swal').on('click', function () {
+const pk = $("#delete_pembina").attr('data-pk')
+const username = $("#delete_pembina").attr('data-user')
+
+$('#delete_pembina').on('click', function () {
   Swal.fire({
-    title: 'SweetAlert2 + Bootstrap 4',
-    input: 'text',
+    title: 'PERINGATAN!',
+    text: `Hapus user ${username} ?`,
     buttonsStyling: false,
     showCancelButton: true,
     customClass: {
-      confirmButton: 'btn btn-primary btn-lg',
-      cancelButton: 'btn btn-danger btn-lg',
+      confirmButton: 'btn btn-sm btn-primary',
+      cancelButton: 'btn btn-danger btn-sm p-2',
       loader: 'custom-loader'
     },
     loaderHtml: '<div class="spinner-border text-primary"></div>',
