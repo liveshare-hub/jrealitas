@@ -28,16 +28,17 @@ function SimpanKunjungan(){
         processData:false,
         data:data,
         success:function(res){
-            var notif = res['success']
+            // var notif = res['success']
             
-            $("#id_to_nama").val("")
-            $("#id_to_jabatan").val("")
-            $("#id_to_alamat").val("")
-            $("#id_to_no_hp").val("")
-            $("#id_to_lokasi").val("")
-            $("#id_tujuan").val("0")
-            $("#id_npp").val("0")
-            $("#id_hasil").val("")
+            // $("#id_to_nama").val("")
+            // $("#id_to_jabatan").val("")
+            // $("#id_to_alamat").val("")
+            // $("#id_to_no_hp").val("")
+            // $("#id_to_lokasi").val("")
+            // $("#id_tujuan").val("0")
+            // $("#id_npp").val("0")
+            // $("#id_hasil").val("")
+            location.href = '/kunjungan/'
         },
         error:function(err){
             console.log(err)
