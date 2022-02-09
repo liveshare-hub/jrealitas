@@ -57,7 +57,7 @@
                                                             {% if data.status_approve %}
                                                             <a href="#" class="btn btn-sm btn-success" disabled>SETUJU</a>
                                                             {% else %}
-                                                            <a href="#" class="btn btn-sm btn-warning" disabled>BELUM APPROVE</a>
+                                                            <a href="#" class="badge badge-warning" disabled>BELUM APPROVE</a>
                                                             {% endif %}
                                                             
                                                             <a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
