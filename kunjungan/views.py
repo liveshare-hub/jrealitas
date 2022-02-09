@@ -1,11 +1,12 @@
 import os
 
-os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
+# os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
 
 
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
+from django.db.models import OuterRef, Subquery
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 from weasyprint import HTML
@@ -18,7 +19,7 @@ from io import BytesIO
 
 
 from kepesertaan.models import Profile
-from .models import berita_kunjungan
+from .models import berita_kunjungan, approval_bak
 
 from .form import KunjunganForm
 
@@ -29,7 +30,9 @@ def kunjungan(request):
     
     # print(profile.pk)
     if profile:
-        data_kunjungan = berita_kunjungan.objects.select_related('petugas').filter(petugas__username__username=profile.username)
+        data_kunjungan = berita_kunjungan.objects.select_related('petugas').filter(petugas__username__username=profile.username).annotate(
+            status_approve=Subquery(approval_bak.objects.filter(berita_acara_id=OuterRef('pk')).values('approved'))
+        )
         # data_kunjungan = berita_kunjungan.objects.select_related('petugas').all()
     else:
         data_kunjungan = berita_kunjungan.objects.none
@@ -112,5 +115,25 @@ def detail_kunjungan(request,pk):
         response.write(output.read())
 
     return response
-    # return render(request,'kunjungan/detil_kunjungan.html',context)
+    
+
+@login_required
+def daftar_approval_kunjungan(request):
+
+    datas = approval_bak.objects.select_related('berita_acara').filter(berita_acara__to_perusahaan__npp=request.user)
+    context = {
+        'datas':datas
+    }
+    return render(request, 'kunjungan/approval.html',context)
+
+
+@login_required
+@csrf_exempt
+def approval_kunjungan(request, pk):
+    datas = approval_bak.objects.select_related('berita_acara').filter(pk=pk)
+    if datas.exists():
+        datas.update(approved=True)
+        
+
+    
 

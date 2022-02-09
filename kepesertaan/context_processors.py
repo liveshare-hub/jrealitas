@@ -46,10 +46,10 @@ def info_context(request):
                 pic = perusahaan[0].nama_pic
             else:
                 pic = None
-
+            counter = 0
+            total = 14
             if cek_valid.exists():
-                total = 14
-                counter = 0
+                
                 if cek_valid[0].email is None:
                     counter +=1
                 if cek_valid[0].no_hp is None:
@@ -57,8 +57,8 @@ def info_context(request):
                 if cek_valid[0].npwp_prsh is None:
                     counter +=1
                 
-                persen_val = 100 - (100 * float(counter)/float(total))
                 
+            persen_val = 100 - (100 * float(counter)/float(total))  
             
             kunjungan_pembina = berita_kunjungan.objects.select_related('petugas').filter(to_perusahaan__npp=request.user).count()
             context = {

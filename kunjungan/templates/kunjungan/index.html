@@ -50,10 +50,18 @@
                                                     <tr>
                                                         <td>{{forloop.counter}}</td>
                                                         <td>{{data.petugas.username.username}}</td>
-                                                        <td>{{data.get_tujuan_display}}</td>
+                                                        <td>{{data.to_perusahaan.npp}} - {{data.get_tujuan_display}}</td>
                                                         <td>{{data.to_alamat}}</td>
                                                         <td>{{data.created|date:"D, d-m-Y"}}</td>
-                                                        <td><a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary">Detail</a></td>
+                                                        <td>
+                                                            {% if data.status_approve %}
+                                                            <a href="#" class="btn btn-sm btn-success" disabled>SETUJU</a>
+                                                            {% else %}
+                                                            <a href="#" class="btn btn-sm btn-warning" disabled>BELUM APPROVE</a>
+                                                            {% endif %}
+                                                            
+                                                            <a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
+                                                        </td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

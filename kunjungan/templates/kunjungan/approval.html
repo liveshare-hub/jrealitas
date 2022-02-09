@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+
+{% block title %}APPROVAL BERITA ACARA{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col col-10">
+            <div class="card">
+                <div class="card-header">
+                    APPROVAL BERITA ACARA <b>{{request.user}}</b>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive mt-3">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table id="approval_kunjungan" class="table table-bordered">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>#</th>
+                                            <th>JUDUL</th>
+                                            <th>PETUGAS</th>
+                                            <th>TANGGAL </br>KUNJUNGAN</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in datas %}
+                                            <tr>
+                                                <td class="text-center">{{forloop.counter}}</td>
+                                                <td class="text-center">{{data.berita_acara.get_tujuan_display}}</td>
+                                                <td class="text-center">{{data.berita_acara.petugas.nama}}</td>
+                                                <td class="text-center">{{data.berita_acara.created|date:"D, d-m-Y"}}</td>
+                                                <td>
+                                                {% if data.approved %}
+                                                    <button type="button" class="btn btn-sm btn-success" disabled>SETUJU</button>
+                                                {% else %}
+                                                    <a href="#" class="btn btn-sm btn-primary" id="approval_bak" data-pk={{data.pk}}>SETUJU</a>
+                                                {% endif %}
+                                                    <a href="{% url 'detil-kunjungan' pk=data.berita_acara.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    const pk = $('#approval_bak').attr('data-pk')
+    $('#approval_bak').on('click', function () {
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success btn-sm',
+              cancelButton: 'btn btn-danger btn-sm'
+            },
+            buttonsStyling: true
+          })
+        swalWithBootstrapButtons.fire({
+            title: 'Anda Yakin ?',
+            text: "Proses Ini tidak bisa dibatalkan!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Setuju!',
+            cancelButtonText: 'Tidak, cancel!',
+            reverseButtons: true
+          }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    method:"POST",
+                    url:`/kunjungan/approval/${pk}/done/`,
+                    success:function(data){
+                        swalWithBootstrapButtons.fire(
+                            'Approved!',
+                            'Berita Acara Kunjungan Sudah Anda Setujui',
+                            'success'
+                        )
+                    }
+                })
+              
+            } else if (
+              /* Read more about handling dismissals below */
+              result.dismiss === Swal.DismissReason.cancel
+            ) {
+              swalWithBootstrapButtons.fire(
+                'Tolak',
+                'Berita Acara Kunjungan di Tolak',
+                'error'
+              )
+            }
+          })
+      })
+</script>
+{% endblock javascripts %}

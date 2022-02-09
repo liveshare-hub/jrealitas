@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from kepesertaan.models import Perusahaan, Profile
 
 User = get_user_model()
@@ -27,3 +29,15 @@ class berita_kunjungan(models.Model):
     def __str__(self):
         return f'{self.petugas.username.username} - {self.to_perusahaan.npp}'
 
+class approval_bak(models.Model):
+    berita_acara = models.ForeignKey(berita_kunjungan, on_delete=models.CASCADE)
+    approved = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.berita_acara.to_perusahaan.nama_perusahaan}'
+
+@receiver(post_save, sender=berita_kunjungan, dispatch_uid="create_approval")
+def kirim_approval(sender, instance, created, **kwargs):
+    if created:
+        approval_bak.objects.create(berita_acara=instance)
