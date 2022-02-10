@@ -1,4 +1,4 @@
-import os
+# import os
 
 # os.add_dll_directory(r"C:\Program Files\GTK3-Runtime Win64\bin")
 
@@ -8,7 +8,8 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.db.models import OuterRef, Subquery
 from django.views.decorators.csrf import csrf_exempt
-from django.template.loader import render_to_string
+from django.template.loader import render_to_string, get_template
+from django.views.generic import View
 from weasyprint import HTML
 
 import tempfile
@@ -22,6 +23,7 @@ from kepesertaan.models import Profile
 from .models import berita_kunjungan, approval_bak
 
 from .form import KunjunganForm
+from .utils import render_to_pdf
 
 @login_required(login_url='/accounts/login/')
 def kunjungan(request):
@@ -76,9 +78,10 @@ def simpan_kunjungan(request):
 def detail_kunjungan(request,pk):
     data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
 
-    # print(data.petugas.username.username)
     datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
     informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
+    print(datas)
+    print(informan)
     factory = qrcode.image.svg.SvgImage
     img = qrcode.make(datas, image_factory=factory, box_size=10)
     img2 = qrcode.make(informan, image_factory=factory, box_size=10)
@@ -94,6 +97,8 @@ def detail_kunjungan(request,pk):
         'svg1':svg1,
         'svg2':svg2
     }
+
+    print(svg1)
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
@@ -136,4 +141,28 @@ def approval_kunjungan(request, pk):
         
 
     
+class GeneratePDF(View):
+    def get(self, request, pk, *args, **kwargs):
+        data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
 
+        datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
+        informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
+        print(datas)
+        print(informan)
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make(datas, image_factory=factory, box_size=10)
+        img2 = qrcode.make(informan, image_factory=factory, box_size=10)
+        stream1 = BytesIO()
+        stream2 = BytesIO()
+        img.save(stream1)
+        img2.save(stream2)
+        svg1 = stream1.getvalue().decode()
+        svg2 = stream2.getvalue().decode()
+        template = get_template('kunjungan/detil_kunjungan.html')
+        context = {
+            'data':data,
+            'svg1':svg1,
+            'svg2':svg2
+        }
+        html = template.render(context)
+        return HttpResponse(html)
