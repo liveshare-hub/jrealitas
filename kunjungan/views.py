@@ -115,14 +115,14 @@ def detail_kunjungan(request,pk):
     img1 = qr.make_image(fill_color="black", back_color="white")
     stream1 = BytesIO()
     img1.save(stream1)
-    svg1 = stream1
+    svg1 = stream1.getvalue().decode("ISO-8859-1")
 
     qr.add_data(informan)
     qr.make(fit=True)
     img2 = qr.make_image(fill_color="black", back_color="white")
     stream2 = BytesIO()
     img2.save(stream2)
-    svg2 = stream2
+    svg2 = stream2.getvalue().decode("ISO-8859-1")
 
     
     context = {
