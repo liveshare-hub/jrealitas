@@ -94,35 +94,35 @@ def detail_kunjungan(request,pk):
     No HP : %s
     """ % (data.to_nama,data.to_jabatan,data.to_no_hp)
 
-    # factory = qrcode.image.svg.SvgImage
-    # img = qrcode.make(datas, image_factory=factory, box_size=10)
-    # stream1 = BytesIO()
-    # img.save(stream1)
-    # svg1 = stream1.getvalue().decode()
-    # img2 = qrcode.make(informan, image_factory=factory, box_size=10)    
-    # stream2 = BytesIO()
-    # img2.save(stream2)
-    # svg2 = stream2.getvalue().decode()
-
-    qr = qrcode.QRCode(
-        version=2.0,
-        error_correction=qrcode.constants.ERROR_CORRECT_Q,
-        box_size=10,
-        border=4,
-    )
-    qr.add_data(datas)
-    qr.make(fit=True)
-    img1 = qr.make_image(fill_color="black", back_color="white")
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(datas, image_factory=factory, box_size=10)
     stream1 = BytesIO()
-    img1.save(stream1)
-    svg1 = stream1.getvalue().decode("ISO-8859-1")
-
-    qr.add_data(informan)
-    qr.make(fit=True)
-    img2 = qr.make_image(fill_color="black", back_color="white")
+    img.save(stream1)
+    svg1 = stream1.getvalue().decode('ISO-8859-1')
+    img2 = qrcode.make(informan, image_factory=factory, box_size=10)    
     stream2 = BytesIO()
     img2.save(stream2)
-    svg2 = stream2.getvalue().decode("ISO-8859-1")
+    svg2 = stream2.getvalue().decode('ISO-8859-1')
+
+    # qr = qrcode.QRCode(
+    #     version=2.0,
+    #     error_correction=qrcode.constants.ERROR_CORRECT_Q,
+    #     box_size=10,
+    #     border=4,
+    # )
+    # qr.add_data(datas)
+    # qr.make(fit=True)
+    # img1 = qr.make_image(fill_color="black", back_color="white")
+    # stream1 = BytesIO()
+    # img1.save(stream1)
+    # svg1 = stream1.getvalue().decode("ISO-8859-1")
+
+    # qr.add_data(informan)
+    # qr.make(fit=True)
+    # img2 = qr.make_image(fill_color="black", back_color="white")
+    # stream2 = BytesIO()
+    # img2.save(stream2)
+    # svg2 = stream2.getvalue().decode("ISO-8859-1")
 
     
     context = {
