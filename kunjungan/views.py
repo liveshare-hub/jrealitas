@@ -183,6 +183,7 @@ class GeneratePDF(View):
         img2.save(stream2)
         svg1 = stream1.getvalue().decode()
         svg2 = stream2.getvalue().decode()
+        print(svg2)
         template = get_template('kunjungan/detil_kunjungan.html')
         context = {
             'data':data,
