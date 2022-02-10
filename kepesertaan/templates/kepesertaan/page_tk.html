@@ -49,7 +49,51 @@
                                     <div class="card-body">
                                         <div class="tab-content">
                                             <div class="tab-pane active" id="list_tk">
-                                                {% include 'kepesertaan/list_tk.html' %}
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <div class="card-title text-center">
+                                                            Data Peserta :  {{is_npp.npp}} - {{is_npp.nama_perusahaan}}
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="table-responsive mt-3">
+                                                            <table id="id_list_tk" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr class="text-center">
+                                                                        <th>#</th>
+                                                                        <th>KPJ</th>
+                                                                        <th>NAMA</th>
+                                                                        <th>TGL LAHIR</th>
+                                                                        <th>TGL KEPS</th>
+                                                                        <th>TGL NA</th>
+                                                                        <th>EMAIL</th>
+                                                                        <th>NO HP</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    {% if workers %}
+                                                                    {% for worker in workers %}
+                                                                    <tr class="text-center">
+                                                                        <td>{{forloop.counter}}</td>
+                                                                        <td>{{worker.no_kartu}}</td>
+                                                                        <td>{{worker.nama}}</td>
+                                                                        <td>{{worker.tgl_lahir|date:"d-m-Y"}}</td>
+                                                                        <td>{{worker.tgl_keps|date:"m-Y"}}</td>
+                                                                        {% if worker.tgl_na is null %}
+                                                                            <td>-</td>
+                                                                        {% else %}
+                                                                            <td>{{worker.tgl_na|date:"m-Y"}}</td>
+                                                                        {% endif %}
+                                                                        <td>{{worker.email}}</td>
+                                                                        <td>{{worker.no_hp}}</td>
+                                                                    </tr>
+                                                                    {% endfor %}
+                                                                    {% endif %}
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -129,6 +173,11 @@
     }
 
     $(document).ready(function(){
+
+        $(document).ready(function() {
+            $('#id_list_tk').DataTable();
+        } );
+
         var npp = $("#list_npp_id option:selected").val()
         $("#list_npp_id").change(function(){
             npp = $(this).val()
