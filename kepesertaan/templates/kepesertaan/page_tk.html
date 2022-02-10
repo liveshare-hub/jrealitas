@@ -15,7 +15,7 @@
                         <div class="nav-tabs-wrapper">
                             <ul class="nav nav-tabs" data-tabs="tabs">
                                 <li class="nav-item mr-2">
-                                    {% if pembina or kepala %}
+                                    {% if pembina %}
                                     <a href="#detil_tk" class="color-nav-link nav-link active" data-toggle="tab">
                                         <i class="fas fa-fw fa-users"> </i> List Perusahaan  
                                     </a>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="list_tk">
+                        <div class="tab-pane" id="list_tk">
                             {% include 'kepesertaan/page_tk.html' %}
                         </div>
                     </div>
