@@ -175,5 +175,6 @@ class GeneratePDF(View):
             filename = "Detil_Kunjungan_%s.pdf" % (data.created)
             content = "inline; filename='%s'" % (filename)
             response['Content-Disposition'] = content
+            #GET RESPONSE
             return response
         return HttpResponse("NOT FOUND")
