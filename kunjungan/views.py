@@ -173,11 +173,10 @@ class GeneratePDF(View):
 
         datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
         informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
-        print(datas)
-        print(informan)
+        
         factory = qrcode.image.svg.SvgImage
-        img = qrcode.make(datas, image_factory=factory, box_size=10)
-        img2 = qrcode.make(informan, image_factory=factory, box_size=10)
+        img = qrcode.make(datas, image_factory=factory, box_size=20)
+        img2 = qrcode.make(informan, image_factory=factory, box_size=20)
         stream1 = BytesIO()
         stream2 = BytesIO()
         img.save(stream1)
