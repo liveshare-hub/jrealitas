@@ -111,27 +111,27 @@ def detail_kunjungan(request,pk):
         'svg2':svg2
     }
 
-    return render(request, 'kunjungan/detil_kunjungan.html', context)
+    # return render(request, 'kunjungan/detil_kunjungan.html', context)
 
-    # response = HttpResponse(content_type="application/pdf")
-    # response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
+    response = HttpResponse(content_type="application/pdf")
+    response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
     # response["Content-Transfer-Encoding"] = "binary"
 
-    # html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
+    html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
 
-    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
 
  
-    # result = html.write_pdf()
+    result = html.write_pdf()
 
 
-    # with tempfile.NamedTemporaryFile(delete=False) as output:
-    #     output.write(result)
-    #     output.flush()
-    #     output = open(output.name, "rb")
-    #     response.write(output.read())
+    with tempfile.NamedTemporaryFile(delete=False) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, "rb")
+        response.write(output.read())
 
-    # return response
+    return response
     
 
 @login_required
