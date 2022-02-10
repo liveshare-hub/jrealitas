@@ -80,8 +80,7 @@ def detail_kunjungan(request,pk):
 
     datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
     informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
-    print(datas)
-    print(informan)
+
     factory = qrcode.image.svg.SvgImage
     img = qrcode.make(datas, image_factory=factory, box_size=10)
     img2 = qrcode.make(informan, image_factory=factory, box_size=10)
@@ -98,7 +97,6 @@ def detail_kunjungan(request,pk):
         'svg2':svg2
     }
 
-    print(svg1)
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
