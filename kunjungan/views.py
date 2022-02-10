@@ -78,17 +78,30 @@ def simpan_kunjungan(request):
 def detail_kunjungan(request,pk):
     data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
 
-    datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
-    informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
+    # datas = (data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor)
+    # informan = (data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp)
+
+    datas = """
+    User : %s
+    Nama Petugas : %s
+    Jabatan : %s
+    Kode Kantor : %s
+    """ % (data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor)
+
+    informan = """
+    Nama : %s
+    Sebagai : %s
+    No HP : %s
+    """ % (data.to_nama,data.to_jabatan,data.to_no_hp)
 
     factory = qrcode.image.svg.SvgImage
     img = qrcode.make(datas, image_factory=factory, box_size=10)
-    img2 = qrcode.make(informan, image_factory=factory, box_size=10)
     stream1 = BytesIO()
-    stream2 = BytesIO()
     img.save(stream1)
-    img2.save(stream2)
     svg1 = stream1.getvalue().decode()
+    img2 = qrcode.make(informan, image_factory=factory, box_size=10)    
+    stream2 = BytesIO()
+    img2.save(stream2)
     svg2 = stream2.getvalue().decode()
     
     
