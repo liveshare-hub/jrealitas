@@ -93,13 +93,13 @@ def detail_kunjungan(request,pk):
     
     qr1 = qrcode.QRCode(
         version=1,
-        error_correction=qrcode.constants.ERRROR_CORRECT_L,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
         border=4,
     )
     qr2 = qrcode.QRCode(
         version=1,
-        error_correction=qrcode.constants.ERRROR_CORRECT_L,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
         box_size=10,
         border=4,
     )
@@ -108,7 +108,7 @@ def detail_kunjungan(request,pk):
     
     qr1.make(fit=True)
     qr2.make(fit=True)
-    
+
     svg1 = qr1.make_image(fill_color="black", back_color="white")
     svg2 = qr1.make_image(fill_color="black", back_color="white")
 
