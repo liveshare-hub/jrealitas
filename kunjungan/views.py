@@ -81,65 +81,42 @@ def detail_kunjungan(request,pk):
     datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
     informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
 
-    # factory = qrcode.image.svg.SvgImage
-    # img = qrcode.make(datas, image_factory=factory, box_size=10)
-    # img2 = qrcode.make(informan, image_factory=factory, box_size=10)
-    # stream1 = BytesIO()
-    # stream2 = BytesIO()
-    # img.save(stream1)
-    # img2.save(stream2)
-    # svg1 = stream1.getvalue().decode()
-    # svg2 = stream2.getvalue().decode()
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(datas, image_factory=factory, box_size=10)
+    img2 = qrcode.make(informan, image_factory=factory, box_size=10)
+    stream1 = BytesIO()
+    stream2 = BytesIO()
+    img.save(stream1)
+    img2.save(stream2)
+    svg1 = stream1.getvalue().decode()
+    svg2 = stream2.getvalue().decode()
     
-    qr1 = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr2 = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-    qr1.add_data(datas)
-    qr2.add_data(informan)
     
-    qr1.make(fit=True)
-    qr2.make(fit=True)
-
-    svg1 = qr1.make_image(fill_color="black", back_color="white")
-    svg2 = qr1.make_image(fill_color="black", back_color="white")
-
-    
-
-
     context = {
         'data':data,
         'svg1':svg1,
         'svg2':svg2
     }
 
-    template = get_template('kunjungan/detil_kunjungan.html')
-    html_render = template.render(context)
+    # template = get_template('kunjungan/detil_kunjungan.html')
+    # html_render = template.render(context)
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
     response["Content-Transfer-Encoding"] = "binary"
 
-    # html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
+    html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
 
-    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
 
-    html = HTML(string=html_render, base_url=request.build_absolute_uri())
+    # html = HTML(string=html_render, base_url=request.build_absolute_uri())
  
     result = html.write_pdf()
 
     # logger = logging.getLogger('weasyprint')
     # logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
 
-    with tempfile.NamedTemporaryFile(delete=False) as output:
+    with tempfile.NamedTemporaryFile(delete=True) as output:
         output.write(result)
         output.flush()
         output = open(output.name, "rb")
