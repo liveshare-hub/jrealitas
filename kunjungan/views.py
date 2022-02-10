@@ -104,26 +104,6 @@ def detail_kunjungan(request,pk):
     img2.save(stream2)
     svg2 = stream2.getvalue().decode('ISO-8859-1')
 
-    # qr = qrcode.QRCode(
-    #     version=2.0,
-    #     error_correction=qrcode.constants.ERROR_CORRECT_Q,
-    #     box_size=10,
-    #     border=4,
-    # )
-    # qr.add_data(datas)
-    # qr.make(fit=True)
-    # img1 = qr.make_image(fill_color="black", back_color="white")
-    # stream1 = BytesIO()
-    # img1.save(stream1)
-    # svg1 = stream1.getvalue().decode("ISO-8859-1")
-
-    # qr.add_data(informan)
-    # qr.make(fit=True)
-    # img2 = qr.make_image(fill_color="black", back_color="white")
-    # stream2 = BytesIO()
-    # img2.save(stream2)
-    # svg2 = stream2.getvalue().decode("ISO-8859-1")
-
     
     context = {
         'data':data,
@@ -131,31 +111,27 @@ def detail_kunjungan(request,pk):
         'svg2':svg2
     }
 
-    # template = get_template('kunjungan/detil_kunjungan.html')
-    # html_render = template.render(context)
+    return render(request, 'kunjungan/detil_kunjungan.html', context)
 
-    response = HttpResponse(content_type="application/pdf")
-    response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
-    response["Content-Transfer-Encoding"] = "binary"
+    # response = HttpResponse(content_type="application/pdf")
+    # response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
+    # response["Content-Transfer-Encoding"] = "binary"
 
-    html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
+    # html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
 
-    html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
 
-    # html = HTML(string=html_render, base_url=request.build_absolute_uri())
  
-    result = html.write_pdf()
+    # result = html.write_pdf()
 
-    # logger = logging.getLogger('weasyprint')
-    # logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
 
-    with tempfile.NamedTemporaryFile(delete=False) as output:
-        output.write(result)
-        output.flush()
-        output = open(output.name, "rb")
-        response.write(output.read())
+    # with tempfile.NamedTemporaryFile(delete=False) as output:
+    #     output.write(result)
+    #     output.flush()
+    #     output = open(output.name, "rb")
+    #     response.write(output.read())
 
-    return response
+    # return response
     
 
 @login_required
