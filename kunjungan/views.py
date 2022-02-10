@@ -172,7 +172,7 @@ class GeneratePDF(View):
         data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
 
         datas = [data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor]
-        informan = [data.to_nama,data.to_jabatan,data.to_alamat,data.to_no_hp]
+        informan = [data.to_nama]
         
         factory = qrcode.image.svg.SvgImage
         img = qrcode.make(datas, image_factory=factory, box_size=20)
