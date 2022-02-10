@@ -121,15 +121,19 @@ def detail_kunjungan(request,pk):
         'svg2':svg2
     }
 
+    template = get_template('kunjungan/detil_kunjungan.html')
+    html_render = template.render(context)
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
     response["Content-Transfer-Encoding"] = "binary"
 
-    html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
-    # result = pdfkit.from_string(html_string, f'BAK_{data.petugas.username.username}')
-    html = HTML(string=html_string, base_url=request.build_absolute_uri())
-    # html = HTML(string=html_string, base_url=".", url_fetcher=default_url_fetcher)
+    # html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
+
+    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+
+    html = HTML(string=html_render, base_url=request.build_absolute_uri())
+ 
     result = html.write_pdf()
 
     # logger = logging.getLogger('weasyprint')
