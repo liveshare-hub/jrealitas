@@ -116,7 +116,7 @@ def detail_kunjungan(request,pk):
     # logger = logging.getLogger('weasyprint')
     # logger.addHandler(logging.FileHandler('/Temp/weasyprint.log'))
 
-    with tempfile.NamedTemporaryFile(delete=True) as output:
+    with tempfile.NamedTemporaryFile(delete=False) as output:
         output.write(result)
         output.flush()
         output = open(output.name, "rb")
@@ -160,7 +160,6 @@ class GeneratePDF(View):
         img2.save(stream2)
         svg1 = stream1.getvalue().decode()
         svg2 = stream2.getvalue().decode()
-        print(svg2)
         template = get_template('kunjungan/detil_kunjungan.html')
         context = {
             'data':data,
@@ -168,11 +167,13 @@ class GeneratePDF(View):
             'svg2':svg2
         }
         html = template.render(context)
+        
         pdf = render_to_pdf('kunjungan/detil_kunjungan.html', context)
+        # pdf = render_to_pdf(html)
         if pdf:
             response = HttpResponse(pdf, content_type='application/pdf')
             filename = "Detil_Kunjungan_%s.pdf" % (data.created)
             content = "inline; filename='%s'" % (filename)
             response['Content-Disposition'] = content
-            return content
+            return response
         return HttpResponse("NOT FOUND")
