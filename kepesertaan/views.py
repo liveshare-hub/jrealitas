@@ -337,6 +337,7 @@ def informasi(request):
 def page_tk(request):
     user = request.user
     npp = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
+    workers = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user)
     
     context = {
         'npps':npp

@@ -39,7 +39,8 @@ def info_context(request):
             return context
         else:
             infos = Informasi.objects.select_related('user').filter(user__username=request.user).order_by('-created')[:5]
-            total_tk = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user).count()
+            workers = Tenaga_kerja.objects.select_related('npp').filter(npp__npp=request.user)
+            total_tk = workers.count()
             perusahaan = Perusahaan.objects.filter(npp=request.user)
             cek_valid = perusahaan.filter(Q(email__isnull=True) | Q(no_hp__isnull=True) | Q(npwp_prsh__isnull=True))
             if perusahaan.exists():
@@ -64,6 +65,7 @@ def info_context(request):
             context = {
                 'info':infos,
                 'total_tk':total_tk,
+                'workers':workers,
                 'pic':pic,
                 'total_kunjungan':kunjungan_pembina,
                 'cek_valid':cek_valid,
