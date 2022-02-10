@@ -60,7 +60,7 @@
                                                             <a href="#" class="badge badge-warning" disabled>BELUM APPROVE</a>
                                                             {% endif %}
                                                             
-                                                            <a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
+                                                            <a href="{% url 'generate-pdf' pk=data.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

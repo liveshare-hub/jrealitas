@@ -163,4 +163,11 @@ class GeneratePDF(View):
             'svg2':svg2
         }
         html = template.render(context)
-        return HttpResponse(html)
+        pdf = render_to_pdf('kunjungan/detil_kunjungan.html', context)
+        if pdf:
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = "Detil_Kunjungan_%s.pdf" % (data.created)
+            content = "inline; filename='%s'" % (filename)
+            response['Content-Disposition'] = content
+            return content
+        return HttpResponse("NOT FOUND")
