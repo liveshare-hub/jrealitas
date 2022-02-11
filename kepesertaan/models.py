@@ -57,7 +57,7 @@ class Profile(models.Model):
 
 
 class Perusahaan(models.Model):
-    nama_pemilik = models.CharField(max_length=100)
+    nama_pemilik = models.CharField(max_length=100, blank=True, null=True)
     nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
     jabatan = models.CharField(max_length=50, default="HRD")
     email = models.EmailField(max_length=100, blank=True, null=True)
@@ -65,12 +65,12 @@ class Perusahaan(models.Model):
     npp = models.CharField(max_length=9)
     nama_perusahaan = models.CharField(max_length=200)
     nama_pic = models.CharField(max_length=100)
-    alamat = models.CharField(max_length=250)
-    kode_pos = models.CharField(max_length=5)
+    alamat = models.CharField(max_length=250, blank=True, null=True)
+    kode_pos = models.CharField(max_length=5, blank=True, null=True)
     npwp_prsh = models.CharField(max_length=15, blank=True, null=True)
-    desa_kel = models.CharField(max_length=100)
-    kecamatan = models.CharField(max_length=100)
-    kota_kab = models.CharField(max_length=100)
+    desa_kel = models.CharField(max_length=100, blank=True, null=True)
+    kecamatan = models.CharField(max_length=100, blank=True, null=True)
+    kota_kab = models.CharField(max_length=100, blank=True, null=True)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     pembina = models.ForeignKey(Profile, on_delete=models.CASCADE)
 

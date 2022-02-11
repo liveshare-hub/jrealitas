@@ -227,12 +227,16 @@
     </div>
 
     <!-- Content Row -->
-
-   
-
 </div>
 <!-- /.container-fluid -->
 
+{% if kepala %}
+    {{ kepala.jabatan.kode_jabatan|json_script:"keode_jabatan" }}
+{% elif pembina %}
+    {{ pembina.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
+{% else %}
+    {{ 0|json_script:"kode_jabatan "}}
+{% endif %}
 {% endblock content %}
 
 {% block javascripts %}
@@ -245,6 +249,8 @@
 <script src="/static/js/demo/chart-pie-demo.js"></script>
 
 <script>
+    const kdJabatan = $("#kode_jabatan").text();
+    console.log(kdJabatan)
     $(document).ready(()=> {
         let jlh_tk = parseInt($("#jlh_tk").text());
         
@@ -260,6 +266,8 @@
                 location.href = '/page/perusahaan/'
             })
         }
+
+        
     })
 </script>
 
