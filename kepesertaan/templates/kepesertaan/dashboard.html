@@ -256,8 +256,11 @@
         let jlh_tk = parseInt($("#jlh_tk").text());
 
         if(value === 0){
-            console.log(validitas)
-            console.log("PERUSAHAAN")
+            if(validitas !== 100){
+                console.log("Tidak valid")
+            }else{
+                console.log("Valid")
+            }
         }
     })
 </script>
