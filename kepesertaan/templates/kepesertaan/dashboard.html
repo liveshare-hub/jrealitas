@@ -249,10 +249,10 @@
 <script src="/static/js/demo/chart-pie-demo.js"></script>
 
 <script>
-    const kdJabatan = $("#kode_jabatan").text();
-    const idJabatan = JSON.parse(kdJabatan)
-    console.log(idJabatan)
+    
     $(document).ready(()=> {
+        const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
+        console.log(value)
         let jlh_tk = parseInt($("#jlh_tk").text());
         //
         //if(jlh_tk === 0){
