@@ -40,6 +40,10 @@ def index(request):
     #dashboard
     return render(request, 'kepesertaan/dashboard.html')
 
+
+# def edit_perusahaan(request):
+
+
 @login_required(login_url='/accounts/login/')
 def data_user(request):
     user = request.user
