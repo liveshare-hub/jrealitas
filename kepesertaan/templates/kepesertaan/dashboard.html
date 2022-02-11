@@ -252,23 +252,25 @@
     
     $(document).ready(()=> {
         const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
-        console.log(value)
-        let jlh_tk = parseInt($("#jlh_tk").text());
-        //
-        //if(jlh_tk === 0){
-        //    swal({
-        //        title:"PERINGATAN!",
-        //        text:"Tenaga Kerja Anda Masih 0",
-        //        icon:"warning",
-        //        
-        //        dangerMode:true,
-        //    })
-        //    .then((willDelete)=> {
-        //        location.href = '/page/perusahaan/'
-        //    })
-        //}
-
         
+        let jlh_tk = parseInt($("#jlh_tk").text());
+        
+        if(jlh_tk === 0){
+            swal({
+                title:"PERINGATAN!",
+                text:"Tenaga Kerja Anda Masih 0",
+                icon:"warning",
+                
+                dangerMode:true,
+            })
+            .then((willDelete)=> {
+                location.href = '/page/perusahaan/'
+            })
+        }
+
+        if(value === 0){
+            console.log("PERUSAHAAN")
+        }
     })
 </script>
 
