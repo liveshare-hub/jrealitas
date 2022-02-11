@@ -57,6 +57,18 @@ def info_context(request):
                     counter +=1
                 if cek_valid[0].npwp_prsh is None:
                     counter +=1
+                if cek_valid[0].nik is None:
+                    counter +=1
+                if cek_valid[0].alamat is None:
+                    counter +=1
+                if cek_valid[0].kode_pos is None:
+                    counter +=1
+                if cek_valid[0].desa_kel is None:
+                    counter +=1
+                if cek_valid[0].kecamatan is None:
+                    counter +=1
+                if cek_valid[0].kota_kab is None:
+                    counter +=1
                 
                 
             persen_val = 100 - (100 * float(counter)/float(total))  

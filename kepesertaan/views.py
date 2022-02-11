@@ -168,7 +168,7 @@ def Daftar_Perusahaan(request):
     else:
         # if password1 == password2 :
         encsalt = fernet.encrypt(npp.encode())
-        password = make_password(npp, salt=[encsalt.decode('utf-8')])
+        password = make_password("WELCOME1", salt=[encsalt.decode('utf-8')])
         user = User.objects.create(username=username, password=password)
 
         Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, npp=npp,
