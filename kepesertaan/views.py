@@ -140,62 +140,60 @@ def Daftar_Pembina(request):
 def Daftar_Perusahaan(request):
     npp = request.POST.get('npp') or request.POST.get('npp_admin')
     nama_pers = request.POST.get('nama_pemberi_kerja') or request.POST.get('nama_pemberi_kerja_admin')
-    nik = request.POST.get('nik') or request.POST.get('nik_admin')
+    # nik = request.POST.get('nik') or request.POST.get('nik_admin')
     nama_pic = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
-    jabatan = request.POST.get('id_jabatan')
+    # jabatan = request.POST.get('id_jabatan')
     pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
-    email = request.POST.get('email') or request.POST.get('email_admin')
-    no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
-    pemilik = request.POST.get('nama_pemilik') or request.POST.get('nama_pemilik_admin')
-    npwp = request.POST.get('npwp') or request.POST.get('npwp_admin')
-    alamat = request.POST.get('alamat_perusahaan') or request.POST.get('alamat_perusahaan_admin')
-    desa_kel = request.POST.get('desa_kel') or request.POST.get('desa_kel_admin')
-    kecamatan = request.POST.get('kecamatan') or request.POST.get('kecamatan_admin')
-    kota_kab = request.POST.get('kota_kab') or request.POST.get('kota_kab_admin')
-    kode_pos = request.POST.get('kode_pos') or request.POST.get('kode_pos_admin')
+    # email = request.POST.get('email') or request.POST.get('email_admin')
+    # no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
+    # pemilik = request.POST.get('nama_pemilik') or request.POST.get('nama_pemilik_admin')
+    # npwp = request.POST.get('npwp') or request.POST.get('npwp_admin')
+    # alamat = request.POST.get('alamat_perusahaan') or request.POST.get('alamat_perusahaan_admin')
+    # desa_kel = request.POST.get('desa_kel') or request.POST.get('desa_kel_admin')
+    # kecamatan = request.POST.get('kecamatan') or request.POST.get('kecamatan_admin')
+    # kota_kab = request.POST.get('kota_kab') or request.POST.get('kota_kab_admin')
+    # kode_pos = request.POST.get('kode_pos') or request.POST.get('kode_pos_admin')
     username = request.POST.get('username') or request.POST.get('username_admin')
-    password1 = request.POST.get('password1') or request.POST.get('password1_admin')
-    password2 = request.POST.get('password2') or request.POST.get('password2_admin')
+    # password1 = request.POST.get('password1') or request.POST.get('password1_admin')
+    # password2 = request.POST.get('password2') or request.POST.get('password2_admin')
 
     key = Fernet.generate_key()
     fernet = Fernet(key)
 
     cek_npp = Perusahaan.objects.filter(username__username=username)
 
-    if jabatan == 3:
-        if cek_npp.exists():
-            return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
-        else:
-            if password1 == password2 :
-                encsalt = fernet.encrypt(npp.encode())
-                password = make_password(password1, salt=[encsalt.decode('utf-8')])
-                user = User.objects.create(username=username, password=password)
-
-                Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
-                    no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
-                    alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
-                    pembina_id=int(pembina))
-
-                return JsonResponse({'success':'done'})
-            else:
-                return JsonResponse({'error':'Password tidak sama!'})
+    
+    if cek_npp.exists():
+        return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
     else:
-        if cek_npp.exists():
-            return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
-        else:
-            if password1 == password2 :
-                encsalt = fernet.encrypt(npp.encode())
-                password = make_password(password1, salt=[encsalt.decode('utf-8')])
-                user = User.objects.create(username=username, password=password)
-                
-                Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
-                    no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
-                    alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
-                    pembina_id=int(pembina))
+        # if password1 == password2 :
+        encsalt = fernet.encrypt(npp.encode())
+        password = make_password(npp, salt=[encsalt.decode('utf-8')])
+        user = User.objects.create(username=username, password=password)
 
-                return JsonResponse({'success':'done'})
-            else:
-                return JsonResponse({'error':'Password tidak sama!'})
+        Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, npp=npp,
+            nama_perusahaan=nama_pers, pembina_id=int(pembina))
+
+        return JsonResponse({'success':'done'})
+        # else:
+        #     return JsonResponse({'error':'Password tidak sama!'})
+    # else:
+    #     if cek_npp.exists():
+    #         return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
+    #     else:
+    #         if password1 == password2 :
+    #             encsalt = fernet.encrypt(npp.encode())
+    #             password = make_password(password1, salt=[encsalt.decode('utf-8')])
+    #             user = User.objects.create(username=username, password=password)
+                
+    #             Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
+    #                 no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
+    #                 alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
+    #                 pembina_id=int(pembina))
+
+    #             return JsonResponse({'success':'done'})
+    #         else:
+    #             return JsonResponse({'error':'Password tidak sama!'})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
