@@ -58,7 +58,7 @@ class Profile(models.Model):
 
 class Perusahaan(models.Model):
     nama_pemilik = models.CharField(max_length=100, blank=True, null=True)
-    nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR])
+    nik = models.CharField(max_length=16, validators=[NIK_VALIDATOR], blank=True, null=True)
     jabatan = models.CharField(max_length=50, default="HRD")
     email = models.EmailField(max_length=100, blank=True, null=True)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR], blank=True, null=True)
