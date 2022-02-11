@@ -256,7 +256,11 @@
         let jlh_tk = parseInt($("#jlh_tk").text());
 
         if(value === 0){
-            console.log(validitas)
+            if(validitas !== 100){
+                console.log("Data Tidak valid")
+            }else{
+                console.log("VAlid")
+            }
         }
     })
 </script>
