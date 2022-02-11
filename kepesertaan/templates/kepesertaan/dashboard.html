@@ -197,7 +197,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                 <a href="#" class="fancy-link">% Validitas</a></div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="validitas">{{ persen_val|stringformat:"0.2f %%" }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800" id="validitas" data-val="{{persen_val}}" >{{ persen_val|stringformat:"0.2f %%" }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -252,7 +252,7 @@
     
     $(document).ready(()=> {
         const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
-        let validitas = $("#validitas").text();
+        let validitas = $("#validitas").attr('data-val');
         let jlh_tk = parseInt($("#jlh_tk").text());
 
         if(value === 0){
