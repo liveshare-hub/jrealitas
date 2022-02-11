@@ -231,11 +231,11 @@
 <!-- /.container-fluid -->
 
 {% if kepala %}
-    {{ kepala.jabatan.kode_jabatan|json_script:"keode_jabatan" }}
+    {{ kepala.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
 {% elif pembina %}
     {{ pembina.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
 {% else %}
-    {{ 0|json_script:"kode_jabatan "}}
+    {{ 0|json_script:"kode_jabatan" }}
 {% endif %}
 {% endblock content %}
 
