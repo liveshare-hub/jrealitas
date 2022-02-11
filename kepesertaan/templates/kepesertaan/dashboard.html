@@ -252,15 +252,11 @@
     
     $(document).ready(()=> {
         const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
-        let validitas = $("#validitas").attr('data-val');
+        let validitas = parseInt($("#validitas").attr('data-val'));
         let jlh_tk = parseInt($("#jlh_tk").text());
 
         if(value === 0){
-            if(validitas !== 100){
-                console.log("Tidak valid")
-            }else{
-                console.log("Valid")
-            }
+            console.log(validitas)
         }
     })
 </script>
