@@ -26,6 +26,7 @@ class berita_kunjungan(models.Model):
     to_lokasi = models.CharField(max_length=100)
     tujuan = models.CharField(choices=TUJUAN, max_length=2)
     hasil = models.TextField()
+    # qrcode_pembina = models.ImageField()
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
