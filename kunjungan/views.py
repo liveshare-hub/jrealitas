@@ -239,7 +239,7 @@ def docPDF(request,pk):
     # bounds = qr_code.getBounds()
     # width = bounds[2] - bounds[0]
     # height = bounds[3] - bounds[1]
-    # c = Drawing(45, 45, transform=[200./width, 0, 0, 200./height, 0, 0])
+    c = Drawing(25, 25, transform=[200, 0, 0, 200, 0, 0])
     # c.add(qr_code)
     renderPDF.draw( p, 320, 600)
     p.showPage()
