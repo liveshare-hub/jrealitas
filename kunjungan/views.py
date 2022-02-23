@@ -196,20 +196,52 @@ class GeneratePDF(View):
 
 def docPDF(request,pk):
     data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
+    datas = """
+    User : %s
+    Nama Petugas : %s
+    Jabatan : %s
+    Kode Kantor : %s
+    """ % (data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor)
+
+    informan = """
+    Nama : %s
+    Sebagai : %s
+    No HP : %s
+    """ % (data.to_nama,data.to_jabatan,data.to_no_hp)
+
+    factory = qrcode.image.svg.SvgImage
+    img = qrcode.make(datas, image_factory=factory, box_size=10)
+    stream1 = BytesIO()
+    img.save(stream1)
+    svg1 = stream1.getvalue().decode('ISO-8859-1')
+    img2 = qrcode.make(informan, image_factory=factory, box_size=10)    
+    stream2 = BytesIO()
+    img2.save(stream2)
+    svg2 = stream2.getvalue().decode('ISO-8859-1')
+
+    
+    context = {
+        'data':data,
+        'svg1':svg1,
+        'svg2':svg2
+    }
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="berita_kunjungan.pdf"'
     p = canvas.Canvas(response)
-    p.drawString(60, 720, "Nganu")
-    p.drawString(60, 700, "Ngintil")
 
-    fecha = str(data.pk)
-    qr_code = qr.QrCodeWidget("TEsting file pdf: " + fecha)
-    bounds = qr_code.getBounds()
-    width = bounds[2] - bounds[0]
-    height = bounds[3] - bounds[1]
-    c = Drawing(45, 45, transform=[200./width, 0, 0, 200./height, 0, 0])
-    c.add(qr_code)
-    renderPDF.draw(c, p, 320, 600)
+    html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
+    p.drawString(html_string)
+    # p.drawString(60, 700, "Ngintil")
+
+    # fecha = str(data.pk)
+    # qr_code = qr.QrCodeWidget("TEsting file pdf: " + fecha)
+    # bounds = qr_code.getBounds()
+    # width = bounds[2] - bounds[0]
+    # height = bounds[3] - bounds[1]
+    # c = Drawing(45, 45, transform=[200./width, 0, 0, 200./height, 0, 0])
+    # c.add(qr_code)
+    renderPDF.draw( p, 320, 600)
     p.showPage()
     p.save()
     return response
