@@ -231,7 +231,7 @@ def docPDF(request,pk):
     p = canvas.Canvas(response)
 
     html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
-    p.drawString(html_string)
+    p.drawString(0,0, html_string)
     # p.drawString(60, 700, "Ngintil")
 
     # fecha = str(data.pk)
