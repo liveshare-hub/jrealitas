@@ -119,17 +119,17 @@ def detail_kunjungan(request,pk):
 
     html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
 
-    # html = HTML(string=html_string, base_url=request.build_absolute_uri())
+    html = HTML(string=html_string, base_url=request.build_absolute_uri())
 
  
-    # result = html.write_pdf()
+    result = html.write_pdf()
 
 
-    # with tempfile.NamedTemporaryFile(delete=False) as output:
-    #     output.write(result)
-    #     output.flush()
-    #     output = open(output.name, "rb")
-    #     response.write(output.read())
+    with tempfile.NamedTemporaryFile(delete=False) as output:
+        output.write(result)
+        output.flush()
+        output = open(output.name, "rb")
+        response.write(output.read())
 
     return response
     
