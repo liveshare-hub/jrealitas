@@ -241,7 +241,7 @@ def docPDF(request,pk):
     # height = bounds[3] - bounds[1]
     c = Drawing(25, 25, transform=[200, 0, 0, 200, 0, 0])
     # c.add(qr_code)
-    renderPDF.draw( p, 320, 600)
+    renderPDF.draw(c, p, 320, 600)
     p.showPage()
     p.save()
     return response
