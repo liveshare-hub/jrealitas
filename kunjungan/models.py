@@ -4,8 +4,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from kepesertaan.models import Perusahaan, Profile
 
-import PIL
-
 User = get_user_model()
 
 TUJUAN = (

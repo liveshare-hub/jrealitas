@@ -15,9 +15,15 @@ from weasyprint import HTML
 import tempfile
 # import pdfkit
 import qrcode
+
 import qrcode.image.svg
 from io import BytesIO
 
+from reportlab.graphics.shapes import Drawing
+from reportlab.graphics.barcode import qr
+from reportlab.lib.pagesizes import A4
+from reportlab.graphics import renderPDF
+from reportlab.pdfgen import canvas
 
 from kepesertaan.models import Profile
 from .models import berita_kunjungan, approval_bak
@@ -187,3 +193,23 @@ class GeneratePDF(View):
             #GET RESPONSE
             return response
         return HttpResponse("NOT FOUND")
+
+def docPDF(request,pk):
+    data = berita_kunjungan.objects.select_related('petugas').get(pk=pk)
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="berita_kunjungan.pdf"'
+    p = canvas.Canvas(response)
+    p.drawString(60, 720, "Nganu")
+    p.drawString(60, 700, "Ngintil")
+
+    fecha = str(data.pk)
+    qr_code = qr.QrCodeWidget("TEsting file pdf: " + fecha)
+    bounds = qr_code.getBounds()
+    width = bounds[2] - bounds[0]
+    height = bounds[3] - bounds[1]
+    c = Drawing(45, 45, transform=[200./width, 0, 0, 200./height, 0, 0])
+    c.add(qr_code)
+    renderPDF.draw(c, p, 320, 600)
+    p.showPage()
+    p.save()
+    return response
