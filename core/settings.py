@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'chat',
     'mychats',
     'kunjungan',
+    'qr_code',
     #'channels',
      #graphene
     

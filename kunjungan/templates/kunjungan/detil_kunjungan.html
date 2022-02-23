@@ -1,5 +1,5 @@
 {% load static %}
-
+{% load qr_code %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -177,10 +177,10 @@
                     </div>
                     <div class="row mt-4">
                         <div class="col-6 text-center">
-                            {{svg2|safe}}
+                            {% qr_from_text "Hello World!" size="m" image_format="png" error_correction="L" %}
                         </div>
                         <div class="col-6 text-center">
-                            {{svg1|safe}}
+                            {% qr_from_text "Hello World!" size="m" image_format="png" error_correction="L" %}
                         </div>
                     </div>
                     <div class="row">
