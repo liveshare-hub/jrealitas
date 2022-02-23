@@ -20,7 +20,7 @@ from .models import (
     Perusahaan, Tenaga_kerja
 )
 
-from .forms import PembinaForm
+from .forms import PembinaForm, PerusahaanForm
 
 fs = FileSystemStorage(location='/informasi/attachment')
 
@@ -194,6 +194,20 @@ def Daftar_Perusahaan(request):
     #             return JsonResponse({'success':'done'})
     #         else:
     #             return JsonResponse({'error':'Password tidak sama!'})
+
+def edit_profile_perusahaan(request):
+    username = request.user
+    cek_npp = Perusahaan.objects.get(npp=username)
+    
+    if request.method == 'POST':
+        form = PerusahaanForm(request.POST, instance=cek_npp)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = PerusahaanForm(instance=cek_npp)
+        return render(request, 'kepesertaan/edit_pers.html', {'form':form})
+    
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt

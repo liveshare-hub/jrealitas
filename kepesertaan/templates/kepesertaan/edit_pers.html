@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit NPP {% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="col">
+        <div class="card">
+            <div class="card-header text-center">
+                Edit NPP
+            </div>
+            <div class="card-body">
+                <form action="" method="post">
+                    {% csrf_token %}
+                    <div class="row">
+
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_nama_pic">Nama PIC</label>
+                                {{form.nama_pic}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_nik">NIK</label>
+                                {{form.nik}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_jabatan">Jabatan</label>
+                                {{form.jabatan}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_no_hp">No Handphone</label>
+                                {{form.no_hp}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_email">Email</label>
+                                {{form.email}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_npwp_prsh">NPWP Perusahaan</label>
+                                {{form.npwp_prsh}}
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label for="id_nama_pemilik">Nama Pemilik Perusahaan</label>
+                                {{form.nama_pemilik}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_alamat">Alamat Perusahaan</label>
+                                {{form.alamat}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_kode_pos">Kode Pos</label>
+                                {{form.kode_pos}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_desa_kel">Desa/Kelurahan</label>
+                                {{form.desa_kel}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_kecamatan">Kecamatan</label>
+                                {{form.kecamatan}}
+                            </div>
+                            <div class="form-group">
+                                <label for="id_kota_kab">Kota/Kabupaten</label>
+                                {{form.kota_kab}}
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary float-right">UPDATE</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}{% endblock javascripts %}

@@ -2,7 +2,7 @@ from django import forms
 from django.db.models import fields
 from django.forms import widgets
 
-from .models import Informasi, Profile
+from .models import Informasi, Perusahaan, Profile
 
 class UploadForm(forms.Form):
     file = forms.FileField()
@@ -50,3 +50,47 @@ class PembinaForm(forms.ModelForm):
             })
         }
 
+
+class PerusahaanForm(forms.ModelForm):
+    class Meta:
+        model = Perusahaan
+        exclude = ('username','pembina','npp',)
+
+        widgets = {
+            'nama_pemilik':forms.TextInput(attrs={
+                'class':'form-control'
+            }),
+            'nik':forms.TextInput(attrs={
+                'class':'form-control'
+            }),
+            'jabatan':forms.TextInput(attrs={
+                'class':'form-control'
+            }),
+            'email':forms.EmailInput(attrs={
+                'class':'form-control',
+            }),
+            'no_hp':forms.TextInput(attrs={
+                'class':'form-control', 'maxlength':'13'
+            }),
+            'nama_pic':forms.TextInput(attrs={
+                'class':'form-control'
+            }),
+            'alamat':forms.TextInput(attrs={
+                'class':'form-control'
+            }),
+            'kode_pos':forms.TextInput(attrs={
+                'class':'form-control', 'maxlength':'5'
+            }),
+            'npwp_prsh':forms.TextInput(attrs={
+                'class':'form-control', 'maxlength':'15'
+            }),
+            'desa_kel':forms.TextInput(attrs={
+                'class':'form-control','maxlength':'100'
+            }),
+            'kecamatan':forms.TextInput(attrs={
+                'class':'form-control','maxlength':'100'
+            }),
+            'kota_kab':forms.TextInput(attrs={
+                'class':'form-control', 'maxlength':'100'
+            })
+        }

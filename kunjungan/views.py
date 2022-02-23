@@ -115,7 +115,7 @@ def detail_kunjungan(request,pk):
 
     response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = f'inline;filename="BAK-{data.petugas.username.username}.pdf"'
-    # response["Content-Transfer-Encoding"] = "binary"
+    response["Content-Transfer-Encoding"] = "binary"
 
     html_string = render_to_string("kunjungan/detil_kunjungan.html",context,request=request)
 

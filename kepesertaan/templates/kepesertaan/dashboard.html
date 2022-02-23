@@ -229,7 +229,7 @@
     <!-- Content Row -->
 </div>
 <!-- /.container-fluid -->
-
+{{ request.user.username|json_script:"username_id" }}
 {% if kepala %}
     {{ kepala.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
 {% elif pembina %}
@@ -252,12 +252,20 @@
     
     $(document).ready(()=> {
         const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
+        const username_id = JSON.parse(document.getElementById('username_id').textContent)
         let validitas = parseInt($("#validitas").attr('data-val'));
         let jlh_tk = parseInt($("#jlh_tk").text());
 
         if(value === 0){
             if(validitas !== 100){
-                console.log("Data Tidak valid")
+                Swal.fire({
+                    title:'DATA PERUSAHAAN ANDA BELUM VALID!',
+                    confirmButtonText:'UPDATE',
+                }).then((result) => {
+                    if(result.isConfirmed){
+                        window.location = '/update/perusahaan/'
+                    }
+                })
             }else{
                 console.log("VAlid")
             }

@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from kepesertaan.models import Perusahaan, Profile
 
+import PIL
+
 User = get_user_model()
 
 TUJUAN = (
@@ -28,6 +30,10 @@ class berita_kunjungan(models.Model):
 
     def __str__(self):
         return f'{self.petugas.username.username} - {self.to_perusahaan.npp}'
+
+    # def save(self, *args, **kwargs):
+
+    #     return super().save(*args, **kwargs)
 
 class approval_bak(models.Model):
     berita_acara = models.ForeignKey(berita_kunjungan, on_delete=models.CASCADE)
