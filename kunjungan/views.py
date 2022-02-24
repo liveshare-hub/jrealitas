@@ -63,19 +63,20 @@ def kunjungan(request):
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
 def simpan_kunjungan(request):
-    petugas = request.POST['petugas']
-    npp = request.POST['npp']
-    nama = request.POST['nama']
-    jabatan = request.POST['jabatan']
-    alamat = request.POST['alamat']
-    no_hp = request.POST['no_hp']
-    tujuan = request.POST['tujuan']
-    lokasi = request.POST['lokasi']
-    hasil = request.POST['hasil']
+    petugas = request.POST.get('petugas')
+    npp = request.POST.get('npp')
+    nama = request.POST.get('nama')
+    jabatan = request.POST.get('jabatan')
+    alamat = request.POST.get('alamat')
+    no_hp = request.POST.get('no_hp')
+    tujuan = request.POST.get('tujuan')
+    lokasi = request.POST.get('lokasi')
+    hasil = request.POST.get('hasil')
+
 
     profile = Profile.objects.select_related('username').get(username__username=petugas)
     if profile:
-        buat_bak = berita_kunjungan.objects.create(petugas_id=profile.pk, to_nama=nama, to_jabatan=jabatan,
+        buat_bak = berita_kunjungan.objects.create(petugas_id=profile.id, to_nama=nama, to_jabatan=jabatan,
             to_perusahaan_id=npp, to_alamat=alamat, to_no_hp=no_hp, tujuan=tujuan, hasil=hasil, to_lokasi=lokasi)
         return JsonResponse({'success':'Berita Acara Berhasil di simpan'})
     return JsonResponse({'error':'Gagal Disimpan! Periksa Kembali Data Anda'})
@@ -89,10 +90,9 @@ def detail_kunjungan(request,pk):
 
     datas = """
     User : %s
-    Nama Petugas : %s
     Jabatan : %s
     Kode Kantor : %s
-    """ % (data.petugas.username.username,data.petugas.nama,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor)
+    """ % (data.petugas.username.username,data.petugas.jabatan.nama_jabatan,data.petugas.kode_kantor.kode_kantor)
 
     informan = """
     Nama : %s
@@ -113,8 +113,10 @@ def detail_kunjungan(request,pk):
     
     context = {
         'data':data,
-        'svg1':svg1,
-        'svg2':svg2
+        # 'svg1':svg1,
+        # 'svg2':svg2
+        'datas':datas,
+        'informan':informan
     }
 
     # return render(request, 'kunjungan/detil_kunjungan.html', context)

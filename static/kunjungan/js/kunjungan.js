@@ -9,6 +9,7 @@ query{
 
 
 function SimpanKunjungan(){
+    console.log($("#id_petugas").val())
     var data = new FormData()
     data.append("nama",$("#id_to_nama").val())
     data.append("npp", $('select#id_npp option').filter(':selected').val())

@@ -1,4 +1,7 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
+
 from . import views
 
 urlpatterns = [
@@ -10,4 +13,4 @@ urlpatterns = [
     path('approval/<int:pk>/done/', views.approval_kunjungan, name='approval-kunjungan'),
     path('pdf/<int:pk>/', views.GeneratePDF.as_view(), name='generate-pdf'),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
