@@ -95,7 +95,7 @@
               
             } else if (
               /* Read more about handling dismissals below */
-              result.isDenied
+              result.dismiss == 'cancel'
             ) {
               $.ajax({
                   method:"POST",
