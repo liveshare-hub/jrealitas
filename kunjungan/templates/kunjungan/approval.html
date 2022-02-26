@@ -90,14 +90,14 @@
                             'Berita Acara Kunjungan Sudah Anda Setujui',
                             'success'
                         )
-                    window.location = '/kunjungan/approval/list/'
                     }
                 })
               
             } else if (
               /* Read more about handling dismissals below */
-              result.dismiss == 'cancel'
+              result.isDismissed
             ) {
+                alert('cancel clicked!')
               $.ajax({
                   method:"POST",
                   url:`/kunjungan/approval/${pk}/done/`,
@@ -110,7 +110,6 @@
                           'Berita Acara Kunjungan di Tolak',
                           'error'
                       )
-                      window.location = '/kunjungan/approval/list/'
                   }
               })
               
