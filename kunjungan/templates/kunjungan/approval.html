@@ -74,7 +74,7 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Ya, Setuju!',
-            cancelButtonText: 'Tidak, cancel!',
+            cancelButtonText: 'Tidak, Tolak!',
             reverseButtons: true
           }).then((result) => {
             if (result.isConfirmed) {
@@ -95,7 +95,7 @@
               
             } else if (
               /* Read more about handling dismissals below */
-              result.dismiss === Swal.DismissReason.cancel
+              result.dismiss
             ) {
               $.ajax({
                   method:"POST",
