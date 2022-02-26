@@ -19,6 +19,12 @@ TUJUAN = (
     ('5','PEMBINAAN FASILITAS KESEHATAN (PLKK)')
 )
 
+STATUS = (
+    ('0','PROSES'),
+    ('1','SETUJU'),
+    ('2','DITOLAK')
+)
+
 class berita_kunjungan(models.Model):
     petugas = models.ForeignKey(Profile, on_delete=models.CASCADE)
     to_perusahaan = models.ForeignKey(Perusahaan, on_delete=models.CASCADE)
@@ -80,7 +86,8 @@ class berita_kunjungan(models.Model):
 
 class approval_bak(models.Model):
     berita_acara = models.ForeignKey(berita_kunjungan, on_delete=models.CASCADE)
-    approved = models.BooleanField(default=False)
+    # approved = models.BooleanField(default=False)
+    status = models.CharField(max_length=1, choices=STATUS, default='0')
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

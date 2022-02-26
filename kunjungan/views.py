@@ -39,7 +39,7 @@ def kunjungan(request):
     # print(profile.pk)
     if profile:
         data_kunjungan = berita_kunjungan.objects.select_related('petugas').filter(petugas__username__username=profile.username).annotate(
-            status_approve=Subquery(approval_bak.objects.filter(berita_acara_id=OuterRef('pk')).values('approved'))
+            status=Subquery(approval_bak.objects.filter(berita_acara_id=OuterRef('pk')).values('status'))
         )
         # data_kunjungan = berita_kunjungan.objects.select_related('petugas').all()
     else:
@@ -156,8 +156,16 @@ def daftar_approval_kunjungan(request):
 @csrf_exempt
 def approval_kunjungan(request, pk):
     datas = approval_bak.objects.select_related('berita_acara').filter(pk=pk)
+    status = request.POST.get('status')
+    print(status)
     if datas.exists():
-        datas.update(approved=True)
+        if status == 1:
+            datas.update(status=1)
+            return redirect('list-approval')
+        if status == 2:
+            datas.update(status=2)
+            return redirect('list-approval')
+        return redirect('dashboard')
         
 
     

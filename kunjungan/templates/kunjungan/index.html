@@ -6,9 +6,9 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
             <div class="card mb-3">
                 <div class="card-header">
                     <div class="nav-tabs-navigation">
@@ -54,13 +54,15 @@
                                                         <td>{{data.to_alamat}}</td>
                                                         <td>{{data.created|date:"D, d-m-Y"}}</td>
                                                         <td>
-                                                            {% if data.status_approve %}
-                                                            <a href="#" class="btn btn-sm btn-success" disabled>SETUJU</a>
+                                                            {% if data.status == '1' %}
+                                                                <button type="button" class="btn btn-sm btn-success" disabled>SETUJU</button>
+                                                            {% elif data.status == '2' %}
+                                                                <button type="button" class="btn btn-sm btn-danger" disabled>TOLAK</button>
                                                             {% else %}
-                                                            <a href="#" class="badge badge-warning" disabled>BELUM APPROVE</a>
-                                                            {% endif %}
-                                                            
-                                                            <a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
+                                                                <a href="#" class="btn btn-sm btn-warning" disabled>PROSES</a>
+                                                            {% endif %}             
+                                                            <br />                                               
+                                                            <a href="{% url 'detil-kunjungan' pk=data.pk %}" class="btn btn-sm btn-primary mt-2" target="_blank">Detail</a>
                                                         </td>
                                                     </tr>
                                                 {% endfor %}

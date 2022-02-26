@@ -34,10 +34,12 @@
                                                 <td class="text-center">{{data.berita_acara.petugas.nama}}</td>
                                                 <td class="text-center">{{data.berita_acara.created|date:"D, d-m-Y"}}</td>
                                                 <td>
-                                                {% if data.approved %}
+                                                {% if data.status == '1' %}
                                                     <button type="button" class="btn btn-sm btn-success" disabled>SETUJU</button>
+                                                {% elif data.status == '2' %}
+                                                    <button type="button" class="btn btn-sm btn-danger" disabled>TOLAK</button>
                                                 {% else %}
-                                                    <a href="#" class="btn btn-sm btn-primary" id="approval_bak" data-pk={{data.pk}}>SETUJU</a>
+                                                    <a href="#" class="btn btn-sm btn-warning" id="approval_bak" data-pk={{data.pk}}>PROSES</a>
                                                 {% endif %}
                                                     <a href="{% url 'detil-kunjungan' pk=data.berita_acara.pk %}" class="btn btn-sm btn-primary float-right" target="_blank">Detail</a>
                                                 </td>
@@ -79,6 +81,9 @@
                 $.ajax({
                     method:"POST",
                     url:`/kunjungan/approval/${pk}/done/`,
+                    data:{
+                        'status':'1'
+                    },
                     success:function(data){
                         swalWithBootstrapButtons.fire(
                             'Approved!',
@@ -92,13 +97,23 @@
               /* Read more about handling dismissals below */
               result.dismiss === Swal.DismissReason.cancel
             ) {
-              swalWithBootstrapButtons.fire(
-                'Tolak',
-                'Berita Acara Kunjungan di Tolak',
-                'error'
-              )
-            }
-          })
-      })
+              $.ajax({
+                  method:"POST",
+                  url:`/kunjungan/approval/${pk}/done/`,
+                  data:{
+                      'status':'2'
+                  },
+                  success:function(data){
+                      swalWithBootstrapButtons.fire(
+                          'Tolak',
+                          'Berita Acara Kunjungan di Tolak',
+                          'error'
+                      )
+                  }
+              })
+              
+          }
+        })
+    })
 </script>
 {% endblock javascripts %}
