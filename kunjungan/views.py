@@ -160,10 +160,10 @@ def approval_kunjungan(request, pk):
     print(status)
     if datas.exists():
         if status == 1:
-            datas.update(status='1')
+            datas.update(status=1)
             return redirect('list-approval')
-        if status == '2':
-            datas.update(status='2')
+        if status == 2:
+            datas.update(status=2)
             return redirect('list-approval')
         return redirect('dashboard')
         
