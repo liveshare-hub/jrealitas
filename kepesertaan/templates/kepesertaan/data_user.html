@@ -462,16 +462,16 @@
                                                         <td>{{forloop.counter}}</td>
                                                         <td>{{data.npp}}</td>
                                                         <td>{{data.nama_perusahaan}}</td>
-                                                        <td>{% if data.alamat %}{{data.alamat}}</td>
+                                                        {% if data.alamat %}<td>{{data.alamat}}</td>
                                                         {% else %}<td> - </td>
                                                         {% endif %}
-                                                        <td>{% if data.desa_kel %}{{data.desa_kel}}</td>
+                                                        {% if data.desa_kel %}<td>{{data.desa_kel}}</td>
                                                         {% else %}<td> - </td>
                                                         {% endif %}
-                                                        <td>{% if data.kecamatan %}{{data.kecamatan}}</td>
+                                                        {% if data.kecamatan %}<td>{{data.kecamatan}}</td>
                                                         {% else %}<td> - </td>
                                                         {% endif %}
-                                                        <td>{% if data.kota_kab %}{{data.kota_kab}}</td>
+                                                        {% if data.kota_kab %}<td>{{data.kota_kab}}</td>
                                                         {% else %}<td> - </td>
                                                         {% endif %}
                                                         <td>
