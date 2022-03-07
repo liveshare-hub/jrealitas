@@ -213,7 +213,7 @@ def edit_profile_perusahaan(request):
         kecamatan = request.POST.get('kecamatan')
         kota_kab = request.POST.get('kota_kab')
         User.objects.filter(username=username).update(email=email)
-        Perusahaan.objects.select_for_update('username').filter(username__username=username).update(nama_pemilik=nama_pemilik,
+        Perusahaan.objects.filter(username__username=username).update(nama_pemilik=nama_pemilik,
             nik=nik, email=email, no_hp=no_hp,alamat=alamat,kode_pos=kode_pos,npwp_prsh=npwp_prsh,desa_kel=desa_kel,
             kecamatan=kecamatan,kota_kab=kota_kab)
         return redirect('dashboard')
