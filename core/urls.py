@@ -21,7 +21,7 @@ urlpatterns = [
     path('accounts/logout/', logout_view, name='logout'),
     path('ganti/password/<int:pk>', edit_password, name='edit-password'),
     path('accounts/reset_password/', auth_views.PasswordResetView.as_view(template_name="registration/reset_password.html"), name="reset_password"),
-    path('accounts/reset_password_sent/',auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path('accounts/reset_password_sent/',auth_views.PasswordResetDoneView.as_view(template_name="registration/reset_password_confirmation.html"), name="password_reset_done"),
     path('accounts/reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('accounts/reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('hapus/user/<int:pk>', delete_user, name='hapus-user'),
