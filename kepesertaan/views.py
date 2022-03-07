@@ -197,7 +197,7 @@ def Daftar_Perusahaan(request):
 
 def edit_profile_perusahaan(request):
     username = request.user
-    # cek_npp = Perusahaan.objects.get(npp=username)
+    cek_npp = Perusahaan.objects.get(npp=username)
     # cek_npp = get_object_or_404(pk=username)
     
     if request.method == 'POST':
