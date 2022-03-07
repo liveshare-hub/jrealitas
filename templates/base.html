@@ -121,6 +121,21 @@
                                     </div>
                                 </a>
                                 {% endfor %}
+                                {% if not kepala or not pembina %}
+                                {% if not total_tk %}
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fas fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        
+                                        <span class="small font-weight-bold">TK anda masih 0. Harap mengisi daftar tenaga kerja anda.</span>
+                                    </div>
+                                </a>
+                                {% endif %}
+                                {% endif %}
                                 {% if kepala or pembina %}
                                 <a class="dropdown-item text-center small text-gray-500" href="{% url 'kunjungan-list' %}">Show All Alerts</a>
                                 {% else %}
