@@ -221,9 +221,9 @@ def edit_profile_perusahaan(request):
     #     if form.is_valid():
     #         form.save()
     #         return redirect('dashboard')
-    # else:
-    #     form = PerusahaanForm(instance=cek_npp)
-    #     return render(request, 'kepesertaan/edit_pers.html', {'form':form})
+    else:
+        form = PerusahaanForm(instance=cek_npp)
+        return render(request, 'kepesertaan/edit_pers.html', {'form':form})
     
 
 @login_required(login_url='/accounts/login/')
