@@ -201,7 +201,7 @@ def edit_profile_perusahaan(request):
     # cek_npp = get_object_or_404(pk=username)
     
     if request.method == 'POST':
-        # form = PerusahaanForm(request.POST, instance=cek_npp)
+        form = PerusahaanForm(request.POST, instance=cek_npp)
         nama_pemilik = request.POST.get('nama_pemilik')
         nik = request.POST.get('nik')
         email = request.POST.get('email')
@@ -217,6 +217,7 @@ def edit_profile_perusahaan(request):
             nik=nik, email=email, no_hp=no_hp,alamat=alamat,kode_pos=kode_pos,npwp_prsh=npwp_prsh,desa_kel=desa_kel,
             kecamatan=kecamatan,kota_kab=kota_kab)
         return redirect('dashboard')
+
     #     if form.is_valid():
     #         form.save()
     #         return redirect('dashboard')
