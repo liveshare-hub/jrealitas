@@ -46,7 +46,7 @@ class Jabatan(models.Model):
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     nama = models.CharField(max_length=100)
-    email = models.EmailField(max_length=100)
+    # email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
     kode_kantor = models.ForeignKey(Kantor, on_delete=models.CASCADE)

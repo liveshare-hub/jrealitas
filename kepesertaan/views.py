@@ -123,11 +123,11 @@ def Daftar_Pembina(request):
         return JsonResponse({'error':'User sudah pernah terdaftar!'})
     else:
         if password1 == password2 :
-            user = User.objects.create(username=username, password=password1)
+            user = User.objects.create(username=username, password=password1, email=email)
             # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
             #     email=email, no_hp=no_hp)
             Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
-                email=email, kode_kantor_id=kd_kantor, no_hp=no_hp)
+                kode_kantor_id=kd_kantor, no_hp=no_hp)
 
             return JsonResponse({'success':'done'})
         else:
@@ -197,16 +197,32 @@ def Daftar_Perusahaan(request):
 
 def edit_profile_perusahaan(request):
     username = request.user
-    cek_npp = Perusahaan.objects.get(npp=username)
+    # cek_npp = Perusahaan.objects.get(npp=username)
+    # cek_npp = get_object_or_404(pk=username)
     
     if request.method == 'POST':
-        form = PerusahaanForm(request.POST, instance=cek_npp)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
-    else:
-        form = PerusahaanForm(instance=cek_npp)
-        return render(request, 'kepesertaan/edit_pers.html', {'form':form})
+        # form = PerusahaanForm(request.POST, instance=cek_npp)
+        nama_pemilik = request.POST.get('nama_pemilik')
+        nik = request.POST.get('nik')
+        email = request.POST.get('email')
+        no_hp = request.POST.get('no_hp')
+        alamat = request.POST.get('alamat')
+        kode_pos = request.POST.get('kode_pos')
+        npwp_prsh = request.POST.get('npwp_prsh')
+        desa_kel = request.POST.get('desa_kel')
+        kecamatan = request.POST.get('kecamatan')
+        kota_kab = request.POST.get('kota_kab')
+        User.objects.filter(username=username).update(email=email)
+        Perusahaan.objects.select_for_update('username').filter(username__username=username).update(nama_pemilik=nama_pemilik,
+            nik=nik, email=email, no_hp=no_hp,alamat=alamat,kode_pos=kode_pos,npwp_prsh=npwp_prsh,desa_kel=desa_kel,
+            kecamatan=kecamatan,kota_kab=kota_kab)
+        return redirect('dashboard')
+    #     if form.is_valid():
+    #         form.save()
+    #         return redirect('dashboard')
+    # else:
+    #     form = PerusahaanForm(instance=cek_npp)
+    #     return render(request, 'kepesertaan/edit_pers.html', {'form':form})
     
 
 @login_required(login_url='/accounts/login/')
