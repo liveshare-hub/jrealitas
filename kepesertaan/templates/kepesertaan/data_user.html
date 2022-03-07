@@ -462,10 +462,18 @@
                                                         <td>{{forloop.counter}}</td>
                                                         <td>{{data.npp}}</td>
                                                         <td>{{data.nama_perusahaan}}</td>
-                                                        <td>{{data.alamat}}</td>
-                                                        <td>{{data.desa_kel}}</td>
-                                                        <td>{{data.kecamatan}}</td>
-                                                        <td>{{data.kota_kab}}</td>
+                                                        <td>{% if data.alamat %}{{data.alamat}}</td>
+                                                        {% else %}<td> - </td>
+                                                        {% endif %}
+                                                        <td>{% if data.desa_kel %}{{data.desa_kel}}</td>
+                                                        {% else %}<td> - </td>
+                                                        {% endif %}
+                                                        <td>{% if data.kecamatan %}{{data.kecamatan}}</td>
+                                                        {% else %}<td> - </td>
+                                                        {% endif %}
+                                                        <td>{% if data.kota_kab %}{{data.kota_kab}}</td>
+                                                        {% else %}<td> - </td>
+                                                        {% endif %}
                                                         <td>
                                                             <div class="btn-group">
                                                                 <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
