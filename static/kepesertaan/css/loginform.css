@@ -222,6 +222,14 @@ section .color:nth-child(3)
     font-weight: 600px;
 }
 
+div.logo
+{
+    position : absolute;
+    left :0;
+    top : 10px;
+
+}
+
 .logo-transparent
 {
     opacity: 1;
