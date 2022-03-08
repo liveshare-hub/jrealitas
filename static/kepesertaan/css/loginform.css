@@ -222,3 +222,8 @@ section .color:nth-child(3)
     font-weight: 600px;
 }
 
+.logo-transparent
+{
+    opacity: 1;
+    height: 65px;
+}
