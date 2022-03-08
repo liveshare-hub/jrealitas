@@ -481,7 +481,7 @@
                                                                 </a>
                                                                 <div class="dropdown-menu">
                                                                     <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
-                                                                    <a class="dropdown-item tag-a-pindah-binaan" href="#" data-toggle="modal" data-target="#pindah_binaan{{data.pk}}" id="pindah_binaan">Pindah Binaan</a>
+                                                                    <a class="dropdown-item tag-a-pindah-binaan" href="#" data-toggle="modal" data-target="#pindah_binaan{{data.pk}}" id="id_pindah_binaan">Pindah Binaan</a>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -491,7 +491,7 @@
                                                         <div class="modal-dialog" role="document">
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
-                                                                    <h6 class="text-center" id="label-edit-password">
+                                                                    <h6 class="text-center" id="label_pindah_binaan" data-npp="{{data.npp}}">
                                                                         Ganti Password {{data.npp}}
                                                                     </h6>
                                                                     
@@ -535,9 +535,9 @@
                                                                     </button>
                                                                 </div>
                                                                 <div id="alert" class="mt-2"></div>
-                                                                <form method="POST" name="form_edit_password" id="id_form_pindah_binaan">
+                                                                <form method="POST" name="form_pinda_binaan" id="id_form_pindah_binaan">
                                                                     {% csrf_token %}
-                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_user_pk">
                                                                 <div class="modal-body">
                                                                     <div class="form-group">
                                                                         <label for="id_npp_pindah">Perusahaan</label>
@@ -545,8 +545,11 @@
                                                                     </div>
                                                                     <div class="form-group">
                                                                         <select class="form-select form-select-sm form-control" aria-label=".form-select-sm example" id="selectpembina">
+                                                                            {% for data in seluruh_pembina %}
                                                                             <option selected style="text-align:center;" value="0">---------- PILIH PEMBINA ----------</option>
                                                                             
+                                                                            <option style="text-align:center;" value={{data.pk}}>{{data.username.username}} - {{data.nama}}</option>
+                                                                            {% endfor %}
                                                                         </select>
                                                                     </div>
                                                                 </div>
@@ -895,7 +898,8 @@ query{
 `
 
 $(document).ready(function() {
-   
+   var pkTarget = $("#id_pindah_binaan").attr("data-target")
+
     $("#npp").on("focusout", function() {
         var nppVal = $(this).val()
         
@@ -945,10 +949,13 @@ $(document).ready(function() {
             console.log(err)
         }
     })
+    
+    
+    
+})
 
-    $("#pindah_binaan").on("click", function() {
-
-        $.ajax({
+function showPembina(){
+    $.ajax({
             method:"POST",
             url:"{% url 'graphql' %}",
             contentType:"application/json",
@@ -957,9 +964,10 @@ $(document).ready(function() {
             }),
             dataType:"json",
             success:function(data){
-                
                 var datas = data['data']['allPembinaBidang']
+                
                 $.each(datas, function(i,j){
+                    
                     $("#selectpembina").append($('<option>', {
                         value:j['id'],
                         text:j['username']['username']+" - "+j['nama']    
@@ -970,9 +978,43 @@ $(document).ready(function() {
                 console.log(err)
             }
         })
+}
+</script>
+<script>
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    const formApprove = document.getElementById('id_form_pindah_binaan')
+    const url = "{% url 'pindah-binaan' %}"
+
+    const idPembina = document.getElementById('selectpembina')
+    const npp = $("#label_pindah_binaan").attr('data-npp')
+    const klaimIdBox = document.getElementById('klaim_id')
+
+    const simpanBox = document.getElementById('simpan')
+
+
+    formApprove.addEventListener('submit', e => {
+        e.preventDefault();
+
+        $.ajax({
+        type: 'POST',
+        url: url,
+        data: {
+            'csrfmiddlewaretoken': csrf[0].value,
+            'pembina': idPembina.value,
+            'npp': npp,
+        },
+        success: function (response) {
+            // console.log(response)
+            location.reload();
+            formApprove.reset()
+        },
+        error: function (error) {
+            console.log(error)
+        }
+        })
+
+
     })
-    
-})
 </script>
 <script src="{% static 'kepesertaan/js/daftar_perusahaan.js' %}"></script>
 {% endblock javascripts %}

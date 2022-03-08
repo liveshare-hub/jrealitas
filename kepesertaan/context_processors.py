@@ -14,6 +14,7 @@ def info_context(request):
         pejabat = Profile.objects.select_related('username','jabatan').all()
         kepala = pejabat.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701),username__username=request.user)
         pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8), username__username=request.user)
+        seluruh_pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8)).exclude(username__username=request.user)
         pelayanan = pejabat.filter(Q(jabatan__kode_jabatan=3) | Q(jabatan__kode_jabatan=4), username__username=request.user)
         # pejabat = Profile.objects.select_related('username','jabatan').filter(jabatan__kode_jabatan=jabatan[0]['jabatan__kode_jabatan'],username__username=request.user)
         if kepala.exists() or request.user.is_superuser:
@@ -34,7 +35,8 @@ def info_context(request):
             total_tk = Tenaga_kerja.objects.select_related('npp').filter(npp__pembina__username__username=request.user).count()
 
             context = {
-                'info':infos, 'pembina':pembina, 'total_npp':total_npp, 'total_tk':total_tk, 'total_kunjungan':total_kunjungan, 'pelayanan':pelayanan
+                'info':infos, 'pembina':pembina, 'total_npp':total_npp, 'total_tk':total_tk, 'total_kunjungan':total_kunjungan, 'pelayanan':pelayanan,
+                'seluruh_pembina':seluruh_pembina
             }
             return context
         else:

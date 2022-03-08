@@ -253,6 +253,7 @@ function updateBinaan(){
         processData:false,
         data:data,
         success:function(data){
+            ``
             console.log(data)
             
         },
@@ -534,9 +535,9 @@ $(document).ready(function() {
         DaftarPembina();
     })
 
-    $("#update_binaan").click(function() {
-        updateBinaan();
-    })
+    //$("#update_binaan").click(function() {
+      //  updateBinaan();
+    //})
 
     var pk = $("#id_ganti_password").val()
     $(`#form_edit_password${pk}`).submit(function() {
