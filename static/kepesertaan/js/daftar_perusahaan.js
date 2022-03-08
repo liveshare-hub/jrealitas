@@ -9,7 +9,7 @@ var profileQuery = `query{
 }`
 
 function DafarNPP() {
-    
+    console.log($("#npp").val())
     var data = new FormData()
     data.append("npp", $("#npp").val())
     data.append("nama_pemberi_kerja", $("#nama_pemberi_kerja").val())
@@ -38,9 +38,9 @@ function DafarNPP() {
         processData:false,
         data:data,
         success:function(res){
-            $("input").val("")
+            //$("input").val("")
             //$("#makeselect").val("7")
-            
+            window.location = '/'
             console.log(res['success'])
             
         },

@@ -156,7 +156,6 @@ def Daftar_Perusahaan(request):
     username = request.POST.get('username') or request.POST.get('username_admin')
     # password1 = request.POST.get('password1') or request.POST.get('password1_admin')
     # password2 = request.POST.get('password2') or request.POST.get('password2_admin')
-
     key = Fernet.generate_key()
     fernet = Fernet(key)
 
@@ -168,7 +167,8 @@ def Daftar_Perusahaan(request):
     else:
         # if password1 == password2 :
         encsalt = fernet.encrypt(npp.encode())
-        password = make_password("WELCOME1", salt=[encsalt.decode('utf-8')])
+        salts = encsalt[1:10]
+        password = make_password("WELCOME1", salt=[salts.decode('utf-8')])
         user = User.objects.create(username=username, password=password)
 
         Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, npp=npp,

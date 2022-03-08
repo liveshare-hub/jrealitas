@@ -222,16 +222,10 @@ section .color:nth-child(3)
     font-weight: 600px;
 }
 
-div.logo
-{
-    position : relative;
-    left :0;
-    top : 0;
-
-}
-
 .logo-transparent
 {
+    width: 10%;
+    margin-top: 5px;
     opacity: 1;
     height: 65px;
 }
