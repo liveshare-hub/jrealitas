@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}{% endblock title %}
+
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary">
+                    <div class="card-title text-center text-white fw-bold" style="font-weight:600;">
+                        PINDAH BINAAN
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <table class="table table-bordered text-center" id="id_npp_table">
+                                <thead>
+                                    <th>Pilih</th>
+                                    <th>NPP</th>
+                                    <th>NAMA PERUSAHAAN</th>
+                                </thead>
+                                <tbody>
+                                    {% for data in datas %}
+                                    <tr>
+                                        <td><input type="checkbox" class="form-check-input" value="{{data.npp}}" id="cb_{{data.pk}}"></td>
+                                        <td>{{data.npp}}</td>
+                                        <td>{{data.nama_perusahaan}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-2">
+                                <label for="id_pembina">Pembina</label>
+                                <input type="text" id="id_pembina" class="form-control">
+                            </div>
+                            <div class="col-4">
+                                <label for="id_hasil_pembina">NAMA</label>
+                                <input type="text" id="id_hasil_pembina" class="form-control" disabled>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button id="btn-simpan" class="btn btn-primary" onclick="getValues()" type="button">SIMPAN</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+    var subQuery =`
+query getUser($user:String!){
+    allPembinaBidang(user:$user){
+        id
+        username{
+        username
+        }
+        nama
+    }
+}
+`
+
+    $(document).ready( function () {
+        $('#id_npp_table').DataTable();
+
+        $("#id_pembina").on("focusout", function(){
+            $.ajax({
+                method:"POST",
+                url:"{% url 'graphql' %}",
+                contentType:"application/json",
+                data:JSON.stringify({
+                    query:subQuery,
+                    variables:{
+                        user:$(this).val()
+                    }
+                }),
+                dataType:"json",
+                success:function(res){
+                    var hasil = res.data.allPembinaBidang[0]
+                    $("#id_hasil_pembina").val(hasil["username"]["username"]+' - '+hasil.nama)
+                    $("#id_hasil_pembina").attr("data-id",hasil.id)
+                    
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        })
+    } );
+
+    function getValues(){
+        var selected = new Array();
+        var chckbox = document.getElementById("id_npp_table")
+        var selchk = chckbox.getElementsByTagName("input")
+
+
+
+        for(var i=0;i<selchk.length;i++){
+            if(selchk[i].checked){
+                selected.push(selchk[i].value);
+            }
+        }
+
+        if((selected.length>0) && ($("#id_pembina").val() !== ''))
+        {   
+            if(confirm("Apakah anda yakin ?") == true){
+                console.log("selesai")
+                selected.forEach(item => {
+                   var form = new FormData()
+                   form.append("pembina",$("#id_hasil_pembina").attr("data-id"))
+                   form.append("npp", item)
+                   form.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url 'update-binaan' %}",
+                        contentType:false,
+                        processData:false,
+                        data:form,
+                        success:function(e){
+                            location.reload();
+                        },
+                        error:function(err){
+                            console.log(err)
+                        }
+                    })
+                })
+            }
+        }
+    }
+</script>
+
+{% endblock javascripts %}

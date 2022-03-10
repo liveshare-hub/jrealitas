@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
-# import pymysql
-# pymysql.install_as_MySQLdb()
+import pymysql
+pymysql.install_as_MySQLdb()
 
 import os
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
@@ -102,17 +102,17 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        # 'ENGINE':'django.db.backends.mysql',
-        # 'NAME':config('DBNAME'),
-        # 'USER':config('DBUSER'),
-        # 'PASSWORD':config('DBPASS'),
-        # 'HOST':config('DBHOST'),
-        # 'PORT':'',
-        # 'OPTIONS':{
-        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        # }
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE':'django.db.backends.mysql',
+        'NAME':config('DBNAME'),
+        'USER':config('DBUSER'),
+        'PASSWORD':config('DBPASS'),
+        'HOST':config('DBHOST'),
+        'PORT':'',
+        'OPTIONS':{
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        }
        
     }
 }
@@ -161,7 +161,7 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = '/home/reah4319/jrealitas/public/'
 
-# MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_ROOT = '/home/reah4319/jrealitas/media/'
 MEDIA_URL = 'media/'
 

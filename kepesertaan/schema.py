@@ -33,7 +33,7 @@ class Query(graphene.ObjectType):
     all_npp_pembina = graphene.List(PerusahaanType)
     all_profile = graphene.List(ProfileType)
     all_users = graphene.List(UserType)
-    all_pembina_bidang = graphene.List(ProfileType)
+    all_pembina_bidang = graphene.List(ProfileType, user=graphene.String())
 
     def resolve_all_jabatan(root, info, **kwargs):
         if info.context.user.is_authenticated:
@@ -58,9 +58,9 @@ class Query(graphene.ObjectType):
             jabatan = Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701)
             return Profile.objects.select_related('username','jabatan','kode_kantor').all().exclude(jabatan)
 
-    def resolve_all_pembina_bidang(root, info):
+    def resolve_all_pembina_bidang(root, info, user):
         if info.context.user.is_authenticated:
-            return Profile.objects.select_related('username','jabatan','kode_kantor').filter(jabatan__bidang__kode_bidang=12).exclude(username__username=info.context.user)
+            return Profile.objects.select_related('username','jabatan','kode_kantor').filter(username__username=user).exclude(username__username=info.context.user)
 
     def resolve_all_npp(root, info):
         if info.context.user.is_authenticated:
