@@ -13,9 +13,11 @@
                     APPROVAL BERITA ACARA <b>{{request.user}}</b>
                 </div>
                 <div class="card-body">
+                    {% if datas %}
                     <div class="table table-responsive mt-2">
                         <div class="row">
                             <div class="col-sm-12">
+                                
                                 <table id="approval_kunjungan" class="table table-bordered">
                                     <thead>
                                         <tr class="text-center">
@@ -47,6 +49,10 @@
                                         {% endfor %}
                                     </tbody>
                                 </table>
+                                {% else %}
+                                <p class="text-md-center" style="font-weight:600;">Tidak ada Berita Acara</p>
+                                {% endif %}
+                               
                             </div>
                         </div>
                     </div>
@@ -90,6 +96,10 @@
                             'Berita Acara Kunjungan Sudah Anda Setujui',
                             'success'
                         )
+                        location.reload();
+                    },
+                    error:function(err){
+                        console.log(err)
                     }
                 })
               
@@ -109,6 +119,10 @@
                           'Berita Acara Kunjungan di Tolak',
                           'error'
                       )
+                      location.reload();
+                  },
+                  error:function(err){
+                      console.log(err)
                   }
               })
               

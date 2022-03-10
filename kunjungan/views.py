@@ -145,7 +145,11 @@ def detail_kunjungan(request,pk):
 @login_required
 def daftar_approval_kunjungan(request):
 
-    datas = approval_bak.objects.select_related('berita_acara').filter(berita_acara__to_perusahaan__npp=request.user)
+    pembina = Profile.objects.select_related('username').filter(username__username=request.user)
+    if pembina.exists():
+        datas = approval_bak.objects.select_related('berita_acara').filter(berita_acara__to_perusahaan__npp=request.user)
+    else:
+        datas = approval_bak.objects.select_related('berita_acara').filter(berita_acara__to_perusahaan__npp=request.user).exclude(status="2")
     context = {
         'datas':datas
     }
