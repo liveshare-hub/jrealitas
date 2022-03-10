@@ -31,6 +31,8 @@ from .models import berita_kunjungan, approval_bak
 from .form import KunjunganForm
 from .utils import render_to_pdf
 
+from core.decorators import allowed_users
+
 @login_required(login_url='/accounts/login/')
 def kunjungan(request):
     user = request.user
@@ -61,6 +63,7 @@ def kunjungan(request):
     return render(request, 'kunjungan/index.html',context)
 
 @login_required(login_url='/accounts/login/')
+@allowed_users(allowed_roles=['pembina'])
 @csrf_exempt
 def simpan_kunjungan(request):
     petugas = request.POST.get('petugas')
@@ -74,9 +77,9 @@ def simpan_kunjungan(request):
     hasil = request.POST.get('hasil')
 
 
-    profile = Profile.objects.select_related('username').get(username__username=petugas)
-    if profile:
-        buat_bak = berita_kunjungan.objects.create(petugas_id=profile.id, to_nama=nama, to_jabatan=jabatan,
+    profile = Profile.objects.select_related('username').filter(username__username=petugas)
+    if profile.exists():
+        buat_bak = berita_kunjungan.objects.create(petugas_id=profile[0].id, to_nama=nama, to_jabatan=jabatan,
             to_perusahaan_id=npp, to_alamat=alamat, to_no_hp=no_hp, tujuan=tujuan, hasil=hasil, to_lokasi=lokasi)
         return JsonResponse({'success':'Berita Acara Berhasil di simpan'})
     return JsonResponse({'error':'Gagal Disimpan! Periksa Kembali Data Anda'})

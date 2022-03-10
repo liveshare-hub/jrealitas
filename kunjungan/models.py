@@ -40,7 +40,7 @@ class berita_kunjungan(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.petugas.username.username} - {self.to_perusahaan.npp}'
+        return f'{self.petugas.username.username} - {self.to_perusahaan.npp} - {self.to_nama}'
 
     # def save(self, *args, **kwargs):
     #     qr =qrcode.QRCode(

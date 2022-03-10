@@ -1,4 +1,3 @@
-from calendar import c
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 from django.http.response import HttpResponse, JsonResponse
@@ -21,6 +20,7 @@ from .models import (
     Perusahaan, Tenaga_kerja
 )
 
+from core.decorators import allowed_users
 from .forms import PembinaForm, PerusahaanForm
 
 fs = FileSystemStorage(location='/informasi/attachment')
@@ -105,6 +105,7 @@ def update_binaan(request):
     return JsonResponse({'msg':'Berhasil'})
 
 @login_required
+@allowed_users(allowed_roles=['pembina'])
 def pindah_binaan(request):
     datas = Perusahaan.objects.select_related('pembina').filter(pembina__username__username=request.user)
     
