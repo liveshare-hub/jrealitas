@@ -99,7 +99,7 @@ class Tenaga_kerja(models.Model):
 class Informasi(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     judul = models.CharField(max_length=200)
-    attachment = models.FileField(upload_to=info_save+'informasi/attachment', blank=True, null=True)
+    attachment = models.FileField(upload_to='/home/reah4319/jrealitas/public/informasi/attachment', blank=True, null=True)
     isi = models.TextField()
     created_by = models.ForeignKey(Profile, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
