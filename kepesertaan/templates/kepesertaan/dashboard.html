@@ -260,7 +260,28 @@
 <script src="/static/js/demo/chart-pie-demo.js"></script>
 
 <script>
-    
+    function resetPassword(){
+        var pk = $("#id_user").val()
+        var data = new FormData()
+        data.append("id_user",$("#id_user").val())
+        data.append("password1", $("#id_edit_password1").val())
+        data.append("password2",$("#id_edit_password2").val())
+        data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+        $.ajax({
+            method:"POST",
+            url:`/ganti/password/${pk}`,
+            contentType:false,
+            processData:false,
+            data:data,
+            success:function(data){
+                console.log(data)
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+    }
+
     $(document).ready(()=> {
         const value = JSON.parse(document.getElementById('kode_jabatan').textContent)
         const username_id = JSON.parse(document.getElementById('username_id').textContent)
@@ -288,6 +309,11 @@
                 confirmButtonText: 'OK'
             })
         }
+
+        $("#reset_password").click(function(){
+            console.log("klik")
+            resetPassword();
+        })
 
     })
 </script>

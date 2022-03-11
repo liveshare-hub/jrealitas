@@ -301,36 +301,6 @@
     {% include 'javascript.html' %}
 
     {% block javascripts %}
-    <script>
-        function resetPassword(){
-            var pk = $("#id_user").val()
-            var data = new FormData()
-            data.append("id_user",$("#id_user").val())
-            data.append("password1", $("#id_edit_password1").val())
-            data.append("password2",$("#id_edit_password2").val())
-            data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
-            $.ajax({
-                method:"POST",
-                url:`/ganti/password/${pk}`,
-                contentType:false,
-                processData:false,
-                data:data,
-                success:function(data){
-                    console.log(data)
-                },
-                error:function(err){
-                    console.log(err)
-                }
-            })
-        }
-
-        $(document).ready(function(){
-            $("#reset_password").click(function(){
-                console.log("klik")
-                resetPassword();
-            })
-        })
-    </script>
     {% endblock javascripts %}
     {% block extra_js %}{% endblock extra_js %}
 
