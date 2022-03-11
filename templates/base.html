@@ -260,6 +260,7 @@
         </div>
     </div>
 
+    {% if admin %}
     <div class="modal fade" id="edit_password{{request.user.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -280,6 +281,7 @@
                     <div class="form-group">
                         <label for="id_edit_password1">Password Baru</label>
                         <input type="password" class="form-control" id="id_edit_password1" required>
+                        <input type="text" class="form-control" id="id_user" value="{{request.user.pk}}" hidden>
                     </div>
                     <div class="form-group">
                         <label for="id_edit_password2">Ulangi Password Baru</label>
@@ -294,10 +296,39 @@
             </div>
         </div>
     </div>
+    {% endif %}
 
     {% include 'javascript.html' %}
 
-    {% block javascripts %}{% endblock javascripts %}
+    {% block javascripts %}
+    <script>
+        function resetPassword(){
+            var pk = $("#id_user").val()
+            var data = new FormData()
+            data.append("id_user",$("#id_user").val())
+            data.append("password1", $("#id_edit_password1").val())
+            data.append("password2",$("#id_edit_password2").val())
+            data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+            $.ajax({
+                method:"POST",
+                url:`/ganti/password/${pk}`,
+                contentType:false,
+                processData:false,
+                data:data,
+                success:function(data){
+                    console.log(data)
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        }
+
+        $(document).ready(function(){
+
+        })
+    </script>
+    {% endblock javascripts %}
     {% block extra_js %}{% endblock extra_js %}
 
 </body>
