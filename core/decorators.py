@@ -8,6 +8,7 @@ def unauthenticated_user(view_func):
         if request.user.is_authenticated:
             return redirect('dashboard')
         else:
+            print("gk bs login")
             return view_func(request, *args, **kwargs)
     return wrapper_func
 

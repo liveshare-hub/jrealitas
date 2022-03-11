@@ -89,6 +89,14 @@ query getUser($user:String!){
                 success:function(res){
                     var hasil = res.data.allPembinaBidang[0]
                     
+                    if(hasil === undefined){
+                        Swal.fire({
+                            text:"KODE PEMBINA TIDAK DITEMUKAN / KODE PEMBINA TIDAK BOLEH SAMA",
+                            icon:'error',
+                            confirmButtonText: 'OK'
+                        })
+                        $("#id_hasil_pembina").val("")                    
+                    }
                     $("#id_hasil_pembina").val(hasil["username"]["username"]+' - '+hasil.nama)
                     $("#id_hasil_pembina").attr("data-id",hasil.id)
                     

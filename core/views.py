@@ -13,7 +13,6 @@ from .decorators import unauthenticated_user
 
 # User = get_user_model()
 
-@unauthenticated_user
 @csrf_exempt
 def login_view(request):
     form = LoginForm(request.POST or None)
