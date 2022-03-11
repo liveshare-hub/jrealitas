@@ -350,6 +350,8 @@ def create_info_user(request):
         print(judul)
         print(isi)
         print(attach)
+
+        return JsonResponse({'success':'Berhasil'})
         # print(file1)
         # if users:
         #     for user in users:
