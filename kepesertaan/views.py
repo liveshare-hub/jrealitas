@@ -350,6 +350,7 @@ def create_info_user(request):
         print(judul)
         print(isi)
         print(attach_url)
+        print(file1)
         if users:
             for user in users:
             
