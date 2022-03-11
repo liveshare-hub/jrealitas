@@ -194,11 +194,11 @@
                                 </a>
                                 {% endif %}
                                 {% if admin %}
-                                <a class="dropdown-item" data-toggle="modal" data-target="#edit_password{{request.user.pk}}" >
+                                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#edit_password" >
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Ganti Password
                                 </a>
-                                <div class="modal fade" id="edit_password{{request.user.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                <div class="modal fade" id="edit_password" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
