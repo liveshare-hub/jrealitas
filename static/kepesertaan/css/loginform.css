@@ -200,12 +200,8 @@ button {
     font-weight: 600px;
 }
 
-img {
-    width: 10px;
-    background-color: black;
-}
-
 .logo-transparent {
+    position: absolute;
     width: 10%;
     margin-top: 5px;
     opacity: 1;
