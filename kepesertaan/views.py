@@ -23,7 +23,7 @@ from .models import (
 from core.decorators import allowed_users
 from .forms import PembinaForm, PerusahaanForm
 
-fs = FileSystemStorage(location='/informasi/attachment')
+fs = FileSystemStorage(location='informasi/attachment')
 
 @login_required(login_url='/accounts/login/')
 def index(request):
@@ -343,13 +343,13 @@ def create_info_user(request):
         
         isi = request.POST.get('isi')
         attach = request.FILES['attach']
-        # file1 = fs.save(attach.name, attach)
+        file1 = fs.save(attach.name, attach)
         # attach_url = fs.url(file1)
         
         users = json.loads(request.POST.get('user'))
         print(judul)
         print(isi)
-        print(attach)
+        print(file1)
 
         return JsonResponse({'success':'Berhasil'})
         # print(file1)
