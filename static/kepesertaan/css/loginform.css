@@ -202,8 +202,7 @@ button {
 
 .logo-transparent {
     position: absolute;
-    left: 0;
-    width: 20%;
+    width: 15%;
     margin-top: 5px;
     opacity: 1;
     height: 65px;
