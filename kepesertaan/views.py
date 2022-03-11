@@ -4,7 +4,7 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from django.core.files.storage import FileSystemStorage
 
@@ -116,10 +116,11 @@ def pindah_binaan(request):
 
 
 @login_required(login_url='/accounts/login/')
+@allowed_users(allowed_roles=['admin'])
 @csrf_exempt
 def Daftar_Pembina(request):
-    kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
-    
+    # kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
+    kd_kantor = request.POST.get('kd_kantor')
     nama = request.POST.get('nama_pembina')
     jabatan = request.POST.get('jabatan')
     # bidang = request.POST.get('bidang')
@@ -135,7 +136,10 @@ def Daftar_Pembina(request):
         return JsonResponse({'error':'User sudah pernah terdaftar!'})
     else:
         if password1 == password2 :
+            group = Group.objects.get(name='pembina')
             user = User.objects.create(username=username, password=password1, email=email)
+            user.groups.add(group.id)
+            user.save()
             # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
             #     email=email, no_hp=no_hp)
             Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
@@ -146,6 +150,12 @@ def Daftar_Pembina(request):
             return JsonResponse({'data_error':'Password tidak sama!'})
     # except:
     #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+
+@login_required(login_url='/accounts/login/')
+@allowed_users(allowed_roles=['admin',])
+def Buat_Pembina(request):
+    datas = Profile.objects.all()
+    return render(request,'kepesertaan/buat_pembina.html',{'datas':datas})
 
 @login_required(login_url='/accounts/login/')
 @csrf_exempt
@@ -181,7 +191,10 @@ def Daftar_Perusahaan(request):
         encsalt = fernet.encrypt(npp.encode())
         salts = encsalt[1:10]
         password = make_password("WELCOME1", salt=[salts.decode('utf-8')])
+        group = Group.objects.get(name='peserta')
         user = User.objects.create(username=username, password=password)
+        user.groups.add(group.id)
+        user.save()
 
         Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, npp=npp,
             nama_perusahaan=nama_pers, pembina_id=int(pembina))
@@ -321,6 +334,7 @@ def download_excel(request):
     return response
 
 @login_required(login_url='/accounts/login')
+@allowed_users(allowed_roles=['admin','pembina'])
 @csrf_exempt
 def buat_info(request):
     kepala = Profile.objects.select_related('username').filter(username__username=request.user)
@@ -451,7 +465,7 @@ def save_tk_to_models(request):
         
         dbframe = exceldata
         na = dbframe.TGL_NA
-        print(dbframe.NO_KPJ)
+        
         for dbframe in dbframe.itertuples():
             tgl_lhr = datetime.strptime(dbframe.TGL_LAHIR, '%d-%m-%Y')
             tgl_keps = datetime.strptime(dbframe.TGL_KEPS, '%m-%Y')

@@ -2,6 +2,7 @@ from kunjungan.models import berita_kunjungan
 from .models import Informasi, Profile, Perusahaan, Tenaga_kerja
 from django.db.models import Q, Sum
 from django.shortcuts import redirect
+from django.contrib.auth.models import User, Group
 # from .models import Profile
 
 def info_context(request):
@@ -12,11 +13,23 @@ def info_context(request):
     # pejabat = Profile.objects.select_related('username','jabatan').filter(Q(jabatan__pk=1) | Q(jabatan__pk=2) | Q(jabatan__pk=3),username__username=request.user)
     if request.user.is_authenticated:
         pejabat = Profile.objects.select_related('username','jabatan').all()
+        admin = User.objects.filter(groups__name__in=['admin',])
         kepala = pejabat.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701),username__username=request.user)
         pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8), username__username=request.user)
         seluruh_pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8)).exclude(username__username=request.user)
         pelayanan = pejabat.filter(Q(jabatan__kode_jabatan=3) | Q(jabatan__kode_jabatan=4), username__username=request.user)
         # pejabat = Profile.objects.select_related('username','jabatan').filter(jabatan__kode_jabatan=jabatan[0]['jabatan__kode_jabatan'],username__username=request.user)
+        if admin.exists():
+            total_npp = Perusahaan.objects.all().count()
+            infos = Informasi.objects.all().order_by('-created')[:5]
+            total_tk = Tenaga_kerja.objects.all().count()
+            total_kunjungan = berita_kunjungan.objects.all().count()
+            context = {
+                'admin':admin,'total_tk':total_tk,'total_npp':total_npp,'total_kunjungan':total_kunjungan,
+                'info':infos
+            }
+            return context
+
         if kepala.exists() or request.user.is_superuser:
             infos = Informasi.objects.all().order_by('-created')[:5]
             total_npp = Perusahaan.objects.all().count()

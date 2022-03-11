@@ -4,7 +4,7 @@ from django.conf.urls.static import static
 
 from .views import (index, data_user, Daftar_Perusahaan, save_to_models, download_excel,
     informasi, Daftar_Pembina, buat_info, create_info_user, page_tk, list_tk_npp, download_tk_excel,
-    save_tk_to_models, edit_profile,update_binaan, edit_profile_perusahaan, pindah_binaan)
+    save_tk_to_models, edit_profile,update_binaan, edit_profile_perusahaan, pindah_binaan, Buat_Pembina)
 
 urlpatterns = [
     path('', index, name='dashboard'),
@@ -12,6 +12,7 @@ urlpatterns = [
     path('edit/user/<int:pk>/', edit_profile, name='edit-profile'),
     path('create/npp/', Daftar_Perusahaan, name='daftar-npp'),
     path('update/perusahaan/', edit_profile_perusahaan, name='edit-npp'),
+    path('buat/pembina/', Buat_Pembina, name='buat-pembina'),
     path('create/pembina/', Daftar_Pembina, name='daftar-pembina'),
     path('update/binaan/', update_binaan, name='update-binaan'),
     path('pindah/binaan/', pindah_binaan, name='pindah-binaan'),

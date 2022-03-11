@@ -23,7 +23,14 @@
 
     <!-- Nav Item - Pages Collapse Menu -->
     
-    {% if kepala or pembina %}
+    {% if admin %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'buat-pembina' %}">
+            <i class="fas fa-fw fa-users"> </i>
+            <span>Users</span>
+        </a>
+    </li>
+    {% elif kepala or pembina %}
     <li class="nav-item">
         <a class="nav-link" href="{% url 'user_data' %}">
             <i class="fas fa-fw fa-users"> </i>

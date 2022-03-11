@@ -9,7 +9,7 @@ var profileQuery = `query{
 }`
 
 function DafarNPP() {
-    console.log($("#npp").val())
+    
     var data = new FormData()
     data.append("npp", $("#npp").val())
     data.append("nama_pemberi_kerja", $("#nama_pemberi_kerja").val())

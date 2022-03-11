@@ -28,7 +28,7 @@
     {% endif %}
     <!-- Content Row -->
     <div class="row">
-        {% if kepala %}
+        {% if kepala or admin %}
         <!-- Earnings (Monthly) Card Example -->
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-primary shadow h-100 py-2">
@@ -243,6 +243,8 @@
     {{ kepala.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
 {% elif pembina %}
     {{ pembina.jabatan.kode_jabatan|json_script:"kode_jabatan" }}
+{% elif admin %}
+    {{ 999|json_script:"kode_jabatan" }}
 {% else %}
     {{ 0|json_script:"kode_jabatan" }}
 {% endif %}
@@ -265,7 +267,6 @@
         let validitas = parseInt($("#validitas").attr('data-val'));
         let jlh_tk = parseInt($("#jlh_tk").text());
         let pesan = $("#pesan_error").text()
-        console.log(pesan)
 
         if(value === 0){
             if(validitas !== 100){
