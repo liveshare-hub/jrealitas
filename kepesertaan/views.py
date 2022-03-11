@@ -343,14 +343,14 @@ def create_info_user(request):
         
         isi = request.POST.get('isi')
         attach = request.FILES['attach']
-        file1 = fs.save(attach.name, attach)
-        attach_url = fs.url(file1)
+        # file1 = fs.save(attach.name, attach)
+        # attach_url = fs.url(file1)
         
         users = json.loads(request.POST.get('user'))
         print(judul)
         print(isi)
         print(attach)
-        print(file1)
+        # print(file1)
         # if users:
         #     for user in users:
             
