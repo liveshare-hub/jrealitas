@@ -349,27 +349,27 @@ def create_info_user(request):
         users = json.loads(request.POST.get('user'))
         print(judul)
         print(isi)
-        print(attach_url)
+        print(attach)
         print(file1)
-        if users:
-            for user in users:
+        # if users:
+        #     for user in users:
             
-                user_id = User.objects.get(pk=user['value'])
-                profile_id = Profile.objects.get(username__username=request.user)
-                created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=user_id.id, created_by_id=profile_id.id)
-            if created:
-                return JsonResponse({'success':'Berhasil'})
-            else:
-                return JsonResponse({'errors':'Data Gagal Disimpan!'})
-        else:
-            factories = Perusahaan.objects.all()
-            for npp in factories:
-                profile_id = Profile.objects.get(username__username=request.user)
-                created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=npp.username.id, created_by_id=profile_id.id)
-            if created:
-                return JsonResponse({'success':'Berhasil'})
-            else:
-                return JsonResponse({'errors':'Data Gagal Disimpan'})
+        #         user_id = User.objects.get(pk=user['value'])
+        #         profile_id = Profile.objects.get(username__username=request.user)
+        #         created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=user_id.id, created_by_id=profile_id.id)
+        #     if created:
+        #         return JsonResponse({'success':'Berhasil'})
+        #     else:
+        #         return JsonResponse({'errors':'Data Gagal Disimpan!'})
+        # else:
+        #     factories = Perusahaan.objects.all()
+        #     for npp in factories:
+        #         profile_id = Profile.objects.get(username__username=request.user)
+        #         created = Informasi.objects.select_related('user').create(judul=judul, isi=isi, attachment=attach_url, user_id=npp.username.id, created_by_id=profile_id.id)
+        #     if created:
+        #         return JsonResponse({'success':'Berhasil'})
+        #     else:
+        #         return JsonResponse({'errors':'Data Gagal Disimpan'})
                 
 
 @login_required(login_url='/accounts/login/')
