@@ -183,9 +183,26 @@ function uploadFile() {
         processData:false,
         data:data,
         success:function(data){
-            
-            location.href = "/user/data/"
-           
+            var res = JSON.parse(data)
+            if(res["success"]){
+                Swal.fire({
+                    text:"Upload File Berhasil",
+                    icon:'success',
+                    confirmButtonText:'OK',
+                    preConfirm: () => {
+                        location.reload();
+                    }
+                })
+            }else{
+                Swal.fire({
+                    text:"Upload File Gagal",
+                    icon:'error',
+                    confirmButtonText:'OK',
+                    preConfirm: () => {
+                        location.reload();
+                    }
+                })
+            }
         },
         error:function(err){
             console.log(err)
@@ -207,8 +224,27 @@ function uploadFileAdmin() {
         processData:false,
         data:data,
         success:function(data){
-            
-            location.href = "/user/data/"
+            var res = JSON.parse(data)
+            var res = JSON.parse(data)
+            if(res["success"]){
+                Swal.fire({
+                    text:"Upload File Berhasil",
+                    icon:'success',
+                    confirmButtonText:'OK',
+                    preConfirm: () => {
+                        location.reload();
+                    }
+                })
+            }else{
+                Swal.fire({
+                    text:"Upload File Gagal",
+                    icon:'error',
+                    confirmButtonText:'OK',
+                    preConfirm: () => {
+                        location.reload();
+                    }
+                })
+            }
            
         },
         error:function(err){
@@ -241,8 +277,7 @@ function uploadTK(){
 }
 
 function updateBinaan(){
-    console.log($("#id_npp_pindah").attr('data-npp'))
-    console.log($('select#selectpembina option').filter(':selected').val())
+
     var data = new FormData()
     data.append("npp", $("#id_npp_pindah").attr('data-npp'))
     data.append("pembina", $('select#selectpembina option').filter(':selected').val())

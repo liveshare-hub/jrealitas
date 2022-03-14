@@ -334,7 +334,6 @@ def download_excel(request):
     return response
 
 @login_required(login_url='/accounts/login')
-@allowed_users(allowed_roles=['admin','pembina'])
 @csrf_exempt
 def buat_info(request):
     kepala = Profile.objects.select_related('username').filter(username__username=request.user)
@@ -351,6 +350,7 @@ def buat_info(request):
     return render(request, 'kepesertaan/create_informasi.html',context)
 
 @login_required(login_url='/accounts/login/')
+@allowed_users(allowed_roles=['admin','pembina'])
 def create_info_user(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
