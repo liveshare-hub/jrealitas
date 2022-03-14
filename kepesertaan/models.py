@@ -62,7 +62,7 @@ class Perusahaan(models.Model):
     jabatan = models.CharField(max_length=50, default="HRD")
     email = models.EmailField(max_length=100, blank=True, null=True)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR], blank=True, null=True)
-    npp = models.CharField(max_length=9)
+    npp = models.CharField(max_length=8)
     nama_perusahaan = models.CharField(max_length=200)
     nama_pic = models.CharField(max_length=100)
     alamat = models.CharField(max_length=250, blank=True, null=True)
