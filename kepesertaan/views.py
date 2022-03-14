@@ -461,24 +461,26 @@ def save_tk_to_models(request):
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
         
-        exceldata = pd.read_excel(myfile)
-        
+        exceldata = pd.read_excel(myfile, converters={'NPP':str,'NO_HANDPHONE':str, 'NO_KARTU':str, 'TGL_NA':str, 'TGL_LAHIR':str})
+    
         dbframe = exceldata
-        na = dbframe.TGL_NA
-        
-        for dbframe in dbframe.itertuples():
-            tgl_lhr = datetime.strptime(dbframe.TGL_LAHIR, '%d-%m-%Y')
-            tgl_keps = datetime.strptime(dbframe.TGL_KEPS, '%m-%Y')
-            no_hp = '0'+str(dbframe.NO_HANDPHONE)
-            if (len(na.value_counts())) > 0:
-                tgl_na = datetime.strptime(dbframe.TGL_NA, '%m-%Y')
+        for df in dbframe.itertuples():
+            
+            na = df.TGL_NA
+            tgl_lhr = datetime.strptime(df.TGL_LAHIR, '%d-%m-%Y').strftime('%Y-%m-%d')
+            tgl_keps = datetime.strptime(df.TGL_KEPS, '%m-%Y')
+            # no_hp = '0'+str(dbframe.NO_HANDPHONE)
+            if str(na) != "nan":
+                print("betol")
+                tgl_na = datetime.strptime(df.TGL_NA, '%m-%Y')
             else:
                 tgl_na = None
-            npp = Perusahaan.objects.get(npp=dbframe.NPP)
-            if npp:
-
-                obj = Tenaga_kerja.objects.select_related('npp').create(npp_id=npp.pk, nama=dbframe.NAMA_LENGKAP, no_kartu=str(dbframe.NO_KPJ), tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
-                    tgl_na=tgl_na, email=dbframe.EMAIL, no_hp=no_hp)
-            else:
-                return JsonResponse({'Error':'Cek File anda kembali'})
-        return JsonResponse({'success':'Done'})
+            npp = Perusahaan.objects.filter(npp=df.NPP)
+            if npp.exists():
+                objs = Tenaga_kerja.objects.select_related('npp').create(npp_id=npp[0].pk, nama=df.NAMA_LENGKAP, no_kartu=df.NO_KPJ, tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
+                    tgl_na=tgl_na, email=df.EMAIL, no_hp=df.NO_HANDPHONE)                
+        if objs:
+            return JsonResponse({"success":"Done"}, safe=False)
+        else:
+            return JsonResponse({'error':'Cek File anda kembali'}, safe=False)
+        

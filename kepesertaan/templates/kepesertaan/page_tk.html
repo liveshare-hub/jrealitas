@@ -153,9 +153,27 @@
             mimeType:"multipart/form-data",
             processData:false,
             data:data,
-            success:function(data){
-                
-                location.href = "/page/perusahaan/"
+            success:function(res){
+                obj = JSON.parse(res)
+                if(obj['success']){
+                    Swal.fire({
+                        text:"Data berhasil di upload.",
+                        icon:'success',
+                        confirmButtonText:'OK',
+                        preConfirm: () => {
+                            location.reload()
+                        }
+                    })
+                }else{
+                    Swal.fire({
+                        text:"Data tidak berhasil di upload. Silahkan periksa kembali!",
+                        icon:'error',
+                        confirmButtonText:'OK',
+                        preConfirm: () => {
+                            location.reload()
+                        }
+                    })
+                }
                
             },
             error:function(err){

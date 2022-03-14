@@ -1,8 +1,8 @@
 import os
+from django.conf import settings
 from django.db import models
 # from django.contrib.auth import get_user_model
 # from django.core.files.storage import FileSystemStorage
-
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 # from django.db.models.signals import post_save

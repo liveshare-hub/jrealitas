@@ -13,7 +13,8 @@ def info_context(request):
     # pejabat = Profile.objects.select_related('username','jabatan').filter(Q(jabatan__pk=1) | Q(jabatan__pk=2) | Q(jabatan__pk=3),username__username=request.user)
     if request.user.is_authenticated:
         pejabat = Profile.objects.select_related('username','jabatan').all()
-        admin = User.objects.filter(groups__name__in=['admin',])
+        admin = User.objects.filter(username=request.user,groups__name__in=['admin',])
+        
         kepala = pejabat.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701),username__username=request.user)
         pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8), username__username=request.user)
         seluruh_pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8)).exclude(username__username=request.user)
