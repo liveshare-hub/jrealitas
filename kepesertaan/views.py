@@ -471,7 +471,6 @@ def save_tk_to_models(request):
             tgl_keps = datetime.strptime(df.TGL_KEPS, '%d-%m-%Y')
             # no_hp = '0'+str(dbframe.NO_HANDPHONE)
             if str(na) != "nan":
-                print("betol")
                 tgl_na = datetime.strptime(df.TGL_NA, '%d-%m-%Y')
             else:
                 tgl_na = None
@@ -479,8 +478,8 @@ def save_tk_to_models(request):
             if npp.exists():
                 objs = Tenaga_kerja.objects.select_related('npp').create(npp_id=npp[0].pk, nama=df.NAMA_LENGKAP, no_kartu=df.NO_KPJ, tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
                     tgl_na=tgl_na, email=df.EMAIL, no_hp=df.NO_HANDPHONE)                
-        if objs:
-            return JsonResponse({"success":"Done"}, safe=False)
-        else:
-            return JsonResponse({'error':'Cek File anda kembali'}, safe=False)
+        
+        return JsonResponse({"success":"Done"}, safe=False)
+    else:
+        return JsonResponse({'error':'Cek File anda kembali'}, safe=False)
         

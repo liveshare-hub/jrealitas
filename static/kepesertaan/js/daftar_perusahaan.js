@@ -301,6 +301,8 @@ function updateBinaan(){
 
 $(document).ready(function() {
     
+    
+
     $("#form_registrasi_user_perusahaan").validate({
         rules:{
             npp:{

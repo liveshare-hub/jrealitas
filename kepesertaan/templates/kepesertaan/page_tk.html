@@ -95,7 +95,11 @@
                                             {% else %}
                                                 <td>{{worker.tgl_na|date:"m-Y"}}</td>
                                             {% endif %}
+                                            {% if worker.email is null %}
+                                            <td>-</td>
+                                            {% else %}
                                             <td>{{worker.email}}</td>
+                                            {% endif %}
                                             <td>{{worker.no_hp}}</td>
                                         </tr>
                                         {% endfor %}
@@ -120,7 +124,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" id="upload_tk_form">
                     {% csrf_token %}
                     <div class="modal-body mt-2 mb-2">
                         <div class="custom-file">
@@ -133,6 +137,9 @@
                         <button type="button" class="btn btn-primary" id="upload_tk">Simpan</button>
                      </div>
                 </form>
+                <div class="container d-none progress mb-3" id="progress">
+                    
+                </div>
             </div>
         </div>
     </div>
@@ -141,18 +148,33 @@
 
 {% block javascripts %}
 <script>
-    function uploadFileTk() {
+    const input_file = document.getElementById('id_upload_tk')
+    const progress_bar = document.getElementById('progress')
 
+    function uploadFileTk() {
         var data = new FormData()
         data.append("file", $("#id_upload_tk")[0].files[0])
         data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
         $.ajax({
-            method:"POST",
+            xhr:function(){
+                var xhr = new window.XMLHttpRequest();
+                xhr.upload.addEventListener('progress', (e) => {
+                    if(e.lengthComputable){
+                        const percentProgress = (e.loaded / e.total)*100;
+                        console.log(percentProgress)
+                        $("#progress").html(`<div class="progress-bar progress-bar-stripped bg-success" role="progressbar" style="width: ${percentProgress}%;" aria-valuenow="${percentProgress}" aria-valuemin="0" aria-valuemax="100"></div>`)
+                    }
+                })
+                return xhr
+            },
+            type:"POST",
             url: "{% url 'upload-tk' %}",
             contentType:false,
             mimeType:"multipart/form-data",
             processData:false,
             data:data,
+            beforeSend: function(){
+            },
             success:function(res){
                 obj = JSON.parse(res)
                 if(obj['success']){
@@ -184,10 +206,22 @@
     }
 
     $(document).ready(function(){
+        $('#id_list_tk').DataTable();
+        
+        $("#id_upload_tk").change(function(e){
+            var filename = e.target.files[0].name
+            const media_data = input_file.files[0];
+            $("#upload_user_perusahaan_label").text(filename)
+            
+            if(media_data != null) {
+                progress_bar.classList.remove("d-none")
+                
+            }
 
-        $(document).ready(function() {
-            $('#id_list_tk').DataTable();
-        } );
+        })
+        
+        const uploadForm = $("#upload_tk_form")
+        console.log(uploadForm)
 
         var npp = $("#list_npp_id option:selected").val()
         $("#list_npp_id").change(function(){
@@ -195,9 +229,10 @@
             $("a#list_tk_id").attr("href",`/informasi/${npp}/list/tk/`)
         })
 
-        $("#upload_tk").click(function(){
+       
+    })
+    $("#upload_tk").click(function(){
             uploadFileTk();
         })
-    })
 </script>
 {% endblock javascripts %}
