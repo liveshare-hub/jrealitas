@@ -461,18 +461,18 @@ def save_tk_to_models(request):
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
         
-        exceldata = pd.read_excel(myfile, converters={'NPP':str,'NO_HANDPHONE':str, 'NO_KARTU':str, 'TGL_NA':str, 'TGL_LAHIR':str})
+        exceldata = pd.read_excel(myfile, converters={'NPP':str,'NO_HANDPHONE':str, 'NO_KARTU':str, 'TGL_NA':str, 'TGL_LAHIR':str, 'TGL_KEPS':str})
     
         dbframe = exceldata
         for df in dbframe.itertuples():
             
             na = df.TGL_NA
             tgl_lhr = datetime.strptime(df.TGL_LAHIR, '%d-%m-%Y').strftime('%Y-%m-%d')
-            tgl_keps = datetime.strptime(df.TGL_KEPS, '%m-%Y')
+            tgl_keps = datetime.strptime(df.TGL_KEPS, '%d-%m-%Y')
             # no_hp = '0'+str(dbframe.NO_HANDPHONE)
             if str(na) != "nan":
                 print("betol")
-                tgl_na = datetime.strptime(df.TGL_NA, '%m-%Y')
+                tgl_na = datetime.strptime(df.TGL_NA, '%d-%m-%Y')
             else:
                 tgl_na = None
             npp = Perusahaan.objects.filter(npp=df.NPP)
