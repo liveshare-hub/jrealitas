@@ -449,6 +449,7 @@
                                                         <th>NO</th>
                                                         <th>NPP</th>
                                                         <th>NAMA PERUSAHAAN</th>
+                                                        <th>TOTAL TK</th>
                                                         <th>ALAMAT</th>
                                                         <th>DESA/KEL.</th>
                                                         <th>KECAMATAN</th>
@@ -462,6 +463,11 @@
                                                         <td>{{forloop.counter}}</td>
                                                         <td>{{data.npp}}</td>
                                                         <td>{{data.nama_perusahaan}}</td>
+                                                        {% if data.jlh_tk > 0 %}
+                                                        <td>{{data.jlh_tk}}</td>
+                                                        {% else %}
+                                                        <td>0</td>
+                                                        {% endif %}
                                                         {% if data.alamat %}<td>{{data.alamat}}</td>
                                                         {% else %}<td> - </td>
                                                         {% endif %}

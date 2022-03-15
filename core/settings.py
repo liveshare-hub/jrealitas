@@ -13,8 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config
 
-import pymysql
-pymysql.install_as_MySQLdb()
+# import pymysql
+# pymysql.install_as_MySQLdb()
 
 import os
 os.environ['OPENBLAS_NUM_THREADS'] = '1'
@@ -102,17 +102,17 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': BASE_DIR / 'db.sqlite3',
-        'ENGINE':'django.db.backends.mysql',
-        'NAME':config('DBNAME'),
-        'USER':config('DBUSER'),
-        'PASSWORD':config('DBPASS'),
-        'HOST':config('DBHOST'),
-        'PORT':'',
-        'OPTIONS':{
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE':'django.db.backends.mysql',
+        # 'NAME':config('DBNAME'),
+        # 'USER':config('DBUSER'),
+        # 'PASSWORD':config('DBPASS'),
+        # 'HOST':config('DBHOST'),
+        # 'PORT':'',
+        # 'OPTIONS':{
+        #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"
+        # }
        
     }
 }
@@ -232,3 +232,5 @@ EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
