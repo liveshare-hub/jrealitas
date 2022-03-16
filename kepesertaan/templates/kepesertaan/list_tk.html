@@ -67,7 +67,65 @@ Daftar TK
 {% block javascripts %}
 <script>
     $(document).ready(function() {
-        $('#id_list_tk').DataTable();
+        $('#id_list_tk').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                {
+                    text:'Hapus',
+                    action: function(e, dt, node, config){
+                        console.log(e)
+                        console.log(node)
+                    }
+                }
+            ]
+        });
     } );
+
+    function getValues(){
+        var selected = new Array();
+        var chckbox = document.getElementById("id_list_tk")
+        var selchk = chckbox.getElementsByTagName("input")
+
+
+
+        for(var i=0;i<selchk.length;i++){
+            if(selchk[i].checked){
+                selected.push(selchk[i].value);
+            }
+        }
+
+        if((selected.length>0) && ($("#id_pembina").val() !== ''))
+        {   
+            if(confirm("Apakah anda yakin ?") == true){
+                
+                selected.forEach(item => {
+                   var form = new FormData()
+                   form.append("pembina",$("#id_hasil_pembina").attr("data-id"))
+                   form.append("npp", item)
+                   form.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+                    $.ajax({
+                        type:"POST",
+                        url:"{% url 'update-binaan' %}",
+                        contentType:false,
+                        processData:false,
+                        data:form,
+                        success:function(e){
+                            location.reload();
+                        },
+                        error:function(err){
+                            console.log(err)
+                        }
+                    })
+                })
+            } 
+        }else{
+            Swal.fire({
+                text: 'Data tidak boleh kosong!',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            })
+           
+        }
+    }
 </script>
 {% endblock javascripts %}
