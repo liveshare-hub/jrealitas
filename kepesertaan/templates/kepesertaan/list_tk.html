@@ -8,20 +8,23 @@ Daftar TK
 {% endif %}
 {% endblock title %}
 
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+{% endblock stylesheets %}
 
 {% block content %}
 <div class="container-fluid">
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title text-center">
+                <div class="card-header bg-primary">
+                    <div class="card-title text-center text-white fw-bold">
                         Data Peserta :  {{is_npp.npp}} - {{is_npp.nama_perusahaan}}
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive mt-3">
+                    <div class="table-responsive">
                         <table id="id_list_tk" class="table table-bordered">
                             <thead>
                                 <tr class="text-center">
@@ -38,8 +41,11 @@ Daftar TK
                             <tbody>
                                 {% if workers %}
                                 {% for worker in workers %}
-                                <tr class="text-center">
-                                    <td>{{forloop.counter}}</td>
+                                <tr>
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
+                                    <td style="text-align: right;"><input type="checkbox" class="form-check-input" value="{{worker.pk}}" id="cb_{{worker.pk}}"></td>
+                                </form>
                                     <td>{{worker.no_kartu}}</td>
                                     <td>{{worker.nama}}</td>
                                     <td>{{worker.tgl_lahir|date:"d-m-Y"}}</td>
@@ -65,25 +71,29 @@ Daftar TK
 {% endblock content %}
 
 {% block javascripts %}
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
 <script>
     $(document).ready(function() {
-        $('#id_list_tk').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
+        $("#id_list_tk").dataTable({
+            dom:"<'row'<'col'l><'col'f>><t>iBp",
+            buttons:[
                 {
                     text:'Hapus',
+                    className:'btn-primary',
                     action: function(e, dt, node, config){
-                        console.log(e)
-                        console.log(node)
+                        getValues();
+                        
                     }
                 }
             ]
-        });
+        })
+        
     } );
 
     function getValues(){
+        var pk = $("input:checkbox").attr('id')
         var selected = new Array();
-        var chckbox = document.getElementById("id_list_tk")
+        var chckbox = document.getElementById('id_list_tk')
         var selchk = chckbox.getElementsByTagName("input")
 
 
@@ -94,18 +104,19 @@ Daftar TK
             }
         }
 
-        if((selected.length>0) && ($("#id_pembina").val() !== ''))
+        if(selected.length>0) 
         {   
+            console.log(selected)
             if(confirm("Apakah anda yakin ?") == true){
                 
                 selected.forEach(item => {
-                   var form = new FormData()
-                   form.append("pembina",$("#id_hasil_pembina").attr("data-id"))
-                   form.append("npp", item)
-                   form.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+                    console.log(item)
+                    var form = new FormData()
+                    form.append("pk", item)
+                    form.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
                     $.ajax({
                         type:"POST",
-                        url:"{% url 'update-binaan' %}",
+                        url:"{% url 'hapus-tk' %}",
                         contentType:false,
                         processData:false,
                         data:form,
@@ -116,6 +127,7 @@ Daftar TK
                             console.log(err)
                         }
                     })
+                   
                 })
             } 
         }else{

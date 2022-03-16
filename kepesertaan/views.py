@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
-from django.db import transaction
+
 
 from django.core.files.storage import FileSystemStorage
 
@@ -495,4 +495,18 @@ def save_tk_to_models(request):
         return JsonResponse({"success":"Done",'count':count}, safe=False)
     else:
         return JsonResponse({'error':'Cek File anda kembali'}, safe=False)
-        
+
+
+    
+@login_required
+def hapus_tk(request):
+    pk = request.POST.get('pk')
+    # print(pembina)
+    q = Tenaga_kerja.objects.filter(pk=pk)
+    if q.exists():
+        q.delete()
+    # print(q.pembina.username.pk)
+
+        return JsonResponse({'msg':'Berhasil'})
+    else:
+        return JsonResponse({'error':'Hapus data Gagal!'})

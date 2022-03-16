@@ -4,7 +4,8 @@ from django.conf.urls.static import static
 
 from .views import (index, data_user, Daftar_Perusahaan, save_to_models, download_excel,
     informasi, Daftar_Pembina, buat_info, create_info_user, page_tk, list_tk_npp, download_tk_excel,
-    save_tk_to_models, edit_profile,update_binaan, edit_profile_perusahaan, pindah_binaan, Buat_Pembina)
+    save_tk_to_models, edit_profile,update_binaan, edit_profile_perusahaan, pindah_binaan, Buat_Pembina,
+    hapus_tk)
 
 urlpatterns = [
     path('', index, name='dashboard'),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('templates/download/', download_excel, name='download-npp'),
     path('templates/tk/download/', download_tk_excel, name='download-tk-excel'),
     path('templates/tk/upload/', save_tk_to_models, name='upload-tk'),
+    path('hapus/tk/', hapus_tk, name='hapus-tk'),
     path('page/perusahaan/', page_tk, name='page-tk'),
     path('informasi/<str:npp>/list/tk/', list_tk_npp, name='list-tk'),
     path('informasi/create', buat_info, name='buat-info'),
