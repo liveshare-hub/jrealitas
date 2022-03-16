@@ -868,14 +868,10 @@ const input_file = document.getElementById('file2')
 $(document).ready(function() {
     $("#file2").change(function(e){
         var filename = e.target.files[0].name
-        console.log(filename)
-        const media_data = input_file.files[0];
+      
         $("#file2_label").text(filename)
         
-        if(media_data != null) {
-            progress_bar.classList.remove("d-none")
-            
-        }
+        
 
     })
    var pkTarget = $("#id_pindah_binaan").attr("data-target")
