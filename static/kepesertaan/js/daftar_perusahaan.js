@@ -178,7 +178,7 @@ function resetPassword(){
 function uploadFile() {
 
     var data = new FormData()
-    data.append("file", $("#file")[0].files[0])
+    data.append("file", $("#file2")[0].files[0])
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
     $.ajax({
         method:"POST",
@@ -305,7 +305,17 @@ function updateBinaan(){
 }
 
 $(document).ready(function() {
-    
+    $("#file2").change(function(e){
+        var filename = e.target.files[0].name
+        const media_data = input_file.files[0];
+        $("#upload_user_perusahaan_label").text(filename)
+        
+        if(media_data != null) {
+            progress_bar.classList.remove("d-none")
+            
+        }
+
+    })
     
 
     $("#form_registrasi_user_perusahaan").validate({
