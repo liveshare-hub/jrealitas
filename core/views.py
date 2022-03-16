@@ -13,7 +13,6 @@ from .decorators import unauthenticated_user
 
 # User = get_user_model()
 
-@csrf_exempt
 def login_view(request):
     form = LoginForm(request.POST or None)
     msg = None
@@ -21,9 +20,9 @@ def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
-        
+
         user = authenticate(request, username=username, password=password)
-        
+        print(user)
         if user is not None:
             login(request, user)
             return redirect('dashboard')
@@ -44,6 +43,7 @@ def edit_password(request, pk):
     
     # pk = request.POST.get('id_pembina')
     password1 = request.POST.get('password1')
+    
     password2 = request.POST.get('password2')
     
     if (password1 != password2) or (password1, password2) is None:
@@ -52,7 +52,10 @@ def edit_password(request, pk):
     else:
         password = make_password(password1, hasher='default')
         
-        User.objects.filter(id=pk).update(password=password)
+        user = User.objects.filter(pk=pk)
+        user.update(password=password)
+        user[0].set_password(password1)
+        user[0].save()
         return JsonResponse({'success':'Password berhasil diganti','status':200})
 
 @login_required

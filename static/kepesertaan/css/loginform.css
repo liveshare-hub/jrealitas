@@ -136,6 +136,13 @@ section .color:nth-child(3) {
     padding: 40px;
 }
 
+.form-new {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
+
 .form h2 {
     position: relative;
     color: #fff;
@@ -155,12 +162,15 @@ section .color:nth-child(3) {
     background: #fff;
 }
 
-.form .inputbox {
+.form .inputbox,
+.form-new .inputbox {
     width: 100%;
     margin-top: 20px;
 }
 
 .form .inputbox input,
+.form-new .inputbox input,
+.form-new .inputbox button,
 button {
     width: 100%;
     background: rgba(255, 255, 255, 0.2);
@@ -177,11 +187,13 @@ button {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.form .inputbox input::placeholder {
+.form .inputbox input::placeholder,
+.form-new .inputbox input::placeholder {
     color: #fff;
 }
 
-.form .inputbox button[type="submit"] {
+.form .inputbox button[type="submit"],
+.form-new .inputbox button[type="submit"] {
     background: #fff;
     color: #666;
     max-width: 100px;

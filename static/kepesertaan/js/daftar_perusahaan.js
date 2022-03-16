@@ -152,14 +152,12 @@ function DaftarPembina() {
     
 }
 
-function resetPassword(pk){
-    
-    var primaryK = $("#id_user_pk").val()
-    console.log(primaryK)
+function resetPassword(pk, pass1, pass2){
+
     var data = new FormData()
     data.append("id_pembina",$("#id_ganti_password_pembina").val())
-    data.append("password1", $("#id_edit_password1").val())
-    data.append("password2",$("#id_edit_password2").val())
+    data.append("password1", pass1)
+    data.append("password2", pass2)
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
     $.ajax({
         method:"POST",
@@ -317,11 +315,14 @@ $(document).ready(function() {
         Swal.fire({
             title: 'Reset Password',
             html:
-              '<input id="password_1" class="swal2-input" placeholder="Password" type:"password">' +
-              '<input id="password2" class="swal2-input" placeholder="Password Konfirmasi" type:"password">',
+              '<input id="password_1" class="swal2-input" placeholder="Password" type="password">' +
+              '<input id="password_2" class="swal2-input" placeholder="Password Konfirmasi" type="password">',
             focusConfirm: false,
             preConfirm: () => {
-              resetPassword(e.target.dataset.pk)
+                var pass1 = $("#password_1").val()
+                var pass2 = $("#password_2").val()
+                
+              resetPassword(e.target.dataset.pk, pass1, pass2)
             }
           })
           
