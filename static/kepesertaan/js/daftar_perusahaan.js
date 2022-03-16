@@ -152,8 +152,10 @@ function DaftarPembina() {
     
 }
 
-function resetPassword(){
-    var pk = $("#id_ganti_password_pembina").val()
+function resetPassword(pk){
+    
+    var primaryK = $("#id_user_pk").val()
+    console.log(primaryK)
     var data = new FormData()
     data.append("id_pembina",$("#id_ganti_password_pembina").val())
     data.append("password1", $("#id_edit_password1").val())
@@ -167,6 +169,7 @@ function resetPassword(){
         data:data,
         success:function(data){
             console.log(data)
+            
         },
         error:function(err){
             console.log(err)
@@ -294,7 +297,7 @@ function updateBinaan(){
         processData:false,
         data:data,
         success:function(data){
-            ``
+            
             console.log(data)
             
         },
@@ -305,8 +308,25 @@ function updateBinaan(){
 }
 
 $(document).ready(function() {
-    
-    
+
+    var rowCount = $("#example2 tr").length;
+    for(var i=1;i<rowCount;i++){
+       var tr = $(`#example2 tr:nth-child(${i}) td:nth-child(9) a`)
+       var pk = tr.attr("data-pk")
+       $(`#id_ganti_pass${pk}`).click((e) => {
+        Swal.fire({
+            title: 'Reset Password',
+            html:
+              '<input id="password_1" class="swal2-input" placeholder="Password" type:"password">' +
+              '<input id="password2" class="swal2-input" placeholder="Password Konfirmasi" type:"password">',
+            focusConfirm: false,
+            preConfirm: () => {
+              resetPassword(e.target.dataset.pk)
+            }
+          })
+          
+       })
+    }   
 
     $("#form_registrasi_user_perusahaan").validate({
         rules:{
@@ -560,9 +580,14 @@ $(document).ready(function() {
         resetPassword();
     })
 
+
     $("#upload").click(function(e) {
       //  e.preventDefault();
         uploadFile();
+    })
+
+    $("#id_ganti_pass").click(function(){
+        console.log("klik")
     })
 
     $("#upload_admin").click(function() {

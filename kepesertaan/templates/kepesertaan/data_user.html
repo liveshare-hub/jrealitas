@@ -179,84 +179,78 @@
                         <!-- List Perusahaan Seluruh Binaan -->
                         <div style="font-size:14px;" class="tab-pane" id="show_perusahaan">
                             <div class="table-responsive mt-3">
-                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table id="example" class="table table-bordered dataTable no-footer">
-                                                <thead>
-                                                    <tr>
-                                                        <th>NO</th>
-                                                        <th>NPP</th>
-                                                        <th>NAMA PERUSAHAAN</th>
-                                                        <th>ALAMAT</th>
-                                                        <th>DESA/KEL.</th>
-                                                        <th>KECAMATAN</th>
-                                                        <th>KOTA/KAB.</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for data in datas %}
-                                                    <tr>
-                                                        <td>{{forloop.counter}}</td>
-                                                        <td>{{data.npp}}</td>
-                                                        <td>{{data.nama_perusahaan}}</td>
-                                                        <td>{{data.alamat}}</td>
-                                                        <td>{{data.desa_kel}}</td>
-                                                        <td>{{data.kecamatan}}</td>
-                                                        <td>{{data.kota_kab}}</td>
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="far fa-edit">edit</i>
-                                                                </a>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <!-- Modal Change Password -->
-                                                    <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h6 class="text-center" id="label-edit-password">
-                                                                        Ganti Password {{data.npp}}
-                                                                    </h6>
-                                                                    
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">x</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div id="alert" class="mt-2"></div>
-                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label for="id_edit_password1">Password Baru</label>
-                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
-                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                                </div>
-                                                                </form>
-                                                            </div>
+                                <table id="example" class="table table-bordered dataTable no-footer">
+                                    <thead>
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>NPP</th>
+                                            <th>NAMA PERUSAHAAN</th>
+                                            <th>ALAMAT</th>
+                                            <th>DESA/KEL.</th>
+                                            <th>KECAMATAN</th>
+                                            <th>KOTA/KAB.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in datas %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.npp}}</td>
+                                            <td>{{data.nama_perusahaan}}</td>
+                                            <td>{{data.alamat}}</td>
+                                            <td>{{data.desa_kel}}</td>
+                                            <td>{{data.kecamatan}}</td>
+                                            <td>{{data.kota_kab}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="far fa-edit">edit</i>
+                                                    </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <!-- Modal Change Password -->
+                                        <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="text-center" id="label-edit-password">
+                                                            Ganti Password {{data.npp}}
+                                                        </h6>
+                                                        
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">x</span>
+                                                        </button>
+                                                    </div>
+                                                    <div id="alert" class="mt-2"></div>
+                                                    <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="id_edit_password1">Password Baru</label>
+                                                            <input type="password" class="form-control" id="id_edit_password1" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                            <input type="password" class="form-control" id="id_edit_password2" required>
                                                         </div>
                                                     </div>
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                        <button type="submit" class="btn btn-primary">Update</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <!-- Pendaftaran Pembina -->
@@ -440,100 +434,87 @@
                         <!-- Lisit Perusahaan Per Pembina -->
                         <div style="font-size:14px;" class="tab-pane active" id="data_perusahaan">
                             <div class="table-responsive mt-3">
-                                <div class="dataTables_wrapper dt-bootstrap4 no-footer">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <table id="example" class="table table-bordered dataTable no-footer">
-                                                <thead>
-                                                    <tr>
-                                                        <th>NO</th>
-                                                        <th>NPP</th>
-                                                        <th>NAMA PERUSAHAAN</th>
-                                                        <th>TOTAL TK</th>
-                                                        <th>ALAMAT</th>
-                                                        <th>DESA/KEL.</th>
-                                                        <th>KECAMATAN</th>
-                                                        <th>KOTA/KAB.</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    {% for data in datas %}
-                                                    <tr>
-                                                        <td>{{forloop.counter}}</td>
-                                                        <td>{{data.npp}}</td>
-                                                        <td>{{data.nama_perusahaan}}</td>
-                                                        {% if data.jlh_tk > 0 %}
-                                                        <td>{{data.jlh_tk}}</td>
-                                                        {% else %}
-                                                        <td>0</td>
-                                                        {% endif %}
-                                                        {% if data.alamat %}<td>{{data.alamat}}</td>
-                                                        {% else %}<td> - </td>
-                                                        {% endif %}
-                                                        {% if data.desa_kel %}<td>{{data.desa_kel}}</td>
-                                                        {% else %}<td> - </td>
-                                                        {% endif %}
-                                                        {% if data.kecamatan %}<td>{{data.kecamatan}}</td>
-                                                        {% else %}<td> - </td>
-                                                        {% endif %}
-                                                        {% if data.kota_kab %}<td>{{data.kota_kab}}</td>
-                                                        {% else %}<td> - </td>
-                                                        {% endif %}
-                                                        <td>
-                                                            <div class="btn-group">
-                                                                <a href type="button" class="color-nav-link dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                    <i class="far fa-edit">edit</i>
-                                                                </a>
-                                                                <div class="dropdown-menu">
-                                                                    <a class="dropdown-item tag-a-ganti-password" href="#" data-toggle="modal" data-target="#edit_password{{data.pk}}">Ganti Password</a>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <!-- Modal Change Password -->
-                                                    <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h6 class="text-center" id="label_pindah_binaan" data-npp="{{data.npp}}">
-                                                                        Ganti Password {{data.npp}}
-                                                                    </h6>
-                                                                    
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                        <span aria-hidden="true">x</span>
-                                                                    </button>
-                                                                </div>
-                                                                <div id="alert" class="mt-2"></div>
-                                                                <form method="POST" name="form_edit_password" id="form_edit_password">
-                                                                    {% csrf_token %}
-                                                                    <input type="hidden" value="{{data.username.pk}}" id="id_ganti_password">
-                                                                <div class="modal-body">
-                                                                    <div class="form-group">
-                                                                        <label for="id_edit_password1">Password Baru</label>
-                                                                        <input type="password" class="form-control" id="id_edit_password1" required>
-                                                                    </div>
-                                                                    <div class="form-group">
-                                                                        <label for="id_edit_password2">Ulangi Password Baru</label>
-                                                                        <input type="password" class="form-control" id="id_edit_password2" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
-                                                                    <button type="submit" class="btn btn-primary">Update</button>
-                                                                </div>
-                                                                </form>
-                                                            </div>
+                                <table id="example2" class="table table-bordered dataTable no-footer">
+                                    <thead>
+                                        <tr>
+                                            <th>NO</th>
+                                            <th>NPP</th>
+                                            <th>NAMA PERUSAHAAN</th>
+                                            <th>TOTAL TK</th>
+                                            <th>ALAMAT</th>
+                                            <th>DESA/KEL.</th>
+                                            <th>KECAMATAN</th>
+                                            <th>KOTA/KAB.</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for data in datas %}
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{data.npp}}</td>
+                                            <td>{{data.nama_perusahaan}}</td>
+                                            {% if data.jlh_tk > 0 %}
+                                            <td>{{data.jlh_tk}}</td>
+                                            {% else %}
+                                            <td>0</td>
+                                            {% endif %}
+                                            {% if data.alamat %}<td>{{data.alamat}}</td>
+                                            {% else %}<td> - </td>
+                                            {% endif %}
+                                            {% if data.desa_kel %}<td>{{data.desa_kel}}</td>
+                                            {% else %}<td> - </td>
+                                            {% endif %}
+                                            {% if data.kecamatan %}<td>{{data.kecamatan}}</td>
+                                            {% else %}<td> - </td>
+                                            {% endif %}
+                                            {% if data.kota_kab %}<td>{{data.kota_kab}}</td>
+                                            {% else %}<td> - </td>
+                                            {% endif %}
+                                            <td>
+                                                <a href="#" class="btn-primary" data-pk="{{data.username.pk}}" id="id_ganti_pass{{data.username.pk}}">Ganti Password</a>
+                                            </td>
+                                        </tr>
+                                        <!-- Modal Change Password -->
+                                        <div class="modal fade" id="edit_password{{data.pk}}" tabindex="-1" aria-labelledby="edit_passwordLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h6 class="text-center" id="label_pindah_binaan" data-npp="{{data.npp}}">
+                                                            Ganti Password {{data.npp}}
+                                                        </h6>
+                                                        
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">x</span>
+                                                        </button>
+                                                    </div>
+                                                    <div id="alert" class="mt-2"></div>
+                                                    <form method="POST" name="form_edit_password" id="form_edit_password">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" value="{{data.username.pk}}" id="id_user_pk" data-get-pk="{{data.username.pk}}">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="id_edit_password1">Password Baru</label>
+                                                            <input type="password" class="form-control" id="id_edit_password1" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="id_edit_password2">Ulangi Password Baru</label>
+                                                            <input type="password" class="form-control" id="id_edit_password2" required>
                                                         </div>
                                                     </div>
-                                                    <!-- Modal Pindah Binaan -->
-                                                    
-                                                    {% endfor %}
-                                                </tbody>
-                                            </table>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary mr-3" data-dismiss="modal">Batal</button>
+                                                        <button type="button" class="btn btn-primary" id="reset_password2" >Update</button>
+                                                    </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                        <!-- Modal Pindah Binaan -->
+                                        
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                         <div class="tab-pane" id="upload_template">
@@ -839,6 +820,7 @@
 <script>
     $(document).ready(function() {
         $('#example').DataTable();
+        $('#example2').DataTable();
     })
 </script>
 
@@ -870,9 +852,6 @@ $(document).ready(function() {
         var filename = e.target.files[0].name
       
         $("#file2_label").text(filename)
-        
-        
-
     })
    var pkTarget = $("#id_pindah_binaan").attr("data-target")
 
