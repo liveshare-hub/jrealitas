@@ -306,10 +306,11 @@ function updateBinaan(){
 
 $(document).ready(function() {
     $("#file2").change(function(e){
+        console.log(e)
         var filename = e.target.files[0].name
         console.log(filename)
         const media_data = input_file.files[0];
-        $("#upload_user_perusahaan_label").text(filename)
+        $("#file2_label").text(filename)
         
         if(media_data != null) {
             progress_bar.classList.remove("d-none")
