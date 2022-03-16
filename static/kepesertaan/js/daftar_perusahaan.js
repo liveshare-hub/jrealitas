@@ -305,19 +305,7 @@ function updateBinaan(){
 }
 
 $(document).ready(function() {
-    $("#file2").change(function(e){
-        console.log(e)
-        var filename = e.target.files[0].name
-        console.log(filename)
-        const media_data = input_file.files[0];
-        $("#file2_label").text(filename)
-        
-        if(media_data != null) {
-            progress_bar.classList.remove("d-none")
-            
-        }
-
-    })
+    
     
 
     $("#form_registrasi_user_perusahaan").validate({
