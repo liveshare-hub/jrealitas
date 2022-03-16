@@ -95,7 +95,7 @@
                                             {% else %}
                                                 <td>{{worker.tgl_na|date:"m-Y"}}</td>
                                             {% endif %}
-                                            {% if worker.email is null %}
+                                            {% if worker.email is None%}
                                             <td>-</td>
                                             {% else %}
                                             <td>{{worker.email}}</td>
@@ -140,6 +140,7 @@
                 <div class="container d-none progress mb-3" id="progress">
                     
                 </div>
+                
             </div>
         </div>
     </div>
@@ -160,9 +161,10 @@
                 var xhr = new window.XMLHttpRequest();
                 xhr.upload.addEventListener('progress', (e) => {
                     if(e.lengthComputable){
+                        
                         const percentProgress = (e.loaded / e.total)*100;
-                        console.log(percentProgress)
-                        $("#progress").html(`<div class="progress-bar progress-bar-stripped bg-success" role="progressbar" style="width: ${percentProgress}%;" aria-valuenow="${percentProgress}" aria-valuemin="0" aria-valuemax="100"></div>`)
+                        
+                        $("#progress").html(`<div class="progress-bar progress-bar-stripped bg-success" role="progressbar" id="id_progress" style="width: ${percentProgress}%;" aria-valuenow="${percentProgress}" aria-valuemin="0" aria-valuemax="100">${percentProgress.toFixed(1)}%</div>`)
                     }
                 })
                 return xhr
@@ -174,9 +176,17 @@
             processData:false,
             data:data,
             beforeSend: function(){
+               Swal.fire({
+                   text:"Loading ...",
+                   icon:'info',
+                   timerProgressBar:true,
+                   showCancelButton:false,
+                   showConfirmButton:false,
+               })
             },
             success:function(res){
                 obj = JSON.parse(res)
+                $("#spinner").hide();
                 if(obj['success']){
                     Swal.fire({
                         text:"Data berhasil di upload.",
@@ -207,7 +217,7 @@
 
     $(document).ready(function(){
         $('#id_list_tk').DataTable();
-        
+        $("#spinner").hide();
         $("#id_upload_tk").change(function(e){
             var filename = e.target.files[0].name
             const media_data = input_file.files[0];
@@ -221,8 +231,6 @@
         })
         
         const uploadForm = $("#upload_tk_form")
-        console.log(uploadForm)
-
         var npp = $("#list_npp_id option:selected").val()
         $("#list_npp_id").change(function(){
             npp = $(this).val()

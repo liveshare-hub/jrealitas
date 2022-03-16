@@ -1,10 +1,11 @@
 from django.contrib.auth.hashers import make_password
-from django.db.models import Q
+from django.db.models import Q, Subquery, OuterRef, Count
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
+from django.db import transaction
 
 from django.core.files.storage import FileSystemStorage
 
@@ -64,7 +65,8 @@ def data_user(request):
         'ply':ply,
     }
     elif keps.exists():
-        datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user)
+        jlh_tk = Tenaga_kerja.objects.filter(npp_id=OuterRef('pk'))
+        datas = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=user).annotate(jlh_tk=Count('tenaga_kerja'))
         context = {
         'datas':datas,
         'kepala':kepala,
@@ -464,8 +466,11 @@ def save_tk_to_models(request):
         exceldata = pd.read_excel(myfile, converters={'NPP':str,'NO_HANDPHONE':str, 'NO_KARTU':str, 'TGL_NA':str, 'TGL_LAHIR':str, 'TGL_KEPS':str})
     
         dbframe = exceldata
+        count = 0
+        data_list = []
         for df in dbframe.itertuples():
-            
+            # print(len(dbframe.itertuples))
+            count +=1
             na = df.TGL_NA
             tgl_lhr = datetime.strptime(df.TGL_LAHIR, '%d-%m-%Y').strftime('%Y-%m-%d')
             tgl_keps = datetime.strptime(df.TGL_KEPS, '%d-%m-%Y')
@@ -474,12 +479,20 @@ def save_tk_to_models(request):
                 tgl_na = datetime.strptime(df.TGL_NA, '%d-%m-%Y')
             else:
                 tgl_na = None
+            if str(df.EMAIL) != "nan":
+                email = str(df.EMAIL)
+            else:
+                email = ""
             npp = Perusahaan.objects.filter(npp=df.NPP)
             if npp.exists():
-                objs = Tenaga_kerja.objects.select_related('npp').create(npp_id=npp[0].pk, nama=df.NAMA_LENGKAP, no_kartu=df.NO_KPJ, tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
-                    tgl_na=tgl_na, email=df.EMAIL, no_hp=df.NO_HANDPHONE)                
+                objs = Tenaga_kerja(npp_id=npp[0].pk, nama=df.NAMA_LENGKAP, no_kartu=df.NO_KPJ, tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
+                        tgl_na=tgl_na, email=email, no_hp=df.NO_HANDPHONE)
+                data_list.append(objs)
+                    # Tenaga_kerja.objects.select_related('npp').create(npp_id=npp[0].pk, nama=df.NAMA_LENGKAP, no_kartu=df.NO_KPJ, tgl_lahir=tgl_lhr, tgl_keps=tgl_keps,
+                        # tgl_na=tgl_na, email=df.EMAIL, no_hp=df.NO_HANDPHONE)                
         
-        return JsonResponse({"success":"Done"}, safe=False)
+        Tenaga_kerja.objects.bulk_create(data_list)    
+        return JsonResponse({"success":"Done",'count':count}, safe=False)
     else:
         return JsonResponse({'error':'Cek File anda kembali'}, safe=False)
         

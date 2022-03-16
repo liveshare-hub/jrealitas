@@ -9,7 +9,7 @@ var profileQuery = `query{
 }`
 
 function DafarNPP() {
-    
+    const npp = $("#npp").val()
     var data = new FormData()
     data.append("npp", $("#npp").val())
     data.append("nama_pemberi_kerja", $("#nama_pemberi_kerja").val())
@@ -38,9 +38,14 @@ function DafarNPP() {
         processData:false,
         data:data,
         success:function(res){
-            //$("input").val("")
-            //$("#makeselect").val("7")
-            window.location = '/'
+            Swal.fire({
+                text:`Pendaftaran Perusahaan NPP <b>${npp}</b> berhasil!`,
+                icon:'success',
+                confirmButtonText:'OK',
+                preConfirm:() => {
+                    location.reload();
+                }
+            })
             console.log(res['success'])
             
         },
