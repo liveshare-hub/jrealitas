@@ -166,7 +166,7 @@ function resetPassword(){
         processData:false,
         data:data,
         success:function(data){
-            location.href = "/user/data/"
+            console.log(data)
         },
         error:function(err){
             console.log(err)
