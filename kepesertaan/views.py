@@ -270,7 +270,7 @@ def save_to_models(request):
             encsalt = fernet.encrypt(dbframe.NPP.encode())
             salts = encsalt[1:5]
 
-            password = make_password(dbframe.NPP, salt=[salts.decode('utf-8')])
+            password = make_password(dbframe.NPP, salt='default')
             user = User.objects.create(username=dbframe.NPP, password=password)
             obj = Perusahaan.objects.select_related('pembina','username').create(npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, username_id=user.pk, pembina_id=pembina)
             obj.save()
