@@ -169,6 +169,7 @@ section .color:nth-child(3) {
 }
 
 .form .inputbox input,
+.form .inputbox button,
 .form-new .inputbox input,
 .form-new .inputbox button,
 button {
