@@ -211,7 +211,7 @@ function uploadFile() {
             }
         },
         error:function(err){
-            console.log(err)
+            console.log(err.responseText)
         }
     })
 
