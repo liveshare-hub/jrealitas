@@ -265,12 +265,12 @@ def save_to_models(request):
         
         dbframe = exceldata
         for dbframe in dbframe.itertuples():
-            key = Fernet.generate_key()
-            fernet = Fernet(key)
-            encsalt = fernet.encrypt(dbframe.NPP.encode())
-            salts = encsalt[1:5]
+            # key = Fernet.generate_key()
+            # fernet = Fernet(key)
+            # encsalt = fernet.encrypt(dbframe.NPP.encode())
+            # salts = encsalt[1:5]
 
-            password = make_password(dbframe.NPP, salt='default')
+            password = make_password(dbframe.NPP, hasher='default')
             user = User.objects.create(username=dbframe.NPP, password=password)
             obj = Perusahaan.objects.select_related('pembina','username').create(npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, username_id=user.pk, pembina_id=pembina)
             obj.save()
