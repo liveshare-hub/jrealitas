@@ -261,7 +261,7 @@ def save_to_models(request):
     if request.method == 'POST' and request.FILES['file']:
         myfile = request.FILES['file']
         
-        exceldata = pd.read_excel(myfile)
+        exceldata = pd.read_excel(myfile, converters={'NPP':str})
         
         dbframe = exceldata
         for dbframe in dbframe.itertuples():
@@ -271,10 +271,7 @@ def save_to_models(request):
             
             password = make_password(dbframe.NPP, salt=[encsalt.decode('utf-8')])
             user = User.objects.create(username=dbframe.NPP, password=password)
-            obj = Perusahaan.objects.select_related('pembina','username').create(nama_pemilik=dbframe.NAMA_PEMILIK_PERUSAHAAN, nik=dbframe.NIK, email=dbframe.EMAIL,
-                no_hp=dbframe.NO_HANDPHONE, npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, alamat=dbframe.ALAMAT_PERUSAHAAN,
-                npwp_prsh=dbframe.NPWP_PERUSAHAAN, kode_pos=dbframe.KODE_POS, desa_kel=dbframe.DESA_KELURAHAN, kecamatan=dbframe.KECAMATAN,
-                kota_kab=dbframe.KOTA_KABUPATEN, username_id=user.pk, pembina_id=pembina)
+            obj = Perusahaan.objects.select_related('pembina','username').create(npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, username_id=user.pk, pembina_id=pembina)
             obj.save()
 
         return JsonResponse({'success':'Done'})
@@ -292,39 +289,28 @@ def download_excel(request):
     worksheet.write('A1','NPP',bold)
     worksheet.write('B1','NAMA_PERUSAHAAN', bold)
     worksheet.write('C1','NAMA_PIC', bold)
-    worksheet.write('D1','NIK', bold)
-    worksheet.write('E1','JABATAN',bold)
-    worksheet.write('F1','EMAIL', bold)
-    worksheet.write('G1','NO_HANDPHONE', bold)
-    worksheet.write('H1', 'NAMA_PEMILIK_PERUSAHAAN', bold)
-    worksheet.write('I1', 'NPWP_PERUSAHAAN', bold)
-    worksheet.write('J1','ALAMAT_PERUSAHAAN', bold)
-    worksheet.write('K1','DESA_KELURAHAN', bold)
-    worksheet.write('L1','KECAMATAN', bold)
-    worksheet.write('M1','KOTA_KABUPATEN', bold)
-    worksheet.write('N1','KODE_POS', bold)
 
     row = 1
     col = 0
     try:
-        data = Perusahaan.objects.all()[0]
+        # data = Perusahaan.objects.all()[0]
         # npp = datas[0].npp
         # for data in datas:
         #     print(data.npp)
-        worksheet.write(row, col, data.npp)
-        worksheet.write(row, col+1, data.nama_perusahaan)
-        worksheet.write(row, col+2, data.nama_pic)
-        worksheet.write(row, col+3, data.nik)
-        worksheet.write(row, col+4, "HRD")
-        worksheet.write(row, col+5, data.email)
-        worksheet.write(row, col+6, data.no_hp)
-        worksheet.write(row, col+7, data.nama_pemilik)
-        worksheet.write(row, col+8, data.npwp_prsh)
-        worksheet.write(row, col+9, data.alamat)
-        worksheet.write(row, col+10, data.desa_kel)
-        worksheet.write(row, col+11, data.kecamatan)
-        worksheet.write(row, col+12, data.kota_kab)
-        worksheet.write(row, col+13, data.kode_pos)
+        worksheet.write_string(row, col, "BB04xxxx")
+        worksheet.write_string(row, col+1, "PT XYZ")
+        worksheet.write_string(row, col+2, "SI XYZ")
+        # worksheet.write(row, col+3, data.nik)
+        # worksheet.write(row, col+4, "HRD")
+        # worksheet.write(row, col+5, data.email)
+        # worksheet.write(row, col+6, data.no_hp)
+        # worksheet.write(row, col+7, data.nama_pemilik)
+        # worksheet.write(row, col+8, data.npwp_prsh)
+        # worksheet.write(row, col+9, data.alamat)
+        # worksheet.write(row, col+10, data.desa_kel)
+        # worksheet.write(row, col+11, data.kecamatan)
+        # worksheet.write(row, col+12, data.kota_kab)
+        # worksheet.write(row, col+13, data.kode_pos)
     except:
         pass
         
