@@ -311,19 +311,35 @@ $(document).ready(function() {
     for(var i=1;i<rowCount;i++){
        var tr = $(`#example2 tr:nth-child(${i}) td:nth-child(9) a`)
        var pk = tr.attr("data-pk")
+       var npp = tr.attr("data-npp")
        $(`#id_ganti_pass${pk}`).click((e) => {
-        Swal.fire({
-            title: 'Reset Password',
+        const swalWithBootstrapButtons = Swal.mixin({
+            customClass: {
+              confirmButton: 'btn btn-success',
+            },
+            buttonsStyling: false
+          })
+          
+          swalWithBootstrapButtons.fire({
+            title: `Ubah Sandi</br>${npp}`,
             html:
               '<input id="password_1" class="swal2-input" placeholder="Password" type="password">' +
               '<input id="password_2" class="swal2-input" placeholder="Password Konfirmasi" type="password">',
-            focusConfirm: false,
-            preConfirm: () => {
+            
+            showCancelButton: false,
+            confirmButtonText: 'SUBMIT',
+          }).then((result) => {
+            if (result.isConfirmed) {
                 var pass1 = $("#password_1").val()
                 var pass2 = $("#password_2").val()
-                
-              resetPassword(e.target.dataset.pk, pass1, pass2)
-            }
+
+                resetPassword(e.target.dataset.pk, pass1, pass2)
+                swalWithBootstrapButtons.fire(
+                    'Berhasil!',
+                    `Sandi ${npp} berhasil diganti.`,
+                    'success'
+                )
+            } 
           })
           
        })
