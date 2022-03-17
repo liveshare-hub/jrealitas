@@ -268,7 +268,7 @@ def save_to_models(request):
             key = Fernet.generate_key()
             fernet = Fernet(key)
             encsalt = fernet.encrypt(dbframe.NPP.encode())
-            salts = encsalt[1:10]
+            salts = encsalt[1:5]
 
             password = make_password(dbframe.NPP, salt=[salts.decode('utf-8')])
             user = User.objects.create(username=dbframe.NPP, password=password)
