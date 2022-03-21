@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 
-from core.settings import MEDIA_ROOT
+# from core.settings import MEDIA_ROOT
 
 from .views import delete_user, login_view, logout_view, edit_password
 
@@ -26,7 +26,7 @@ urlpatterns = [
     path('accounts/reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('hapus/user/<int:pk>', delete_user, name='hapus-user'),
     path('admin/', admin.site.urls),
-] 
+]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

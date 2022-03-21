@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
     "corsheaders.middleware.CorsMiddleware",
@@ -154,14 +155,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
-    # BASE_DIR / 'kepesertaan/static'
+   
 ]
 
 STATIC_ROOT = '/home/reah4319/jrealitas/public/'
+# STATIC_ROOT = BASE_DIR / 'static_cdn'
 
 # MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_ROOT = '/home/reah4319/jrealitas/media/'
