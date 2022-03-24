@@ -16,6 +16,7 @@ urlpatterns = [
     path('chat/', include('chat.urls')),
     path('mychats/', include('mychats.urls')),
     path('kunjungan/', include('kunjungan.urls')),
+    path('admin-page/', include('admin_page.urls')),
     path("graphql", csrf_exempt(GraphQLView.as_view(graphiql=True)), name="graphql"),
     path('accounts/login/', login_view, name='login'),
     path('accounts/logout/', logout_view, name='logout'),

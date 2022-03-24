@@ -121,18 +121,17 @@ def pindah_binaan(request):
 @allowed_users(allowed_roles=['admin'])
 @csrf_exempt
 def Daftar_Pembina(request):
-    # kd_kantor = request.user.profile_set.values('kode_kantor__pk')[0]['kode_kantor__pk']
+
     kd_kantor = request.POST.get('kd_kantor')
     nama = request.POST.get('nama_pembina')
     jabatan = request.POST.get('jabatan')
-    # bidang = request.POST.get('bidang')
-    # kepala = request.POST.get('kepala_id')
+
     email = request.POST.get('email_pembina')
     no_hp = request.POST.get('no_hp_pembina')
     username = request.POST.get('username')
     password1 = request.POST.get('password1')
     password2 = request.POST.get('password2')
-    # try:
+
     cek_user = User.objects.filter(username=username)
     if cek_user.exists():
         return JsonResponse({'error':'User sudah pernah terdaftar!'})
@@ -142,16 +141,14 @@ def Daftar_Pembina(request):
             user = User.objects.create(username=username, password=password1, email=email)
             user.groups.add(group.id)
             user.save()
-            # user_prof = User_Profile.objects.create(username_id=user.pk, nama=nama, nik=nik,
-            #     email=email, no_hp=no_hp)
+
             Profile.objects.create(username_id=user.pk,nama=nama, jabatan_id=jabatan,
                 kode_kantor_id=kd_kantor, no_hp=no_hp)
 
             return JsonResponse({'success':'done'})
         else:
             return JsonResponse({'data_error':'Password tidak sama!'})
-    # except:
-    #     return JsonResponse({'error':'Pastikan semua data terisi dan benar!'})
+
 
 @login_required(login_url='/accounts/login/')
 @allowed_users(allowed_roles=['admin',])

@@ -1,0 +1,307 @@
+{% extends 'base2.html' %}
+
+{% block title %}Create User Internal{% endblock title %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12 px-5 mt-5">
+        <div class="card mb-3">
+            <div class="card-header">
+                <div class="nav-tabs-navigation">
+                    <div class="nav-tabs-wrapper" style="font-size: small; font-weight: bold;">
+                        <ul class="nav nav-tabs" data-tabs="tabs">
+                            <li class="nav-item mr-2">
+                                <a href="#id_list_pegawai" class="color-nav-link nav-link active" data-toggle="tab">
+                                    <i class="fas fa-fw fa-users"> </i> Karyawan
+                                </a>
+                            </li>
+                            <li class="nav-item mr-2">
+                                <a href="#register_karyawan" class="color-nav-link nav-link" data-toggle="tab">
+                                    <i class="fas fa-fw fa-user-plus"> </i>Registrasi Karyawan
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="card-body">
+                <div class="tab-content">
+                    <div style="font-size:14px;" class="tab-pane active" id="id_list_pegawai">
+                        <div class="table-responsive mt-3">
+                            <table id="example2" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>NO</th>
+                                        <th>USER</th>
+                                        <th>NAMA LENGKAP</th>
+                                        <th>JABATAN</th>
+                                        <th>EMAIL</th>
+                                        <th>NO HANDPHONE</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in datas %}
+                                    <tr>
+                                        <td>{{forloop.counter}}</td>
+                                        <td>{{data.username.username}}</td>
+                                        <td>{{data.nama}}</td>
+                                        <td>{{data.jabatan.kode_jabatan}} - {{data.jabatan.nama_jabatan}}</td>
+                                        <td>{{data.username.email}}</td>
+                                        <td>{{data.no_hp}}</td>
+                                        <td>
+                                            <a href="#" class="badge badge-primary" data-pk="{{data.username.pk}}" id="id_ganti_pass{{data.username.pk}}" data-user="{{data.username.username}}">Ganti Password</a>
+                                        </td>
+                                    </tr>
+                                    <!-- Modal Change Password -->
+                                    
+                                    <!-- Modal Pindah Binaan -->
+                                    
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="register_karyawan">
+                        <form id="form_register_pembina" method="POST">
+                            {% csrf_token %}
+                            <div class="row justify-content-center">
+                                <div class="col md-5">
+                                    <div class="form-group">
+                                        <label for="nama">Nama Lengkap</label>
+                                        <span style="color:red;">*</span>
+                                        {{form.nama}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="makeselect">Jabatan</label>
+                                        <span style="color:red;">*</span>
+                                        {{form.jabatan}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="no_hp">No Handphone</label>
+                                        <span style="color:red;">*</span>
+                                        {{form.no_hp}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kd_user">Kode User</label>
+                                        <span style="color:red;">*</span>
+                                        <input type="text" class="form-control clear" id="kd_user" name="kd_user" onkeyup="this.value = this.value.toUpperCase()" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="kd_user">Kode Kantor</label>
+                                        <span style="color:red;">*</span>
+                                        {{form.kode_kantor}}
+                                    </div>
+                                </div>
+                                <div class="col md-5">
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <span style="color:red;">*</span>
+                                        <input type="text" class="form-control clear" id="email_pembina" name="email" onkeyup="this.value = this.value.toUpperCase()" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pembaina_username">Username</label>
+                                        <span style="color:red;">*</span>
+                                        {{form.username}}
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pembina_password1">Password</label>
+                                        <span style="color:red;">*</span>
+                                        <input type="password" name="id_password_1" id="id_password_1" class="form-control clear" minlength="8" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pembina_password2">Ulangi Password</label>
+                                        <span style="color:red;">*</span>
+                                        <input type="password" name="id_password_2" id="id_password_2" class="form-control clear" minlength="8" required>
+                                    </div>
+                                    
+                                   <div class="form-group">
+                                        <button type="button" class="btn btn-success float-right mt-4" id="id_Daftar_btn">Daftar</button>
+                                   </div>
+                                </div>
+                            </div>
+                        </form>
+                    <div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+var superQuery = `query{
+    allJabatan{
+        id
+        kodeJabatan
+        namaJabatan
+    }
+    }`
+
+    function DaftarPembina() {
+        var data = new FormData()
+        data.append("nama", $("#id_nama").val())
+        data.append("jabatan", $('select#id_jabatan option').filter(':selected').val())
+        data.append("kd_kantor", $('select#id_kode_kantor option').filter(':selected').val())
+        data.append("kepala_id", $("#id_jabatan_pembina").val())
+        data.append("email",$("#email_pembina").val())
+        data.append("no_hp",$("#id_no_hp").val())
+        data.append("username", $("#id_username").val())
+        data.append("password1", $("#id_password_1").val())
+        data.append("password2", $("#id_password_1").val())
+        data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+        
+        $.ajax({
+            method:"POST",
+            url:"{% url 'create-user-internal' %}",
+            contentType:false,
+            processData:false,
+            data:data,
+            success:function(res){
+                $("input.clear").val("")
+                $('select#id_jabatan_pembina option').val("0")
+                
+                if(res['error']){
+                    swal({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Username sudah terdaftar sebelumnya!',
+                        
+                      })
+                }
+                if(res['success']){
+                    swal({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Data Berhasil disimpan',
+                      })
+                }
+                if(res['data_error']){
+                    swal({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Password Tidak Sama',
+                      })
+                }
+                
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+        
+    }
+
+    function resetPassword(pk, pass1, pass2){
+
+        var data = new FormData()
+        data.append("id_pembina",$("#id_ganti_password_pembina").val())
+        data.append("password1", pass1)
+        data.append("password2", pass2)
+        data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
+        $.ajax({
+            method:"POST",
+            url:`/ganti/password/${pk}`,
+            contentType:false,
+            processData:false,
+            data:data,
+            success:function(data){
+                console.log(data)
+                
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+    }
+
+    $(document).ready(function(){
+        $('#example').DataTable();
+
+        //reset password
+
+        var rowCount = $("#example2 tr").length;
+        for(var i=1;i<rowCount;i++){
+            var tr = $(`#example2 tr:nth-child(${i}) td:nth-child(7) a`)
+            console.log($("#example tr:nth-child(1) td"))
+            var pk = tr.attr("data-pk")
+            
+            $(`#id_ganti_pass${pk}`).click((e) => {
+
+                var dataUser = e.target.dataset.user
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                    confirmButton: 'btn btn-success',
+                    },
+                    buttonsStyling: false
+                })
+                
+                swalWithBootstrapButtons.fire({
+                    title: `Ubah Sandi</br>${dataUser}`,
+                    html:
+                    '<input id="password_1" class="swal2-input" placeholder="Password" type="password">' +
+                    '<input id="password_2" class="swal2-input" placeholder="Password Konfirmasi" type="password">',
+                    
+                    showCancelButton: false,
+                    confirmButtonText: 'SUBMIT',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var pass1 = $("#password_1").val()
+                        var pass2 = $("#password_2").val()
+
+                        resetPassword(e.target.dataset.pk, pass1, pass2)
+                        swalWithBootstrapButtons.fire(
+                            'Berhasil!',
+                            `Sandi ${dataUser} berhasil diganti.`,
+                            'success'
+                        )
+                    } 
+                })
+                
+            })
+        }
+
+        //end
+
+        $("#kd_user").on("focusout", function() {
+            var kd_user = $(this).val()
+            $("#id_username").val(kd_user)
+        })
+
+        $.ajax({
+            method:"POST",
+            url:"{% url 'graphql' %}",
+            contentType:"application/json",
+            data:JSON.stringify({
+                query:superQuery,
+            }),
+            dataType:"json",
+            success:function(data){
+                var datas = data['data']['allJabatan']
+                
+                $.each(datas, function(i,j){
+    
+                    $("#id_jabatan").append($('<option>', {
+                        
+                        value:j['id'],
+                        text:j['id']+" - "+j['namaJabatan'],       
+                    }));
+                })
+              
+            },
+            error:function(err){
+                console.log(err)
+            }
+        })
+
+        $("#id_Daftar_btn").click(function(){
+            DaftarPembina()
+        })
+    })
+</script>
+
+{% endblock javascripts %}
+

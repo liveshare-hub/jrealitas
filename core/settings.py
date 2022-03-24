@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # 'django_private_chat',
     # 'import_export',
     "corsheaders",
+    'admin_page',
     'kepesertaan',
     'chat',
     'mychats',

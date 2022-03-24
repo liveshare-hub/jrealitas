@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}Admin Page{% endblock title %}
+
+{% block content %}
+<div class="row px-3">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase">
+                            Total Perusahaan</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_npp}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-industry fa-2x text-primary mt-2"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Tenaga Kerja</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_tk}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fa fa-briefcase fa-2x text-success mt-2">
+                        </i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row px-3">
+    <div class="col-xl-8">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="box-title">Daftar Pembina </h4>
+            </div>
+            <div class="card-body--">
+                <div class="table">
+                    <table class="table text-center" id="id_table_total">
+                        <thead>
+                            <tr class="bg-light">
+                                <th class="serial">#</th>
+                                <th>User</th>
+                                <th>Nama</th>
+                                <th>Total NPP</th>
+                                <th>Total Tenaga Kerja</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in datas %}
+                            <tr>
+                                <td class="serial">{{forloop.counter}}</td>
+                                <td>{{data.username.username}}</td>
+                                <td>{{data.nama}}</td>
+                                <td>{{data.num_npp}}</td>
+                                <td>{{data.total_tk}}</td>
+                            </tr>
+                            {% endfor %}
+                            
+                        </tbody>
+                    </table>
+                </div> <!-- /.table-stats -->
+            </div>
+        </div> <!-- /.card -->
+    </div>  <!-- /.col-lg-8 -->
+
+    <div class="col-xl-4">
+        <div class="row">
+            <div class="col-lg-6 col-xl-12">
+                
+            </div>
+
+           
+        </div>
+    </div> <!-- /.col-md-4 -->
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+$(document).ready(function() {
+    $('#id_table_total').DataTable();
+    
+})
+{% endblock javascripts %}

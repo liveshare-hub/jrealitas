@@ -11,9 +11,10 @@ def info_context(request):
 
     # jabatan = request.user.profile_set.values('jabatan__kode_jabatan')
     # pejabat = Profile.objects.select_related('username','jabatan').filter(Q(jabatan__pk=1) | Q(jabatan__pk=2) | Q(jabatan__pk=3),username__username=request.user)
-    if request.user.is_authenticated:
+    if request.user.is_authenticated or request.user.is_superuser:
         pejabat = Profile.objects.select_related('username','jabatan').all()
-        admin = User.objects.filter(username=request.user,groups__name__in=['admin',])
+        # admin = User.objects.filter(username=request.user,groups__name__in=['admin',])
+        admin = User.objects.filter(username=request.user,is_superuser=True)
         
         kepala = pejabat.filter(Q(jabatan__kode_jabatan=70) | Q(jabatan__kode_jabatan=701),username__username=request.user)
         pembina = pejabat.filter(Q(jabatan__kode_jabatan=7) | Q(jabatan__kode_jabatan=8), username__username=request.user)
@@ -31,17 +32,6 @@ def info_context(request):
             }
             return context
 
-        if kepala.exists() or request.user.is_superuser:
-            infos = Informasi.objects.all().order_by('-created')[:5]
-            total_npp = Perusahaan.objects.all().count()
-            total_tk = Tenaga_kerja.objects.all().count()
-            total_kunjungan = berita_kunjungan.objects.all().count()
-            # profile = Profile.objects.select_related('username','jabatan').filter(jabatan__kode_jabatan=jabatan[0]['jabatan__kode_jabatan'])
-            context = {
-                'info':infos, 'kepala':kepala, 'total_npp':total_npp, 'total_tk':total_tk,
-                'total_kunjungan':total_kunjungan
-            }
-            return context
         elif pembina.exists():
             infos = Informasi.objects.select_related('created_by').filter(created_by__username=request.user).order_by('-created')[:5]
             total_npp = Perusahaan.objects.select_related('pembina').filter(pembina__username__username=request.user).count()

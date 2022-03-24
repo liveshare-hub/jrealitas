@@ -25,7 +25,10 @@ def login_view(request):
         print(user)
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            if request.user.is_superuser:
+                return redirect('admindex')
+            else:
+                return redirect('dashboard')
         else:
             msg = "Invalid Credentials"
     else:
