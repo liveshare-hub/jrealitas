@@ -46,10 +46,10 @@ class Jabatan(models.Model):
 class Profile(models.Model):
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     nama = models.CharField(max_length=100)
-    # email = models.EmailField(max_length=100)
     no_hp = models.CharField(max_length=13, validators=[HP_VALIDATOR])
     jabatan = models.ForeignKey(Jabatan, on_delete=models.CASCADE)
     kode_kantor = models.ForeignKey(Kantor, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.username} - {self.nama}'
@@ -71,6 +71,7 @@ class Perusahaan(models.Model):
     desa_kel = models.CharField(max_length=100, blank=True, null=True)
     kecamatan = models.CharField(max_length=100, blank=True, null=True)
     kota_kab = models.CharField(max_length=100, blank=True, null=True)
+    status = models.BooleanField(default=False)
     username = models.ForeignKey(User, on_delete=models.CASCADE)
     pembina = models.ForeignKey(Profile, on_delete=models.CASCADE)
 

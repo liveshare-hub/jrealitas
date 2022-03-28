@@ -67,20 +67,7 @@
             <div class="card">
                 <div class="card-body">
                     <div id="id_from_user" style="overflow-y: scroll; height:430px;">
-                        {% if users_jab %}
-                        {% for hrd in hrds %}
-                        <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2 mx-2" href="javascript:void(0)" id="to_user" data-user="{{hrd.username.pk}}">{{hrd.username.username}}</a>
-                            
-                        </ul>
-                        {% endfor %}
-                        {% else %}
-                        {% for user in users %}
-                        <ul class="list-group">
-                            <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user="{{user.username.pk}}">{{user.username}}</a>
-                        </ul>
-                        {% endfor %}
-                        {% endif %}
+                        {% include 'chat/users.html' %}
                         
                     </div>
                 </div>
@@ -123,5 +110,28 @@
 {% endblock content %}
 
 {% block javascripts %}
+<script src="{% static 'chat/reconnecting-websocket.js' %}"></script>
+<script>
+    var endpoint = 'ws://127.0.0.1:8000/chat/status/'
+
+    var socket = new ReconnectingWebSocket(endpoint)
+
+    socket.onopen = function(e) {
+        console.log ("open", e); 
+    }
+    socket.onmessage = function(e) {
+        console.log ("message", e)
+        var userData = JSON.parse(e.data)
+        console.log(userData)
+        $ ('#new_user').html(userData.html_users)
+    }
+    socket.onerror = function(e) {
+        console.log ("error", e)
+    }
+    socket.onclose = function(e) {
+        console.log ("close", e)
+    }
+</script>
+
 <script src="{% static 'chat/chats.js' %}"></script>
 {% endblock javascripts %}

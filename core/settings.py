@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'mychats',
     'kunjungan',
     'qr_code',
-    #'channels',
+    'channels',
      #graphene
     
 ]
@@ -175,17 +175,17 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# ASGI_APPLICATION = "core.asgi.application"
+ASGI_APPLICATION = "core.asgi.application"
 
-#CHANNEL_LAYERS = {
- #   "default":{
+CHANNEL_LAYERS = {
+   "default":{
         # "BACKEND": "channels.layers.InMemoryChannelLayer"
-  #      "BACKEND": "channels_redis.core.RedisChannelLayer",
-   #     "CONFIG":{
-    #        "hosts":[("127.0.0.1", 6379)],
-    #    }
-    #}
-#}
+       "BACKEND": "channels_redis.core.RedisChannelLayer",
+       "CONFIG":{
+           "hosts":[("127.0.0.1", 6379)],
+       }
+    }
+}
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',

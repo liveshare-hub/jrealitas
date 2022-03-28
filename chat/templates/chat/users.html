@@ -1,0 +1,12 @@
+{% for user in users %}
+{% if user.status %}
+<ul class="list-group">
+    <a class="list-group-item nav-link text-grey mb-2 bg-primary" href="javascript:void(0)" id="to_user" data-user="{{user.username.pk}}">{{user.username}} online</a>
+</ul>
+{% else %}
+<ul class="list-group">
+    <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user="{{user.username.pk}}">{{user.username}} offline</a>
+</ul>
+{% endif %}
+
+{% endfor %}

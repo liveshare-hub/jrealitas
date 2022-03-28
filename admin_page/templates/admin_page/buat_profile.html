@@ -161,11 +161,10 @@ var superQuery = `query{
             processData:false,
             data:data,
             success:function(res){
-                $("input.clear").val("")
-                $('select#id_jabatan_pembina option').val("0")
+                
                 
                 if(res['error']){
-                    swal({
+                    Swal.fire({
                         icon: 'error',
                         title: 'Error!',
                         text: 'Username sudah terdaftar sebelumnya!',
@@ -173,14 +172,17 @@ var superQuery = `query{
                       })
                 }
                 if(res['success']){
-                    swal({
+                    Swal.fire({
                         icon: 'success',
                         title: 'Success',
                         text: 'Data Berhasil disimpan',
+                        preConfirm:function(){
+                            window.location.reload()
+                        }
                       })
                 }
                 if(res['data_error']){
-                    swal({
+                    Swal.fire({
                         icon: 'error',
                         title: 'Error!',
                         text: 'Password Tidak Sama',
