@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'admin_page',
     'kepesertaan',
     'chat',
-    'mychats',
+    # 'mychats',
     'kunjungan',
     'qr_code',
     'channels',

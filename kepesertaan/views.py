@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User, Group
+from django.db.utils import IntegrityError
 
 
 from django.core.files.storage import FileSystemStorage
@@ -161,22 +162,9 @@ def Buat_Pembina(request):
 def Daftar_Perusahaan(request):
     npp = request.POST.get('npp') or request.POST.get('npp_admin')
     nama_pers = request.POST.get('nama_pemberi_kerja') or request.POST.get('nama_pemberi_kerja_admin')
-    # nik = request.POST.get('nik') or request.POST.get('nik_admin')
     nama_pic = request.POST.get('nama_lengkap') or request.POST.get('nama_lengkap_admin')
-    # jabatan = request.POST.get('id_jabatan')
     pembina = request.POST.get('pembina_id') or request.POST.get('id_pembina_admin')
-    # email = request.POST.get('email') or request.POST.get('email_admin')
-    # no_hp = request.POST.get('no_hp') or request.POST.get('no_hp_admin')
-    # pemilik = request.POST.get('nama_pemilik') or request.POST.get('nama_pemilik_admin')
-    # npwp = request.POST.get('npwp') or request.POST.get('npwp_admin')
-    # alamat = request.POST.get('alamat_perusahaan') or request.POST.get('alamat_perusahaan_admin')
-    # desa_kel = request.POST.get('desa_kel') or request.POST.get('desa_kel_admin')
-    # kecamatan = request.POST.get('kecamatan') or request.POST.get('kecamatan_admin')
-    # kota_kab = request.POST.get('kota_kab') or request.POST.get('kota_kab_admin')
-    # kode_pos = request.POST.get('kode_pos') or request.POST.get('kode_pos_admin')
     username = request.POST.get('username') or request.POST.get('username_admin')
-    # password1 = request.POST.get('password1') or request.POST.get('password1_admin')
-    # password2 = request.POST.get('password2') or request.POST.get('password2_admin')
     key = Fernet.generate_key()
     fernet = Fernet(key)
 
@@ -199,25 +187,6 @@ def Daftar_Perusahaan(request):
             nama_perusahaan=nama_pers, pembina_id=int(pembina))
 
         return JsonResponse({'success':'done'})
-        # else:
-        #     return JsonResponse({'error':'Password tidak sama!'})
-    # else:
-    #     if cek_npp.exists():
-    #         return JsonResponse({'error':'Perusahaan sudah pernah terdaftar!'})
-    #     else:
-    #         if password1 == password2 :
-    #             encsalt = fernet.encrypt(npp.encode())
-    #             password = make_password(password1, salt=[encsalt.decode('utf-8')])
-    #             user = User.objects.create(username=username, password=password)
-                
-    #             Perusahaan.objects.create(username_id=user.pk,nama_pic=nama_pic, nik=nik, email=email,
-    #                 no_hp=no_hp, npp=npp, nama_perusahaan=nama_pers, nama_pemilik=pemilik, npwp_prsh=npwp,
-    #                 alamat=alamat, desa_kel=desa_kel, kecamatan=kecamatan, kota_kab=kota_kab, kode_pos=kode_pos,
-    #                 pembina_id=int(pembina))
-
-    #             return JsonResponse({'success':'done'})
-    #         else:
-    #             return JsonResponse({'error':'Password tidak sama!'})
 
 def edit_profile_perusahaan(request):
     username = request.user
@@ -242,9 +211,6 @@ def edit_profile_perusahaan(request):
             kecamatan=kecamatan,kota_kab=kota_kab)
         return redirect('dashboard')
 
-    #     if form.is_valid():
-    #         form.save()
-    #         return redirect('dashboard')
     else:
         form = PerusahaanForm(instance=cek_npp)
         return render(request, 'kepesertaan/edit_pers.html', {'form':form})
@@ -261,18 +227,19 @@ def save_to_models(request):
         exceldata = pd.read_excel(myfile, converters={'NPP':str})
         
         dbframe = exceldata
-        for dbframe in dbframe.itertuples():
-            # key = Fernet.generate_key()
-            # fernet = Fernet(key)
-            # encsalt = fernet.encrypt(dbframe.NPP.encode())
-            # salts = encsalt[1:5]
+        try:
+            for dbframe in dbframe.itertuples():
 
-            password = make_password(dbframe.NPP, hasher='default')
-            user = User.objects.create(username=dbframe.NPP, password=password)
-            obj = Perusahaan.objects.select_related('pembina','username').create(npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, username_id=user.pk, pembina_id=pembina)
-            obj.save()
+                password = make_password(dbframe.NPP, hasher='default')
+                user = User.objects.create(username=dbframe.NPP, password=password)
+                obj = Perusahaan.objects.select_related('pembina','username').create(npp=dbframe.NPP, nama_pic=dbframe.NAMA_PIC, nama_perusahaan=dbframe.NAMA_PERUSAHAAN, username_id=user.pk, pembina_id=pembina)
+                obj.save()
 
-        return JsonResponse({'success':'Done'})
+            return JsonResponse({'success':'Done'})
+        except AttributeError:
+            return JsonResponse({'errors':'Isi File salah!'})
+        except IntegrityError:
+            return JsonResponse({'errors':'NPP sudah pernah terdaftar!'})
         # return render(request, 'kepesertaan/upload.html',{'upload_url':uploaded_url})
  
     # return render(request, 'kepesertaan/upload.html')

@@ -22,6 +22,7 @@ from .models import Thread, ChatMessage
 @login_required
 def index(request):
     users_jab = Profile.objects.select_related('username').filter(username__username=request.user)
+    
     if users_jab.exists() :
         users = Profile.objects.exclude(username__username=request.user)
         hrd = Perusahaan.objects.all()
@@ -39,11 +40,12 @@ def index(request):
 
 @login_required
 def inbox(request):
-    # user_obj = User.objects.get(username=u
+    pesan = Message.objects.filter(is_read=False).all()
     users_jab = Profile.objects.select_related('username').filter(username__username=request.user)
     if users_jab.exists() :
         users = Profile.objects.exclude(username__username=request.user)
         hrd = Perusahaan.objects.all()
+
     else:
         users = Profile.objects.exclude(jabatan__kode_jabatan='70')
         # hrd = Perusahaan.objects.select_related('username','pembina').filter(pembina__username__username=request.user)
@@ -52,7 +54,8 @@ def inbox(request):
     context = {
         'users_jab':users_jab,
         'users':users,
-        'hrds':hrd
+        'hrds':hrd,
+        'chats':pesan,
     }
     
     return render(request, 'chat/direct.html',context)
@@ -71,8 +74,8 @@ def load_chat(request):
     threads = ThreadChat.objects.filter(pk=int(thread_id))
 
     if threads.exists():
-        messages = Message.objects.filter(thread_id=threads[0].id).update(is_read=True)
-        testing = Message.objects.filter(thread_id=threads[0].id).values('pk','user__username','sender__pk','sender__username','recipent__pk','recipent__username','body','date')
+        # messages = Message.objects.filter(thread_id=threads[0].id).update(is_read=True)
+        testing = Message.objects.filter(thread_id=thread_id).values('pk','sender__pk','sender__username','body','date').order_by('date')
         
         # data = []
         # for message in messages:
@@ -102,16 +105,33 @@ def create_chat(request):
         return JsonResponse({'success':'Save!'})
 
 @csrf_exempt
+def is_read_chat(request):
+    # from_user = request.user.pk
+    thread_id = request.POST.get('thread_id')
+    # print(thread_id)
+    # to_user = request.POST.get('user')
+    threads = ThreadChat.objects.filter(pk=int(thread_id))
+    # threads = ThreadChat.objects.filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
+    try:
+        if threads.exists():
+            # messages = Message.objects.filter(thread_id=threads[0].id).update(is_read=True)
+            messages = Message.objects.filter(thread_id=threads[0]).update(is_read=True)
+            
+            return JsonResponse({'data':'Done'})
+    except ThreadChat.DoesNotExist:
+        return JsonResponse({'error':'Data Tidak ditemukan!'})
+
+@csrf_exempt
 def save_chat(request):
     user = request.user.pk
     thread_id = request.POST.get('thread_id')
-    to_user = request.POST.get('to_user')
+    # to_user = request.POST.get('to_user')
     body = request.POST.get('pesan')
     # to_user_pk = User.objects.get(username=to_user)
     cek_id = ThreadChat.objects.filter(pk=int(thread_id))
     
     if cek_id.exists():  
-        _ = Message.objects.create(thread_id=int(thread_id), user_id=user, sender_id=user, recipent_id=int(to_user), body=body)
+        _ = Message.objects.create(thread_id=int(thread_id), sender_id=user, body=body)
         last_pesan = Message.objects.filter(thread_id=int(thread_id)).order_by('-date')[0]
         pesan = serializers.serialize('json', [last_pesan])
         # print(pesan)

@@ -13,22 +13,9 @@ function DafarNPP() {
     var data = new FormData()
     data.append("npp", $("#npp").val())
     data.append("nama_pemberi_kerja", $("#nama_pemberi_kerja").val())
-    //data.append("nik", $("#nik").val())
     data.append("nama_lengkap", $("#nama_lengkap").val())
-    //data.append("jabatan", $('select#makeselect option').filter(':selected').val())
     data.append("pembina_id", $("#pembina_id").val())
-    //data.append("email",$("#email").val())
-    //data.append("no_hp",$("#no_hp").val())
-    //data.append("nama_pemilik",$("#nama_pemilik").val())
-    //data.append("npwp",$("#npwp").val())
-    //data.append("alamat_perusahaan",$("#alamat_perusahaan").val())
-    //data.append("desa_kel",$("#desa_kel").val())
-    //data.append("kecamatan", $("#kecamatan").val())
-    //data.append("kota_kab",$("#kota_kab").val())
-    //data.append("kode_pos",$("#kode_pos").val())
     data.append("username", $("#username").val())
-    //data.append("password1", $("#password1").val())
-    //data.append("password2", $("#password2").val())
     data.append("csrfmiddlewaretoken", $("input[name='csrfmiddlewaretoken']").val())
     
     $.ajax({
@@ -39,7 +26,7 @@ function DafarNPP() {
         data:data,
         success:function(res){
             Swal.fire({
-                text:`Pendaftaran Perusahaan NPP <b>${npp}</b> berhasil!`,
+                html:`Pendaftaran Perusahaan NPP <b>${npp}</b> berhasil!`,
                 icon:'success',
                 confirmButtonText:'OK',
                 preConfirm:() => {
@@ -211,7 +198,7 @@ function uploadFile() {
             }
         },
         error:function(err){
-            console.log(err.responseText)
+            
         }
     })
 

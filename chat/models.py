@@ -16,31 +16,31 @@ class ThreadChat(models.Model):
         return f'{self.pk}'
 
 class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='from_user')
-    recipent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
+    # recipent = models.ForeignKey(User, on_delete=models.CASCADE, related_name='to_user')
     body = models.TextField(max_length=1000, blank=True, null=True)
     thread = models.ForeignKey(ThreadChat, on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     is_read = models.BooleanField(default=False)
 
-    def send_message(from_user, to_user, body):
+    def send_message(from_user, body):
         sender_message = Message(
-            user=from_user,
+            # user=from_user,
             sender=from_user,
-            recipent=to_user,
+            # recipent=to_user,
             body=body,
-            is_read=True
+            is_read=False
         )
         sender_message.save()
 
-        recipent_message = Message(
-            user=to_user,
-            sender=from_user,
-            body=body,
-            recipent=from_user,
-        )
-        recipent_message.save()
+        # recipent_message = Message(
+        #     user=to_user,
+        #     sender=from_user,
+        #     body=body,
+        #     recipent=from_user,
+        # )
+        # recipent_message.save()
 
         return sender_message
 

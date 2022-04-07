@@ -10,4 +10,5 @@ urlpatterns = [
     path('create/thread/', views.create_chat, name='create-thread'),
     path('save/chat/', views.save_chat, name='save-chat'),
     path('load/chat/', views.load_chat),
+    path('read/done/', views.is_read_chat)
 ]

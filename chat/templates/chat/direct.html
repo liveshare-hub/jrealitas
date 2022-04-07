@@ -57,6 +57,23 @@
 #to_user:hover{
     background-color: black;
 }
+
+.new_message {
+    animation: example 1.5s infinite;
+}
+
+@keyframes example {
+    0% {
+        background-color: grey;
+    }
+    50% {
+        background-color: greenyellow;
+    }
+
+    100%{
+        background-color: white;
+    }
+}
 </style>
 {% endblock stylesheets %}
 
@@ -112,18 +129,44 @@
 {% block javascripts %}
 <script src="{% static 'chat/reconnecting-websocket.js' %}"></script>
 <script>
-    var endpoint = 'ws://127.0.0.1:8000/chat/status/'
+    var i = window.location.href
+    var protocol = window.location.protocol
+    var host = window.location.host
+    if(protocol === 'https'){
+        proWs = 'wss'
+    }else{
+        proWs = 'ws'
+    }
+    console.log(i)
+    // var endpoint = 'ws://127.0.0.1:8000/chat/status/'
+    var endpoint = proWs+'://'+host+'/chat/status/'
+
 
     var socket = new ReconnectingWebSocket(endpoint)
 
     socket.onopen = function(e) {
-        console.log ("open", e); 
+        // console.log ("open", e);
+       
     }
+
+    var ul = $("ul#to_users").length + 1
+    //console.log(ul)
+
     socket.onmessage = function(e) {
-        console.log ("message", e)
+        
+        var from_sender = $("#sender").text()
+        
         var userData = JSON.parse(e.data)
-        console.log(userData)
-        $ ('#new_user').html(userData.html_users)
+        
+        datas = JSON.parse(userData.chat_users)
+        
+        datas.map(data => {
+            console.log(data)
+            if(data.sender__username !== from_sender){
+                $("#to_user").addClass("new_message")
+            }
+        })
+        
     }
     socket.onerror = function(e) {
         console.log ("error", e)
@@ -131,6 +174,8 @@
     socket.onclose = function(e) {
         console.log ("close", e)
     }
+
+    
 </script>
 
 <script src="{% static 'chat/chats.js' %}"></script>
