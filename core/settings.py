@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # ALLOWED_HOSTS = ['127.0.0.1','localhost','0.0.0.0','realitas.site','www.realitas.site']
 ALLOWED_HOSTS = ['*']
@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     # 'mychats',
     'kunjungan',
     'qr_code',
-    'channels',
+    # 'channels',
      #graphene
     
 ]
@@ -175,17 +175,21 @@ MEDIA_URL = 'media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = "core.asgi.application"
+# ASGI_APPLICATION = "core.asgi.application"
 
-CHANNEL_LAYERS = {
-   "default":{
-        # "BACKEND": "channels.layers.InMemoryChannelLayer"
-       "BACKEND": "channels_redis.core.RedisChannelLayer",
-       "CONFIG":{
-           "hosts":[("127.0.0.1", 6379)],
-       }
-    }
-}
+# CHANNEL_LAYERS = {
+#    "default":{
+#         # "BACKEND": "channels.layers.InMemoryChannelLayer"
+#         "BACKEND": "channels_redis.core.RedisChannelLayer",
+#         "CONFIG":{
+#            "hosts":[("127.0.0.1", 6379)],
+#             # "hosts":[(config('REDIS_ENDPOINT'), config('REDIS_PORT'))],
+#        }
+#     #    "OPTIONS":{
+#     #        "PASSWORD": config('REDIS_PASSWORD')
+#     #    }
+#     }
+# }
 
 PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',

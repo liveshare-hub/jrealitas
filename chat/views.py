@@ -75,7 +75,7 @@ def load_chat(request):
 
     if threads.exists():
         # messages = Message.objects.filter(thread_id=threads[0].id).update(is_read=True)
-        testing = Message.objects.filter(thread_id=thread_id).values('pk','sender__pk','sender__username','body','date').order_by('date')
+        testing = Message.objects.filter(thread_id=thread_id).values('pk','sender__pk','sender__username','body','date','is_read').order_by('date')
         
         # data = []
         # for message in messages:
@@ -106,12 +106,12 @@ def create_chat(request):
 
 @csrf_exempt
 def is_read_chat(request):
-    # from_user = request.user.pk
-    thread_id = request.POST.get('thread_id')
+    from_user = request.user.pk
+    # thread_id = request.POST.get('user')
     # print(thread_id)
-    # to_user = request.POST.get('user')
-    threads = ThreadChat.objects.filter(pk=int(thread_id))
-    # threads = ThreadChat.objects.filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
+    to_user = request.POST.get('user')
+    # threads = ThreadChat.objects.filter(pk=int(thread_id))
+    threads = ThreadChat.objects.filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
     try:
         if threads.exists():
             # messages = Message.objects.filter(thread_id=threads[0].id).update(is_read=True)
@@ -120,6 +120,21 @@ def is_read_chat(request):
             return JsonResponse({'data':'Done'})
     except ThreadChat.DoesNotExist:
         return JsonResponse({'error':'Data Tidak ditemukan!'})
+
+
+@csrf_exempt
+def load_read(request):
+    from_user = request.user.pk
+    to_user = request.POST.get('to_user')
+    
+    threads = ThreadChat.objects.filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
+    try:
+        if threads.exists():
+            pesan = Message.objects.filter(thread_id=threads[0].id).filter(is_read=False).values('sender_id','is_read','thread__user','thread__to_user')
+            # pesan = serializers.serialize('json', [pesan])
+            return JsonResponse({'data':list(pesan)}, safe=False)
+    except ThreadChat.DoesNotExist:
+        return JsonResponse({'error':'Data Not Found!'})
 
 @csrf_exempt
 def save_chat(request):
@@ -134,8 +149,7 @@ def save_chat(request):
         _ = Message.objects.create(thread_id=int(thread_id), sender_id=user, body=body)
         last_pesan = Message.objects.filter(thread_id=int(thread_id)).order_by('-date')[0]
         pesan = serializers.serialize('json', [last_pesan])
-        # print(pesan)
-        # print(last_pesan.order_by('-date')[0])
+
         return JsonResponse({'data':pesan})
 
 

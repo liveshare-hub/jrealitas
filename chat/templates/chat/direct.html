@@ -154,18 +154,18 @@
 
     socket.onmessage = function(e) {
         
-        var from_sender = $("#sender").text()
+        // var from_sender = $("#sender").text()
         
-        var userData = JSON.parse(e.data)
+        // var userData = JSON.parse(e.data)
         
-        datas = JSON.parse(userData.chat_users)
+        // datas = JSON.parse(userData.chat_users)
         
-        datas.map(data => {
-            console.log(data)
-            if(data.sender__username !== from_sender){
-                $("#to_user").addClass("new_message")
-            }
-        })
+        // datas.map(data => {
+            
+        //     if(data.sender__username !== from_sender){
+        //         $("#to_user").addClass("new_message")
+        //     }
+        // })
         
     }
     socket.onerror = function(e) {

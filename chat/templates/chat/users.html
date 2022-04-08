@@ -6,7 +6,7 @@
 {% endfor %}
 {% else %}
 {% for user in users %}
-<ul class="list-group">
+<ul class="list-group" id="to_users">
     <a class="list-group-item nav-link text-grey mb-2" href="javascript:void(0)" id="to_user" data-user="{{user.username.pk}}">{{user.username}}</a>
 </ul>
 {% endfor %}
