@@ -116,16 +116,10 @@ function loadRead(){
                 success:function(data){
                     
                     var datas = data.data
-                    // console.log(datas[0].sender_id)
-                    // to_user.addClass("new_message")
-                    try{
-                        
-                        // console.log(to_user_pk)
-                        if(datas[0].sender_id === to_user_pk){
-                            to_user.addClass("new_message")
-                        }
-                    }catch(err){
-                        console.log("")
+
+                    
+                    if(datas[0].sender_id === to_user_pk){
+                        to_user.addClass("new_message")
                     }
                 
 
@@ -199,6 +193,7 @@ $(document).ready(function(){
             })
         }
 
+        loadRead();
         // var data = new FormData()
         // data.append("user",$("p#id_thread").attr('data-to-user'))
 
@@ -228,7 +223,7 @@ $(document).ready(function(){
         $("p#username_id").remove();
 
         setInterval(loadChatAll, 1000)
-        loadRead()
+        
         if($(this).hasClass("new_message")){
             $(this).removeClass("new_message")
             
