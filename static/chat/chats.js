@@ -97,41 +97,41 @@ function loadChat(el){
         })
 }
 
-function loadRead(){
-    for(var i=1;i<ul;i++){
-        (function (item) { 
-            var to_user = $(`ul#to_users:nth-child(${item}) a`)
+// function loadRead(){
+//     for(var i=1;i<ul;i++){
+//         (function (item) { 
+//             var to_user = $(`ul#to_users:nth-child(${item}) a`)
             
-            var to_user_pk = parseInt(to_user[0].dataset.user)
-            var data = new FormData()
-            data.append('to_user', to_user[0].dataset.user)
+//             var to_user_pk = parseInt(to_user[0].dataset.user)
+//             var data = new FormData()
+//             data.append('to_user', to_user[0].dataset.user)
 
-            $.ajax({
-                method:"POST",
-                url:'/chat/load/read/',
-                dataType:"json",
-                data:data,
-                contentType:false,
-                processData:false,
-                success:function(data){
+//             $.ajax({
+//                 method:"POST",
+//                 url:'/chat/load/read/',
+//                 dataType:"json",
+//                 data:data,
+//                 contentType:false,
+//                 processData:false,
+//                 success:function(data){
                     
-                    var datas = data.data
+//                     var datas = data.data
 
                     
-                    if(datas[0].sender_id === to_user_pk){
-                        to_user.addClass("new_message")
-                    }
+//                     if(datas[0].sender_id === to_user_pk){
+//                         to_user.addClass("new_message")
+//                     }
                 
 
                     
-                },
-                error:function(err){
-                    console.log(err)
-                }
-            })
-         })(i)
-    }
-}
+//                 },
+//                 error:function(err){
+//                     console.log(err)
+//                 }
+//             })
+//          })(i)
+//     }
+// }
 
 function loadChatAll(){
     // var ul = $("ul#to_users").length + 1
@@ -193,7 +193,7 @@ $(document).ready(function(){
             })
         }
 
-        loadRead();
+        // loadRead();
         // var data = new FormData()
         // data.append("user",$("p#id_thread").attr('data-to-user'))
 
