@@ -21,7 +21,7 @@ function createThread(el){
             
             $("#sender").after(html)
             $("p#sender").after(pesan)
-            loadChat($("p#id_thread").attr('data-thread'))
+            // loadChat($("p#id_thread").attr('data-thread'))
         },
         error:function(err){
             console.log(err)
@@ -125,7 +125,7 @@ function loadRead(){
                             to_user.addClass("new_message")
                         }
                     }catch(err){
-                        console.clear()
+                        console.log("")
                     }
                 
 
