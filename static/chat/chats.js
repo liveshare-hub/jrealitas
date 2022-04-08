@@ -160,8 +160,8 @@ var pesan = document.getElementById("pesan_id")
 $(document).ready(function(){
     let sender = $("#sender").text()
     let toUser = $("#to_user").text()
-    // setInterval( loadRead, 1000)
-    loadRead()
+    setInterval( loadRead, 1500)
+    // loadRead()
     $("#kirim_pesan").attr('disabled',true)
     $("#pesan_id").on("focusout",function(){
         if($(this).text !== ""){

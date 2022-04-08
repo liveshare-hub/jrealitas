@@ -126,7 +126,7 @@ def is_read_chat(request):
 def load_read(request):
     from_user = request.user.pk
     to_user = request.POST.get('to_user')
-    print(to_user)
+    # print(to_user)
     threads = ThreadChat.objects.filter(Q(user_id=from_user) | Q(user_id=to_user), Q(to_user_id=to_user) | Q(to_user_id=from_user))
     try:
         if threads.exists():
