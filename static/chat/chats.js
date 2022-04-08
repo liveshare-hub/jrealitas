@@ -160,7 +160,7 @@ var pesan = document.getElementById("pesan_id")
 $(document).ready(function(){
     let sender = $("#sender").text()
     let toUser = $("#to_user").text()
-    setInterval( loadRead, 1500)
+    // setInterval( loadRead, 1500)
     // loadRead()
     $("#kirim_pesan").attr('disabled',true)
     $("#pesan_id").on("focusout",function(){
@@ -228,6 +228,7 @@ $(document).ready(function(){
         $("p#username_id").remove();
 
         setInterval(loadChatAll, 1000)
+        loadRead()
         if($(this).hasClass("new_message")){
             $(this).removeClass("new_message")
             
